@@ -3,22 +3,19 @@ package com.project.happyhouse.model.service;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.ssafy.happyhouse.model.NoticeDto;
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.project.happyhouse.model.NoticeDto;
+import com.project.util.PageNavigation;
 import com.ssafy.happyhouse.model.dao.NoticeDaoImpl;
-import com.ssafy.util.PageNavigation;
 
-public class NoticeServiceImpl implements NoticeService {
+@Service
+public class ArticleServiceImpl implements ArticleService {
 
-	private static NoticeService noticeService;
-
-	private NoticeServiceImpl() {
-	}
-
-	public static NoticeService getNoticeService() {
-		if (noticeService == null)
-			noticeService = new NoticeServiceImpl();
-		return noticeService;
-	}
+	@Autowired
+	private SqlSession sqlSession;
 
 	@Override
 	public List<NoticeDto> getnoticelist(int currentPage, int sizePerPage, String key, String word) {

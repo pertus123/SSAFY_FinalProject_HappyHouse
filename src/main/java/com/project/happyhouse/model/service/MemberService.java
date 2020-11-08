@@ -2,9 +2,9 @@ package com.project.happyhouse.model.service;
 
 import java.util.List;
 
-import com.ssafy.happyhouse.model.UserDto;
+import com.project.happyhouse.model.UserDto;
 
-public interface UserService {
+public interface MemberService {
 
 	public int join(UserDto memberdto) throws Exception;
 	public UserDto login(String userid, String userpwd) throws Exception;

@@ -3,9 +3,9 @@ package com.project.happyhouse.model.mapper;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.ssafy.happyhouse.model.UserDto;
+import com.project.happyhouse.model.UserDto;
 
-public interface UserMapper {
+public interface MemberMapper {
 
 	public int join(UserDto memberdto);
 	public UserDto login(String userid, String userpwd) throws SQLException;

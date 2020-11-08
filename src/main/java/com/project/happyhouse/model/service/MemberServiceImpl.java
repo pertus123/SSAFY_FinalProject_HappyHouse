@@ -2,21 +2,17 @@ package com.project.happyhouse.model.service;
 
 import java.util.List;
 
-import com.ssafy.happyhouse.model.UserDto;
-import com.ssafy.happyhouse.model.dao.UserDaoImpl;
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public class UserServiceImpl implements UserService {
+import com.project.happyhouse.model.UserDto;
 
-	private static UserService userService;
+@Service
+public class MemberServiceImpl implements MemberService {
 
-	private UserServiceImpl() {
-	}
-
-	public static UserService getUserService() {
-		if (userService == null)
-			userService = new UserServiceImpl();
-		return userService;
-	}
+	@Autowired
+	private SqlSession sqlSession;
 
 	@Override
 	public UserDto login(String userid, String userpwd) throws Exception {
