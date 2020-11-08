@@ -1,4 +1,4 @@
-package com.project.happyhouse.cotroller;
+package com.project.happyhouse.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

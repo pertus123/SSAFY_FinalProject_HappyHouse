@@ -1,0 +1,70 @@
+@charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700;800&family=Noto+Sans+KR:wght@500&display=swap');
+* {
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+	display: table;
+	margin: 0;
+}
+
+.search {
+	background-color: rgb(245, 243, 239);
+}
+
+.search div {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+}
+
+.buildinglist {
+	width: 100%;
+	border: 1px #CFB8A1;
+}
+
+.detail {
+	border: 1px #CFB8A1;
+}
+
+#detail_img {
+	width: 100%;
+}
+
+.search-container {
+	width: 100%;
+	padding-bottom:20px;
+}
+
+.custom-select {
+	width: 150px;
+}
+
+.nearbyinfo {
+	text-align: center;
+}
+
+.nearbyinfo .btn {
+	width:50%;
+	color: white;
+	background-color: #CFB8A1;
+	margin-bottom: 20px;
+}
+
+#map_table {
+	margin: 0;
+	width: 100%;
+	height: 100%;
+}
+
+#map_button {
+	height: 30px;
+}
+
+.btn.subfuncbtn {
+	width: 30%;
+}
