@@ -1,0 +1,212 @@
+/*1번*/
+
+#include <iostream>
+#include <sstream>
+#include <vector>
+using namespace std;
+pair<char, int> ans[101];
+void solution(int numOfAllPlayers, int numOfQuickPlayers, char *namesOfQuickPlayers, int numOfGames, int *numOfMovesPerGame) {
+		for (int i = 1; i < numOfAllPlayers; i++) {
+		ans[i-1].first = 'A' + i;
+		ans[i - 1].second = 0;
+	}
+	
+	int key = 1; // 몇번 걸렸는지
+	int index = 0; // 지금 위치 .
+	char point = 'A'; // 누구?
+
+	for (int i = 0; i < numOfGames; i++) {
+
+		if (numOfMovesPerGame[i] > -1) { //  시계일 때,
+			int cnt = numOfMovesPerGame[i] % (numOfAllPlayers - 1);
+			cnt = (index + cnt) % (numOfAllPlayers - 1);
+			int sw = 0;
+			for (int j = 0; j < numOfQuickPlayers; j++) {
+				if (namesOfQuickPlayers[j] == ans[cnt].first) {
+					key += 1;
+				//	ans[key].second += 1;
+					index = cnt;
+					sw = 1;
+					break;
+				}
+				
+			}
+			if(sw == 0) {
+				ans[cnt].second += 1;
+				index = cnt;
+				pair<char, int> temp = { point, key };
+				point = ans[cnt].first;
+				key = ans[cnt].second;
+				ans[cnt] = temp;
+
+			}
+
+
+		}
+		else { // 반시계일때
+			int cnt = abs(numOfMovesPerGame[i]) % (numOfAllPlayers - 1);
+			if (cnt > index) {
+				cnt = (numOfAllPlayers-1) - (cnt - index);
+			}
+			else {
+				cnt = index- cnt;
+			}
+
+			int sw = 0;
+			for (int j = 0; j < numOfQuickPlayers; j++) {
+				if (namesOfQuickPlayers[j] == ans[cnt].first) {
+					key += 1;
+					index = cnt;
+					sw = 1;
+					break;
+				}
+
+			}
+			if (sw == 0) {
+				ans[cnt].second += 1;
+				index = cnt;
+				pair<char, int> temp = { point, key };
+				point = ans[cnt].first;
+				key = ans[cnt].second;
+				ans[cnt] = temp;
+			}
+		}
+	}
+
+
+	for (int i = 0; i < numOfAllPlayers-1; i++) {
+		cout << ans[i].first << " " << ans[i].second << endl;
+	}
+
+	cout << point<< " " << key << endl;
+
+}
+
+struct input_data {
+  int numOfAllPlayers;
+  int numOfQuickPlayers;
+  char *namesOfQuickPlayers;
+  int numOfGames;
+  int *numOfMovesPerGame;
+};
+
+void process_stdin(struct input_data& inputData) {
+  string line;
+  istringstream iss;
+
+  getline(cin, line);
+  iss.str(line);
+  iss >> inputData.numOfAllPlayers;
+
+  getline(cin, line);
+  iss.clear();
+  iss.str(line);
+  iss >> inputData.numOfQuickPlayers;
+
+  getline(cin, line);
+  iss.clear();
+  iss.str(line);
+  inputData.namesOfQuickPlayers = new char[inputData.numOfQuickPlayers];
+  for (int i = 0; i < inputData.numOfQuickPlayers; i++) {
+    iss >> inputData.namesOfQuickPlayers[i];
+  }
+
+  getline(cin, line);
+  iss.clear();
+  iss.str(line);
+  iss >> inputData.numOfGames;
+
+  getline(cin, line);
+  iss.clear();
+  iss.str(line);
+  inputData.numOfMovesPerGame = new int[inputData.numOfGames];
+  for (int i = 0; i < inputData.numOfGames; i++) {
+    iss >> inputData.numOfMovesPerGame[i];
+  }
+}
+
+int main() {
+  struct input_data inputData;
+  process_stdin(inputData);
+
+  solution(inputData.numOfAllPlayers, inputData.numOfQuickPlayers, inputData.namesOfQuickPlayers, inputData.numOfGames, inputData.numOfMovesPerGame);
+  return 0;
+}
+
+
+/////////////
+2번
+/////////////
+#include <iostream>
+#include <sstream>
+
+using namespace std;
+int board[101];
+int ans = 0;
+void solution(int day, int width, int **blocks) {
+  // TODO: 이곳에 코드를 작성하세요. 추가로 필요한 함수와 전역변수를 선언해서 사용하셔도 됩니다.
+		for (int i = 0; i < day; i++) {
+		for (int j = 0; j < width; j++) {
+			board[j] += blocks[i][j]; 
+		}
+
+		for (int j = 1; j < width - 1; j++) {
+			int leftMax = 0;
+			int rightMax = 0;
+			for (int k = 0; k < j; k++) {
+				if (board[k] > leftMax) leftMax = board[k];
+			}
+			for (int k = j+1; k < width; k++) {
+				if (board[k] > rightMax) rightMax = board[k];
+			}
+			if (rightMax > leftMax && leftMax > board[j]) {
+				ans += leftMax - board[j];
+				board[j] = leftMax;
+			}
+			else if((rightMax < leftMax && rightMax > board[j])) {
+				ans += rightMax - board[j];
+				board[j] = rightMax;
+			}
+		}
+	}
+	cout << ans << endl;
+}
+
+struct input_data {
+  int day;
+  int width;
+  int **blocks;
+};
+
+void process_stdin(struct input_data& inputData) {
+  string line;
+  istringstream iss;
+
+  getline(cin, line);
+  iss.str(line);
+  iss >> inputData.day;
+
+  getline(cin, line);
+  iss.clear();
+  iss.str(line);
+  iss >> inputData.width;
+
+  inputData.blocks = new int*[inputData.day];
+  for (int i = 0; i < inputData.day; i++) {
+    getline(cin, line);
+    iss.clear();
+    iss.str(line);
+    inputData.blocks[i] = new int[inputData.width];
+    for (int j = 0; j < inputData.width; j++) {
+      iss >> inputData.blocks[i][j];
+    }
+  }
+}
+
+int main() {
+	struct input_data inputData;
+	process_stdin(inputData);
+
+	solution(inputData.day, inputData.width, inputData.blocks);
+	return 0;
+}
