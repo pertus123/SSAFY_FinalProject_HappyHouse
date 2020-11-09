@@ -1,6 +1,6 @@
 package com.project.happyhouse.model;
 
-public class UserDto {
+public class MemberDto {
 
 	private String userid;
 	private String userpwd;
@@ -10,11 +10,11 @@ public class UserDto {
 	private String joindate;
 	private boolean isadmin;
 
-	public UserDto() {
+	public MemberDto() {
 		super();
 	}
 
-	public UserDto(String userid, String userpwd, String username, String userbirth, String userphone, String joindate,
+	public MemberDto(String userid, String userpwd, String username, String userbirth, String userphone, String joindate,
 			boolean isadmin) {
 		super();
 		this.userid = userid;

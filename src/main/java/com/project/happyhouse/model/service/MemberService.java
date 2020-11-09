@@ -1,21 +1,22 @@
 package com.project.happyhouse.model.service;
 
 import java.util.List;
+import java.util.Map;
 
-import com.project.happyhouse.model.UserDto;
+import com.project.happyhouse.model.MemberDto;
 
 public interface MemberService {
 
-	public int join(UserDto memberdto) throws Exception;
-	public UserDto login(String userid, String userpwd) throws Exception;
-	public List<UserDto> usermodify() throws Exception;
-	public List<UserDto> userearchbyid(String keyword);
-	public List<UserDto> userearchbyname(String keyword);
-	public UserDto getuserinform(String userid);
-	public int userinformupdate(UserDto userDto);
-	public String pwdvalidate(String userid);
-	public int userpwdupdate(UserDto userDto);
-	public int userleave(String userid);
-	public List<String> getinterestloc(String userid);
+	public int join(MemberDto memberdto) throws Exception;
+	public MemberDto login(Map<String, String> map) throws Exception;
+	List<MemberDto> userList();
+	List<MemberDto> userSearchById(String keyword);
+	List<MemberDto> userSearchByName(String keyword);
+	MemberDto getUserInform(String userid);
+	int userInformUpdate(MemberDto userDto);
+	String pwdValidate(String userid);
+	int userPwdUpdate(MemberDto userDto);
+	int userLeave(String userid);
+	List<String> getInterestLoc(String userid);
 	
 }
