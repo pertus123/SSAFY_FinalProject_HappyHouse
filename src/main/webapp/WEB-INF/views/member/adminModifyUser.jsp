@@ -39,7 +39,8 @@
 			<ul class="navbar-nav">
 				<li class="nav-item ">
 					<h5>
-						<a class="nav-link" href="${root}/notice/noticelist?pg=1&key=&word=">공지사항 관리</a>
+						<a class="nav-link"
+							href="${root}/notice/noticelist?pg=1&key=&word=">공지사항 관리</a>
 					</h5>
 				</li>
 				<li class="nav-item ">
@@ -54,6 +55,9 @@
 				</li>
 			</ul>
 			<div class="hb ml-auto">
+				<button id="mypage" class="navbar-nav btn btn-secondary btn-sm"
+					onclick="location.href='${root}/member/userInform'"
+					style="float: left; margin-right: 10px">&nbsp;&nbsp;마이페이지</button>
 				<button id="logout" class="navbar-nav btn btn-secondary btn-sm"
 					onclick="location.href='${root}/member/logout'" style="float: left">&nbsp;&nbsp;로그아웃</button>
 			</div>
@@ -63,13 +67,18 @@
 	<div class="row">
 		<div class="col-md-2"></div>
 		<div class="col-md-8">
-			<form id="userSearchForm" action="" method="get">
+			<form id="userSearchForm" action="${root}/member/userSearch"
+				method="get">
 				<div class="search-container">
-					<select class="custom-select form-control" id="select" name="select">
+					<select class="custom-select form-control" id="select"
+						name="select">
 						<option value="idsearch" selected>ID로 검색</option>
 						<option value="namesearch">이름으로 검색</option>
-					</select> <input type="text" id="search" name="search" placeholder="회원 검색...">
-					<button type="submit" id="searchBtn" onclick="javascript:search();"><i class="fa fa-search"></i></button>
+					</select> <input type="text" id="search" name="search"
+						placeholder="회원 검색...">
+					<button type="submit" id="searchBtn">
+						<i class="fa fa-search"></i>
+					</button>
 				</div>
 			</form>
 			<table class="table table-hover">
@@ -85,7 +94,7 @@
 				</thead>
 				<tbody>
 					<c:forEach items="${members}" var="m" varStatus="vs">
-						<tr onclick = "./notice?act=noticedetail&articleno='${a.articleno}'">
+						<tr onclick="./notice?act=noticedetail&articleno='${a.articleno}'">
 							<th scope="row">${vs.count}</th>
 							<td>${m.userid}</td>
 							<td>${m.username}</td>
@@ -99,41 +108,34 @@
 		</div>
 	</div>
 	<div class="col-md-2"></div>
-	
+
 	<!-- The Modal -->
 	<div class="modal fade" id="messageModal">
-	  <div class="modal-dialog modal-dialog-centered">
-	    <div class="modal-content">
-	
-	      <!-- Modal Header -->
-	      <div class="modal-header">
-	        <h5 class="modal-title">쪽지 보내기</h5>
-	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	      </div>
-	
-	      <!-- Modal body -->
-	      <div class="modal-body">
-	      	<h6 id="receiver">받는 이 : </h6>
-	        <textarea cols="50%" rows="10px"></textarea>
-	      </div>
-	
-	      <!-- Modal footer -->
-	      <div class="modal-footer">
-	      	<button type="button" class="btn ok" data-dismiss="modal" onclick="alert('쪽지를 전송했습니다.')">쪽지 전송</button>
-	        <button type="button" class="btn cancel" data-dismiss="modal">Close</button>
-	      </div>
-	    </div>
-	  </div>
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h5 class="modal-title">쪽지 보내기</h5>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body">
+					<h6 id="receiver">받는 이 :</h6>
+					<textarea cols="50%" rows="10px"></textarea>
+				</div>
+
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn ok" data-dismiss="modal"
+						onclick="alert('쪽지를 전송했습니다.')">쪽지 전송</button>
+					<button type="button" class="btn cancel" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
 	</div>
 	<script type="text/javascript">
-		function search() {
-			if ($("#search").val() == "") {
-				alert("검색어를 입력하세요");
-				return;
-			} else {
-				$("#userSearchForm").attr("action", "${root}/member/userSearch").submit();
-			}
-		}
 		
 		$(".msgbtn").click(function(){
 			var dearid = $(this).attr("dear");

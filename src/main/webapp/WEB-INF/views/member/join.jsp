@@ -21,7 +21,7 @@
 </head>
 <body>
 	<div id="blackbox">
-		<a href="${root}"><img alt="logo" src="./img/logo_text1.png"
+		<a href="${root}"><img alt="logo" src="${root}/img/logo_text1.png"
 			width="50%"></a>
 		<form id="joinForm" action="" method="post">
 			<div class="container">

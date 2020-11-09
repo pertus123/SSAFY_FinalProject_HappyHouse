@@ -47,7 +47,7 @@
 				</div>
 				<div class="signup">
 					<p>
-						아직 회원이 아니신가요? <a href="./member/join">회원가입</a>
+						아직 회원이 아니신가요? <a href="${root}/member/join">회원가입</a>
 					</p>
 				</div>
 			</div>

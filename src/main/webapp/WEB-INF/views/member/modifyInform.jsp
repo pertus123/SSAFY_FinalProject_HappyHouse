@@ -29,8 +29,8 @@
 		<div class="col-md-3">
 			<ul class="nav nav-tabs flex-column" id="side">
 				<li class="nav-item"><a class="nav-link "
-					href="./user?act=inform">개인 정보 수정</a></li>
-				<li class="nav-item"><a class="nav-link" href="./user?act=pwd">비밀번호
+					href="${root}/member/userInform">개인 정보 수정</a></li>
+				<li class="nav-item"><a class="nav-link" href="${root}/member/pwdValidate">비밀번호
 						변경</a></li>
 			</ul>
 		</div>
@@ -74,7 +74,7 @@
 				alert("이름을 입력해주세요.");
 				return;
 			} else {
-				$("#modifyForm").attr("action", "member/userInform").submit();
+				$("#modifyForm").attr("action", "${root}/member/userInform").submit();
 			}
 		}
 	</script>

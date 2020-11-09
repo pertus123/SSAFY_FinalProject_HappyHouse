@@ -22,17 +22,17 @@
 </head>
 
 <body>
-	<jsp:include page="${root}/includes/session.jsp" />
-	<header><jsp:include page="${root}/includes/userHeader.jsp" /></header>
+	<jsp:include page="../includes/session.jsp" />
+	<header><jsp:include page="../includes/userHeader.jsp" /></header>
 
 	<div id="bgc">
 		<div class="row">
 			<div class="col-md-3" id="side">
 				<ul class="nav nav-tabs flex-column">
 					<li class="nav-item"><a class="nav-link "
-						href="./user?act=inform">개인 정보 수정</a></li>
-					<li class="nav-item"><a class="nav-link" href="./user?act=pwd">비밀번호
-							변경</a></li>
+						href="${root}/member/userInform">개인 정보 수정</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="${root}/member/pwdValidate">비밀번호 변경</a></li>
 				</ul>
 			</div>
 			<div class="col-md-1"></div>

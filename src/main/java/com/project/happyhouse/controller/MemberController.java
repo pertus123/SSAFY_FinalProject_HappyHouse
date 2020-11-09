@@ -1,5 +1,6 @@
 package com.project.happyhouse.controller;
 
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +11,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,9 +25,15 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 
+	// 회원가입 창으로 이동
+	@RequestMapping(value = "/join", method = RequestMethod.GET)
+	public String join() {
+		return "member/join";
+	}
+	
 	// 회원가입
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
-	public String join(@RequestParam MemberDto memberDto, Model model) throws Exception {
+	public String join(MemberDto memberDto, Model model) throws Exception {
 		try {
 			int cnt = memberService.join(memberDto);
 			if (cnt == 0) {
@@ -38,15 +44,9 @@ public class MemberController {
 			model.addAttribute("msg", "회원가입 처리 중 문제가 발생했습니다.");
 			return "error/error";
 		}
-		return "redirect:/member/login";
+		return "redirect:/";
 	}
-
-	// 로그인 창으로 이동
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login() {
-		return "member/login";
-	}
-
+	
 	// 로그인
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(@RequestParam Map<String, String> map, Model model, HttpSession session,
@@ -66,7 +66,11 @@ public class MemberController {
 				response.addCookie(cookie);
 
 			} else {
-				model.addAttribute("msg", "아이디 또는 비밀번호 확인 후 로그인해 주세요.");
+				response.setCharacterEncoding("UTF-8");
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				out.println("<script>alert('아이디 또는 비밀번호 확인 후 로그인해 주세요.');location.href='../'</script>"); 
+				out.flush();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -94,7 +98,7 @@ public class MemberController {
 	// 아이디로 회원 검색 (Admin)
 	// 이름으로 회원 검색 (Admin)
 	@RequestMapping(value = "/userSearch", method = RequestMethod.GET)
-	public String userSearch(@RequestParam("select") String select, @RequestParam("search") String search, Model model) {
+	public String userSearch(String select, String search, Model model) {
 		System.out.println(select);
 		System.out.println("냥왜실행안되냥");
 		System.out.println(search);
@@ -115,6 +119,7 @@ public class MemberController {
 	// 회원정보(마이페이지)
 	@RequestMapping(value = "/userInform", method = RequestMethod.GET)
 	public String userInform(HttpSession session, Model model) {
+		System.out.println("userInform");
 		String userid = ((MemberDto) session.getAttribute("userinfo")).getUserid();
 		MemberDto memberDto = memberService.getUserInform(userid);
 		model.addAttribute("member", memberDto);
@@ -123,11 +128,15 @@ public class MemberController {
 
 	// 회원정보 수정(마이페이지)
 	@RequestMapping(value = "/userInform", method = RequestMethod.POST)
-	public String userInformUpdate(MemberDto memberDto, Model model) {
+	public String userInformUpdate(MemberDto memberDto, HttpSession session, Model model) {
+		System.out.println("userInformUpdate");
+		memberDto.setUserid(((MemberDto) session.getAttribute("userinfo")).getUserid());
+		System.out.println(memberDto);
 		try {
 			int cnt = memberService.userInformUpdate(memberDto);
 			if (cnt == 0) {
-				model.addAttribute("msg", "서버에 문제가 있어 정보 수정을 실패했습니다.\\n다시 시도해주세요.");
+				model.addAttribute("msg", "서버에 문제가 있어 정보 수정을 실패했습니다.\n다시 시도해주세요.");
+				return "error/error";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -145,14 +154,18 @@ public class MemberController {
 	
 	// 비밀번호 확인(마이페이지)
 	@RequestMapping(value = "/pwdValidate", method = RequestMethod.POST)
-	public String pwdValidate(String insertpwd, HttpSession session, Model model) {
+	public String pwdValidate(String insertpwd, HttpSession session, Model model,HttpServletResponse response) {
 		try {
 			String userid = ((MemberDto) session.getAttribute("userinfo")).getUserid();
 			System.out.println(insertpwd);
 			String userpwd = memberService.pwdValidate(userid);
 			System.out.println(userpwd);
 			if (!insertpwd.equals(userpwd)) {
-				model.addAttribute("msg", "비밀번호를 틀렸습니다.\\n다시 확인해주세요.");
+				response.setCharacterEncoding("UTF-8");
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				out.println("<script>alert('비밀번호를 틀렸습니다.\\n다시 확인해주세요.');location.href='./pwdValidate'</script>"); 
+				out.flush();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -178,7 +191,7 @@ public class MemberController {
 			model.addAttribute("msg", "비밀번호 변경 처리 중 문제가 발생했습니다.");
 			return "error/error";
 		}
-		return "member/userInform";
+		return "redirect:/member/userInform";
 	}
 
 	// 회원탈퇴(마이페이지)

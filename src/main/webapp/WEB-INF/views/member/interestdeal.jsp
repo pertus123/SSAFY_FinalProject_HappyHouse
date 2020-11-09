@@ -37,43 +37,43 @@
                         <th scope="row">1</th>
                         <td>봉명동</td>
                         <td>파크빌</td>
-                        <td><img src="./img/star.PNG" class="starimg"/></td>
+                        <td><img src="${root}/img/star.PNG" class="starimg"/></td>
                     </tr>
                     <tr>
                         <th scope="row">2</th>
                         <td>성내동</td>
                         <td>브이원빌</td>
-                        <td><img src="./img/ustar.PNG" class="starimg"/></td>
+                        <td><img src="${root}/img/ustar.PNG" class="starimg"/></td>
                     </tr>
                     <tr>
                         <th scope="row">3</th>
                         <td>각화동</td>
                         <td>푸르지오</td>
-                        <td><img src="./img/star.PNG" class="starimg"/></td>
+                        <td><img src="${root}/img/star.PNG" class="starimg"/></td>
                     </tr>
                     <tr>
                         <th scope="row">4</th>
                         <td>우산동</td>
                         <td>비싼아파트</td>
-                        <td><img src="./img/star.PNG" class="starimg"/></td>
+                        <td><img src="${root}/img/star.PNG" class="starimg"/></td>
                     </tr>
                     <tr>
                         <th scope="row">5</th>
                         <td>궁동</td>
                         <td>다솜빌</td>
-                        <td><img src="./img/star.PNG" class="starimg"/></td>
+                        <td><img src="${root}/img/star.PNG" class="starimg"/></td>
                     </tr>
                     <tr>
                         <th scope="row">6</th>
                         <td>덕명동</td>
                         <td>네오미아</td>
-                        <td><img src="./img/star.PNG" class="starimg"/></td>
+                        <td><img src="${root}/img/star.PNG" class="starimg"/></td>
                     </tr>
                     <tr>
                         <th scope="row">7</th>
                         <td>동명동</td>
                         <td>비싼집</td>
-                        <td><img src="./img/star.PNG" class="starimg"/></td>
+                        <td><img src="${root}/img/star.PNG" class="starimg"/></td>
                     </tr>
                 </tbody>
             </table>

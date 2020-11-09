@@ -42,7 +42,7 @@
 					<tr>
 						<th scope="row">${vs.count}</th>
 						<td>${i}</td>
-						<td><img src="./img/star.PNG" class="starimg" /></td>
+						<td><img src="${root}/img/star.PNG" class="starimg" /></td>
 					</tr>
 					</c:forEach>
 				</tbody>

@@ -30,9 +30,9 @@
 			<div class="col-md-3" id="side">
 				<ul class="nav nav-tabs flex-column">
 					<li class="nav-item"><a class="nav-link "
-						href="./user?act=inform">개인 정보 수정</a></li>
-					<li class="nav-item"><a class="nav-link" href="./user?act=pwd">비밀번호
-							변경</a></li>
+						href="${root}/member/userInform">개인 정보 수정</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="${root}/member/pwdValidate">비밀번호 변경</a></li>
 				</ul>
 			</div>
 			<div class="col-md-1"></div>
@@ -65,7 +65,7 @@
 				alert("비밀번호를 확인해주세요.");
 				return
 			} else {
-				$("#modifyForm").attr("action", "./user").submit();
+				$("#modifyForm").attr("action", "${root}/member/userPwdUpdate").submit();
 			}
 		}
 	</script>

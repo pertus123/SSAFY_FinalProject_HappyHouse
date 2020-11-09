@@ -23,7 +23,7 @@
                     <h5><a class="nav-link" href ="${root}/member/interestloc">관심 지역</a></h5>
                 </li>
                 <li class="nav-item">
-                    <h5><a class="nav-link" href ="${root}/member/interestdeal.jsp">관심 매물</a></h5>
+                    <h5><a class="nav-link" href ="../member/interestdeal.jsp">관심 매물</a></h5>
                 </li>
             </ul>
             <div class="hb ml-auto custom-header">
