@@ -93,7 +93,7 @@ public class MemberController {
 
 	// 아이디로 회원 검색 (Admin)
 	// 이름으로 회원 검색 (Admin)
-	@GetMapping(value = "/userSearch", method = RequestMethod.GET)
+	@RequestMapping(value = "/userSearch", method = RequestMethod.GET)
 	public String userSearch(@RequestParam("select") String select, @RequestParam("search") String search, Model model) {
 		System.out.println(select);
 		System.out.println("냥왜실행안되냥");
