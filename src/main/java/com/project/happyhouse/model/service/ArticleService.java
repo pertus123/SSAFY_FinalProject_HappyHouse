@@ -4,18 +4,18 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import com.project.happyhouse.model.NoticeDto;
+import com.project.happyhouse.model.ArticleDto;
 import com.project.util.PageNavigation;
 
 public interface ArticleService {
 
-	List<NoticeDto> getnoticelist(Map<String, Object> map);
+	List<ArticleDto> getnoticelist(Map<String, Object> map);
 	
 	PageNavigation makePageNavigation(Map<String, Object> map) throws SQLException;
 
-	NoticeDto getnoticedetail(int articleno);
+	ArticleDto getnoticedetail(int articleno);
 
-	int noticewrite(NoticeDto noticeDto);
+	int noticewrite(ArticleDto noticeDto);
 
 	int noticedelete(int articleno);
 }

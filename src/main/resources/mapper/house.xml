@@ -3,32 +3,19 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- <mapper namespace="member"> -->
 <mapper namespace="com.projet.happyhouse.model.mapper.HouseMapper">
-<!--  	<select id="login"			parameterType="map"  	resultType="Member">
-		select * from member where id = #{id} and pw = #{pw}
-	</select>
-	<insert id="register"			parameterType="member">
-		select * from member where id = #{id} and pw = #{pw}
-	</insert>
-	<update id="update"			parameterType="member">
-		select * from member where id = #{id} and pw = #{pw}
-	</update>
-		<delete id="delete"			parameterType="String">
-		select * from member where id = #{id}
-	</delete>
-	
-	concat('%', #{word}, '%')-->
-	
-	<select id="search"			parameterType="map"  	resultType="HouseDealDto">
-		SELECT no, dong, aptName, gunguCode, jibun, lat, lng FROM housedeal WHERE type = ?
+
+	<!--  d여기 -->
+	<select id="search"			parameterType="SearchBean"  	resultType="HouseDealDto">
+		SELECT no, dong, aptName, gunguCode, jibun, lat, lng FROM housedeal WHERE type = #{type}
 		 <if test="key == 'subject'">
-				AND dong = ? ORDER BY AptName
+				AND dong = #{dong} ORDER BY AptName
 			</if>
 			<if test="key != 'subject'">
 				AND AptName LIKE concat('%', #{}, '%') ORDER BY dong
 			</if>
 	</select>
 	
-	<select id="getDealInfo"			parameterType="map"  	resultType="HouseDealDto">
+	<select id="getDealInfo"			parameterType="int"  	resultType="HouseDealDto">
 		SELECT no, dong, aptName, gunguCode, dealAmount, buildYear,
 					  area, floor, jibun  FROM housedeal WHERE no = #{no}
 	</select>

@@ -27,7 +27,6 @@ public class ArticleController {
 		return "index";
 	}
 	
-	
 	//@GetMapping(value = "/noticelist&pg= {no}&key= {key}&word= {word}") // 글 목록 보기
 	@GetMapping(value = "/noticelist&pg={no}&key={key}&word={word}") 
 	public String noticelist(Model model, @PathVariable int no, @PathVariable String key, @PathVariable String word) throws SQLException {

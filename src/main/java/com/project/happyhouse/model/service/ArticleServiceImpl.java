@@ -8,48 +8,58 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.project.happyhouse.model.NoticeDto;
+import com.project.happyhouse.model.ArticleDto;
 import com.project.happyhouse.model.mapper.ArticleMapper;
-import com.project.happyhouse.model.mapper.MemberMapper;
 import com.project.util.PageNavigation;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
-
 	@Autowired
 	private SqlSession sqlSession;
 
 	@Override
-	public List<NoticeDto> getnoticelist(Map<String, Object> map) {
-	/*	word = word == null ? "" : word;
-		sqlSession.getMapper(ArticleMapper.class).getnoticelist(currentPage, sizePerPage, key, word);
-		return NoticeDaoImpl.getNoticeDao().getnoticelist(currentPage, sizePerPage, key, word);*/
-		return null;
+	public List<ArticleDto> getnoticelist(Map<String, Object> map) {
+		String word = (String) map.get("word");
+		word = word == null ? "" : word;
+		return sqlSession.getMapper(ArticleMapper.class).getnoticelist(map);
 	}
 
 	@Override
 	public PageNavigation makePageNavigation(Map<String, Object> map) throws SQLException {
-		
-		return null;
+		PageNavigation pageNavigation = new PageNavigation();
+		int naviSize = 10;
+		pageNavigation.setCurrentPage((int) map.get("currentPage"));
+		pageNavigation.setNaviSize(naviSize);
+		int totalCount = sqlSession.getMapper(ArticleMapper.class).getTotalCount((String)map.get("key"), (String)map.get("word"));
+		//int totalCount = NoticeDaoImpl.getNoticeDao().getTotalCount(key, word);
+		pageNavigation.setTotalCount(totalCount);
+		int totalPageCount = (totalCount - 1) / (int) map.get("sizePerPage") + 1;
+		pageNavigation.setTotalPageCount(totalPageCount);
+		boolean startRange = (int) map.get("currentPage") <= naviSize;
+		pageNavigation.setStartRange(startRange);
+		boolean endRange = (totalPageCount - 1) / naviSize * naviSize <  (int) map.get("currentPage");
+		pageNavigation.setEndRange(endRange);
+		pageNavigation.makeNavigator();
+		return pageNavigation;
 	}
 
 	@Override
-	public NoticeDto getnoticedetail(int articleno) {
-		
-		return null;
+	public ArticleDto getnoticedetail(int articleno) {
+		return sqlSession.getMapper(ArticleMapper.class).getnoticedetail(articleno);
 	}
 
 	@Override
-	public int noticewrite(NoticeDto noticeDto) {
-		
-		return 0;
+	public int noticewrite(ArticleDto noticeDto) {
+		return sqlSession.getMapper(ArticleMapper.class).noticewrite(noticeDto);
 	}
 
 	@Override
 	public int noticedelete(int articleno) {
-		
-		return 0;
+		return sqlSession.getMapper(ArticleMapper.class).noticedelete(articleno);
 	}
+
+
+
 	
 	
 	

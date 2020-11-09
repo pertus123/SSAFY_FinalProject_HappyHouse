@@ -4,17 +4,17 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import com.project.happyhouse.model.NoticeDto;
+import com.project.happyhouse.model.ArticleDto;
 
 public interface ArticleMapper {
 
-	List<NoticeDto> getnoticelist(Map<String, Object> map);
+	List<ArticleDto> getnoticelist(Map<String, Object> map);
 
 	int getTotalCount(String key, String word) throws SQLException;
 	
-	NoticeDto getnoticedetail(int articleno);
+	ArticleDto getnoticedetail(int articleno);
 
-	int noticewrite(NoticeDto noticeDto);
+	int noticewrite(ArticleDto noticeDto);
 
 	int noticedelete(int articleno);
 }

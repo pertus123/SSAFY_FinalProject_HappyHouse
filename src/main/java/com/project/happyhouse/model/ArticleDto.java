@@ -1,16 +1,16 @@
 package com.project.happyhouse.model;
 
-public class NoticeDto {
+public class ArticleDto {
 	private int articleno;
 	private String subject;
 	private String content;
 	private String regidate;
 	
-	public NoticeDto() {
+	public ArticleDto() {
 		super();
 	}
 
-	public NoticeDto(int articleno, String subject, String content, String regidate) {
+	public ArticleDto(int articleno, String subject, String content, String regidate) {
 		super();
 		this.articleno = articleno;
 		this.subject = subject;
