@@ -62,7 +62,7 @@
 				alert("비밀번호를 입력해주세요.");
 				return;
 			} else {
-				$("#loginForm").attr("action", "./member/login").submit();
+				$("#loginForm").attr("action", "${root}/member/login").submit();
 			}
 		}
 	</script>

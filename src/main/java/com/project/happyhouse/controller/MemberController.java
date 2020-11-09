@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -92,8 +93,11 @@ public class MemberController {
 
 	// 아이디로 회원 검색 (Admin)
 	// 이름으로 회원 검색 (Admin)
-	@RequestMapping(value = "/userSearch", method = RequestMethod.POST)
-	public String userSearch(String select, String search, Model model) {
+	@GetMapping(value = "/userSearch", method = RequestMethod.GET)
+	public String userSearch(@RequestParam("select") String select, @RequestParam("search") String search, Model model) {
+		System.out.println(select);
+		System.out.println("냥왜실행안되냥");
+		System.out.println(search);
 		List<MemberDto> members;
 		if ("idsearch".equals(select)) {
 			members = memberService.userSearchById(search);
@@ -103,8 +107,9 @@ public class MemberController {
 			members = null;
 		}
 		model.addAttribute("members", members);
+		System.out.println(members);
 
-		return "redirect:/member/userList";
+		return "member/adminModifyUser";
 	}
 
 	// 회원정보(마이페이지)

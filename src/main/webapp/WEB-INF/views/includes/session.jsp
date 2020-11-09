@@ -6,6 +6,7 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/functions"%>
 <fmt:requestEncoding value="utf-8" />
+<c:set var="root" value="${pageContext.request.contextPath}" />
 
 <c:if test="${not empty userinfo}">
 

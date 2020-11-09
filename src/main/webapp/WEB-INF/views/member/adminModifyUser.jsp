@@ -63,7 +63,7 @@
 	<div class="row">
 		<div class="col-md-2"></div>
 		<div class="col-md-8">
-			<form id="userSearchForm" action="" method="post">
+			<form id="userSearchForm" action="" method="get">
 				<div class="search-container">
 					<select class="custom-select form-control" id="select" name="select">
 						<option value="idsearch" selected>ID로 검색</option>
@@ -131,7 +131,7 @@
 				alert("검색어를 입력하세요");
 				return;
 			} else {
-				$("#userSearchForm").attr("action", "${root}}/member/userSearch").submit();
+				$("#userSearchForm").attr("action", "${root}/member/userSearch").submit();
 			}
 		}
 		
