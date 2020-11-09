@@ -23,7 +23,6 @@ import com.project.happyhouse.model.service.ArticleService;
 import com.project.happyhouse.model.service.HouseService;
 
 @Controller
-@RequestMapping("/house")
 public class HouseController {
 	
 	@Autowired
@@ -48,32 +47,32 @@ public class HouseController {
 		}
 		
 		System.out.println("main");
-		return "/house/index";
+		return "index";
 
 		//System.out.println("3");
 		//return "index";
 	}
 	
-	@GetMapping(value = "/main") // 글 상세 보기?
-	public String main(@PathVariable int no, Model model) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		int currentPage = 1;
-		int sizePerPage = 4;
-		System.out.println(currentPage + " " + sizePerPage);
-		try {
-			map.put("currentPage", currentPage);
-			map.put("sizePerPage", sizePerPage);
-			
-			List<ArticleDto> articles = articleService.getnoticelist(map);
-			model.addAttribute("articles", articles);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		System.out.println("main");
-		return "redirect:/";
-	}
+//	@GetMapping(value = "/main") // 글 상세 보기?
+//	public String main(@PathVariable int no, Model model) {
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		int currentPage = 1;
+//		int sizePerPage = 4;
+//		System.out.println(currentPage + " " + sizePerPage);
+//		try {
+//			map.put("currentPage", currentPage);
+//			map.put("sizePerPage", sizePerPage);
+//			
+//			List<ArticleDto> articles = articleService.getnoticelist(map);
+//			model.addAttribute("articles", articles);
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		
+//		System.out.println("main");
+//		return "redirect:/";
+//	}
 	
 	@GetMapping(value = "/search") 
 	public String search(HttpServletRequest request, Model model) {
@@ -87,7 +86,7 @@ public class HouseController {
 		model.addAttribute("searchbean", bean);
 		
 		System.out.println("search");
-		return "house/search";
+		return "search";
 	}
 	
 	
