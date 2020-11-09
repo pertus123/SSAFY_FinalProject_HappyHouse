@@ -46,7 +46,7 @@
 	<!-- 회원정보 수정(마이페이지) -->
 	<update id="userInformUpdate" parameterType="MemberDto">
 		update user
-		set username=#{username}, userbirth=#{userbirth}, userphone=#{userphone}
+		set username = #{username}, userbirth = #{userbirth}, userphone = #{userphone}
 		where userid = #{userid}
 	</update>
 	
@@ -58,7 +58,7 @@
 	</select>
 	
 	<!-- 비밀번호 수정(마이페이지) -->
-	<update id="userInformUpdate" parameterType="MemberDto">
+	<update id="userPwdUpdate" parameterType="MemberDto">
 		update user
 		set userpwd = #{userpwd}
 		where userid = #{userid}
@@ -71,7 +71,7 @@
 	</delete>
 	
 	<!-- 관심지역리스트(마이페이지) -->
-	<select id="pwdValidate" parameterType="String" resultType="String">
+	<select id="getInterestLoc" parameterType="String" resultType="String">
 		select g.gungu
 		from interestlocal i join gungucode g
 		on i.gunguCode = g.gunguCode
