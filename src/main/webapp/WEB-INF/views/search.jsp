@@ -102,6 +102,68 @@
 			initSearch();
 		});
 		
+	/*	$(document).ready(function() {
+			$.ajax({
+				url:'${root}/house/search',  
+				type:'GET',
+				contentType:'application/json;charset=utf-8',
+				dataType:'json',
+				success:function(list) {
+					makeList(list);
+				},
+				error:function(xhr,status,error){
+					console.log("상태값 : " + xhr.status + "\nHttp에러메시지 : " + xhr.responseText + "\nerror : " + error);
+				}
+			});
+			
+			$("#searchbtn").click(function() {
+				$.ajax({
+					url:'${root}/house/searchdata',  
+					type:'GET',
+					contentType:'application/json;charset=utf-8',
+					dataType:'json',
+					success:function(list) {
+						makeList(list);
+					},
+					error:function(xhr,status,msg){
+						console.log("상태값 : " + status + " Http에러메시지 : "+msg);
+					}
+				});
+			});
+		}
+		
+	
+	function makeList(list) {
+			$("#searchlist").empty();
+			if(list.length == 0) {
+				$("#noresultp").remove();
+				$("#rowbuildinglist").append("<p id='noresultp'>검색결과가 없습니다.</p>");
+			}
+			else{
+				$(list).each(function(index, user) {
+					let str = "<tr id=\"view_" + user.no + "\" class=\"view\" data-id=\"" + user.no + "\">"
+					+ "	<td>" + index + "</td>"
+					+ "	<td>" + user.dong + "</td>" // pw
+					+ "	<td>" + user.aptName + "</td>" // name
+					+ "	<td><button type=\"button\" class=\"modiBtn btn btn-outline-primary btn-sm\">상세정보</button> "
+					+ "		<button type=\"button\" class=\"delBtn btn btn-outline-danger btn-sm\">삭제</button></td>"
+					+ "</tr>"
+					+ "<tr id=\"mview_" + user.userid + "\" data-id=\"" + user.userid + "\" style=\"display: none;\">"
+					+ "	<td>" + user.userid + "</td>"
+					+ "	<td><input type=\"text\" name=\"userpwd\" id=\"userpwd" + user.userid + "\" value=\"" + user.userpwd + "\"></td>"
+					+ "	<td>" + user.username + "</td>"
+					+ "	<td><input type=\"text\" name=\"email\" id=\"email" + user.userid + "\" value=\"" + user.email + "\"></td>"
+					+ "	<td><input type=\"text\" name=\"address\" id=\"address" + user.userid + "\" value=\"" + user.address + "\"></td>" 
+					+ "	<td>" + user.joindate + "</td>"
+					+ "	<td><button type=\"button\" class=\"modifyBtn btn btn-primary btn-sm\">수정</button> "
+					+ "		<button type=\"button\" class=\"cancelBtn btn btn-danger btn-sm\">취소</button></td>"
+					+ "</tr>";
+					$("#searchlist").append(str);
+				});//each
+			}
+		}*/
+		
+		
 		$("#deal1btn").click(function() {
 			$("#dealType").val("1");
 		});
@@ -148,39 +210,59 @@
 			hos1icon = new google.maps.MarkerImage("./img/hos1.png", null, null, null, new google.maps.Size(40,40)); 
 		}
 		
-		function initSearch() {
+		function initSearch() { // 처음
 			//alert("search하니?!");
-			$.get("${root}/main"
-					,{act:"searchdata", dealType: "${searchbean.getDealType()}", searchType:"${searchbean.getSearchType()}", keyword:"${searchbean.getKeyword()}"}
-					,function(data, status){
-						$("#searchlist").empty();
-						multimarker.setMap(null);
-						if(data.length == 0) {
-							$("#noresultp").remove();
-							$("#rowbuildinglist").append("<p id='noresultp'>검색결과가 없습니다.</p>");
-						} else {
-							$.each(data, function(index, vo) {
-								let str = "<tr>"
-								+ "<td style='width:10%;'>" + index + "</td>"
-								+ "<td style='width:15%;'>" + vo.dong + "</td>"
-								+ "<td style='width:50%;'>" + vo.aptName + "</td>"
-								+ "<td style='width:20%;'><button calss='btn' onclick=getDetail("+vo.no+")>상세정보</button> </td>" 
-								+ "<td id='lat"+vo.no+"' style='display:none;'>"+vo.lat+"</td>"
-								+ "<td id='lng"+vo.no+"' style='display:none;'>"+vo.lng+"</td></tr>";
-								$("#searchlist").append(str);
-							});//each
-							addMarkers(data);
-						}
-					}//function
-					, "json"
+			$.ajax({
+				url:'${root}/house/searchdata',  
+				type:'GET',
+				
+				dealType: "${searchbean.getDealType()}", 
+				searchType:"${searchbean.getSearchType()}", 
+				keyword:"${searchbean.getKeyword()}",
+				
+				contentType:'application/json;charset=utf-8',
+				dataType:'json',
+				success:function(data, status){
+					$("#searchlist").empty();
+					multimarker.setMap(null);
+					if(data.length == 0) {
+						$("#noresultp").remove();
+						$("#rowbuildinglist").append("<p id='noresultp'>검색결과가 없습니다.</p>");
+					} else {
+						$.each(data, function(index, vo) {
+							let str = "<tr>"
+							+ "<td style='width:10%;'>" + (index +1) + "</td>"
+							+ "<td style='width:15%;'>" + vo.dong + "</td>"
+							+ "<td style='width:50%;'>" + vo.aptName + "</td>"
+							+ "<td style='width:20%;'><button calss='btn' onclick=getDetail("+vo.no+")>상세정보</button> </td>" 
+							+ "<td id='lat"+vo.no+"' style='display:none;'>"+vo.lat+"</td>"
+							+ "<td id='lng"+vo.no+"' style='display:none;'>"+vo.lng+"</td></tr>";
+							$("#searchlist").append(str);
+						});//each
+						addMarkers(data);
+					}
+				},//function
+				error:function(xhr,status,error){
+					console.log("상태값 : " + xhr.status + "\nHttp에러메시지 : " + xhr.responseText + "\nerror : " + error);
+				}
+				}
 			);//get
 		}
 		
-		function search() {
+		
+		function search() { //searchdata
 			//alert("search하니?!");
-			$.get("${root}/main"
-					,{act:"searchdata", dealType: $("#dealType").val(), searchType: $("#searchType").val(), keyword:$("#keyword").val()}
-					,function(data, status){
+			$.ajax({
+				url:'${root}/house/searchdata',  
+				type:'GET',
+				
+				dealType: "${searchbean.getDealType()}", 
+				searchType:"${searchbean.getSearchType()}", 
+				keyword:"${searchbean.getKeyword()}",
+				
+				contentType:'application/json;charset=utf-8',
+				dataType:'json',
+				success:function(data, status){
 						$("#searchlist").empty();
 						if(data.length == 0) {
 							$("#noresultp").remove();
@@ -198,8 +280,11 @@
 							});//each
 							addMarkers(data);
 						}
-					}//function
-					, "json"
+					},//function
+					error:function(xhr,status,error){
+						console.log("상태값 : " + xhr.status + "\nHttp에러메시지 : " + xhr.responseText + "\nerror : " + error);
+					}
+			}
 			);//get
 		}
 		

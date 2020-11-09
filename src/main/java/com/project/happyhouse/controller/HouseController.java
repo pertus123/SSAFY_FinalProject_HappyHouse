@@ -70,7 +70,7 @@ public class HouseController {
 		model.addAttribute("searchbean", bean);
 		
 		System.out.println("search");
-		return "search";
+		return "house/search";
 	}
 	
 	
@@ -104,25 +104,15 @@ public class HouseController {
 	@ResponseBody
 	@GetMapping(value = "/detail", headers = { "Content-type=application/json" })
 	public HouseDealDto detail(HttpServletRequest request) {
-//		PrintWriter out = response.getWriter();
 		HouseDealDto dto = null;
-	//	JSONObject obj = new JSONObject();
 		try {
 			int no = Integer.parseInt(request.getParameter("no"));
 			houseService.getDealInfo(no);
-			//dto = HouseServiceImpl.getHouseService().getDealInfo(no);
 			dto = houseService.getDealInfo(no);
 			
 		} catch (Exception e) {
-		//	obj = new JSONObject();
-		//	obj.put("message_code", "-1");
 			e.printStackTrace();
 		} 
-		/*finally {
-			out.print(obj.toJSONString());
-			out.close();
-		}*/
-	//	articleService.noticewrite(noticeDto);
 		System.out.println("detail");
 		return dto;
 	}
