@@ -1,12 +1,14 @@
 package com.project.happyhouse.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.project.happyhouse.model.UserDto;
+import com.project.happyhouse.model.MemberDto;
+import com.project.happyhouse.model.mapper.MemberMapper;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -15,60 +17,60 @@ public class MemberServiceImpl implements MemberService {
 	private SqlSession sqlSession;
 
 	@Override
-	public UserDto login(String userid, String userpwd) throws Exception {
-		if (userid == null || userpwd == null) // BL
+	public MemberDto login(Map<String, String> map) throws Exception {
+		if(map.get("userid") == null || map.get("userpwd") == null)
 			return null;
-		return UserDaoImpl.getUserDao().login(userid, userpwd);
+		return sqlSession.getMapper(MemberMapper.class).login(map);
 	}
 
 	@Override
-	public int join(UserDto memberDto) throws Exception {
-		return UserDaoImpl.getUserDao().join(memberDto);
+	public int join(MemberDto memberDto) throws Exception {
+		return sqlSession.getMapper(MemberMapper.class).join(memberDto);
 	}
 
 	@Override
-	public List<UserDto> usermodify() {
-		return UserDaoImpl.getUserDao().usermodify();
+	public List<MemberDto> userList() {
+		return sqlSession.getMapper(MemberMapper.class).userList();
 	}
 
 	@Override
-	public List<UserDto> userearchbyid(String keyword) {
-		return UserDaoImpl.getUserDao().userearchbyid(keyword);
+	public List<MemberDto> userSearchById(String keyword) {
+		return sqlSession.getMapper(MemberMapper.class).userSearchById(keyword);
 	}
 
 	@Override
-	public List<UserDto> userearchbyname(String keyword) {
-		return UserDaoImpl.getUserDao().userearchbyname(keyword);
+	public List<MemberDto> userSearchByName(String keyword) {
+		return sqlSession.getMapper(MemberMapper.class).userSearchByName(keyword);
 	}
 
 	@Override
-	public UserDto getuserinform(String userid) {
-		return UserDaoImpl.getUserDao().getuserinform(userid);
+	public MemberDto getUserInform(String userid) {
+		return sqlSession.getMapper(MemberMapper.class).getUserInform(userid);
 	}
 
 	@Override
-	public int userinformupdate(UserDto userDto) {
-		return UserDaoImpl.getUserDao().userinformupdate(userDto);
+	public int userInformUpdate(MemberDto userDto) {
+		return sqlSession.getMapper(MemberMapper.class).userInformUpdate(userDto);
 	}
 
 	@Override
-	public String pwdvalidate(String userid) {
-		return UserDaoImpl.getUserDao().pwdvalidate(userid);
+	public String pwdValidate(String userid) {
+		return sqlSession.getMapper(MemberMapper.class).pwdValidate(userid);
 	}
 
 	@Override
-	public int userpwdupdate(UserDto userDto) {
-		return UserDaoImpl.getUserDao().userpwdupdate(userDto);
+	public int userPwdUpdate(MemberDto userDto) {
+		return sqlSession.getMapper(MemberMapper.class).userPwdUpdate(userDto);
 	}
 
 	@Override
-	public int userleave(String userid) {
-		return UserDaoImpl.getUserDao().userleave(userid);
+	public int userLeave(String userid) {
+		return sqlSession.getMapper(MemberMapper.class).userLeave(userid);
 	}
 
 	@Override
-	public List<String> getinterestloc(String userid) {
-		return UserDaoImpl.getUserDao().getinterestloc(userid);
+	public List<String> getInterestLoc(String userid) {
+		return sqlSession.getMapper(MemberMapper.class).getInterestLoc(userid);
 	}
 
 }
