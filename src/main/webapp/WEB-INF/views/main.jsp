@@ -41,7 +41,7 @@
 							전월세</button>
 					</div>
 					<div class="form-div">
-						<form class="form-inline" id="searchForm" method="post" action="${root}/main">
+						<form class="form-inline" id="searchForm" method="post" action="${root}/search">
 							<div class="col-auto my-1">
 								<input type="hidden" name="act" id="act" value="search">
 								<select id="dealType" name="dealType" style="display: none;">

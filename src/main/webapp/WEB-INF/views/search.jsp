@@ -23,8 +23,8 @@
 <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 </head>
 <body>
-	<jsp:include page="session.jsp" />
-	<header><jsp:include page="searchHeader.jsp" /></header>
+	<jsp:include page="includes/session.jsp" />
+	<header><jsp:include page="includes/searchHeader.jsp" /></header>
 	<div class="search" style="padding-top: 20px;">
 		<div class="row">
 			<div class="col-lg-12">
@@ -32,7 +32,7 @@
 					<div class="col-md-5">
 						<div class="row">
 							<div class="search-container">
-								<form class="form-inline" id="searchForm" method="post" action="${root}/main">
+								<form class="form-inline" id="searchForm" method="post" action="${root}/search">
 									<input type="hidden" name="act" id="act" value="search">
 									<select id="dealType" name="dealType" style="display: none;">
 										<option value="1" selected></option>
@@ -100,6 +100,43 @@
 			$("#searchType").val("${searchbean.getSearchType()}");
 			$("#keyword").val("${searchbean.getKeyword()}");
 			initSearch();
+			
+			
+			
+			
+		/*	$("#registerBtn").click(function() {
+				let registerinfo = JSON.stringify({
+					"username" : $("#username").val(), 
+					"userid" : $("#userid").val(), 
+					"userpwd" : $("#userpwd").val(), 
+					"email" : $("#email").val(), 
+					"address" : $("#address").val()
+				   });
+				$.ajax({
+					url:'${root}/admin/user',  
+					type:'POST',
+					contentType:'application/json;charset=utf-8',
+					dataType:'json',
+					data: registerinfo,
+					success:function(users) {
+						$("#username").val('');
+						$("#userid").val('');
+						$("#userpwd").val('');
+						$("#email").val('');
+						$("#address").val('');
+						$("#userRegModal").modal("hide");
+						makeList(users);
+					},
+					error:function(xhr,status,msg){
+						console.log("상태값 : " + status + " Http에러메시지 : "+msg);
+					}
+				});
+			});*/
+			
+			
+			
+			
+			
 		});
 		
 	/*	$(document).ready(function() {
@@ -210,25 +247,68 @@
 			hos1icon = new google.maps.MarkerImage("./img/hos1.png", null, null, null, new google.maps.Size(40,40)); 
 		}
 		
+		
+	/*	function initSearch() {
+			alert("search하니?!");
+			$.get("${root}"
+					,{act:"searchdata", dealType: "${searchbean.getDealType()}", searchType:"${searchbean.getSearchType()}", keyword:"${searchbean.getKeyword()}"}
+					,function(data, status){//alert("search하니?!33");
+						$("#searchlist").empty();
+						multimarker.setMap(null);
+						if(data.length == 0) {
+							alert("search하니?!2");
+							$("#noresultp").remove();
+							$("#rowbuildinglist").append("<p id='noresultp'>검색결과가 없습니다.</p>");
+						} else {
+							alert("search하니?!3");
+							$.each(data, function(index, vo) {
+								let str = "<tr>"
+								+ "<td style='width:10%;'>" + (index+1) + "</td>"
+								+ "<td style='width:15%;'>" + vo.dong + "</td>"
+								+ "<td style='width:50%;'>" + vo.aptName + "</td>"
+								+ "<td style='width:20%;'><button calss='btn' onclick=getDetail("+vo.no+")>상세정보</button> </td>" 
+								+ "<td id='lat"+vo.no+"' style='display:none;'>"+vo.lat+"</td>"
+								+ "<td id='lng"+vo.no+"' style='display:none;'>"+vo.lng+"</td></tr>";
+								$("#searchlist").append(str);
+							});//each
+							addMarkers(data);
+						}
+					}//function
+					, "json"
+			);//get
+		}*/
+		
+		
 		function initSearch() { // 처음
-			//alert("search하니?!");
-			$.ajax({
-				url:'${root}/house/searchdata',  
-				type:'GET',
-				
+			//alert("search하니?!1");
+			let registerinfo = {
 				dealType: "${searchbean.getDealType()}", 
 				searchType:"${searchbean.getSearchType()}", 
-				keyword:"${searchbean.getKeyword()}",
-				
+				keyword:"${searchbean.getKeyword()}"
+			   };
+			//alert("search하니?!1-2");
+			$.ajax({
+				url:'${root}/searchdata',  
+				type:'GET',
 				contentType:'application/json;charset=utf-8',
 				dataType:'json',
+				data :{
+					dealType: "${searchbean.getDealType()}", 
+					searchType:"${searchbean.getSearchType()}", 
+					keyword:"${searchbean.getKeyword()}"
+				   },
 				success:function(data, status){
+				//	alert("search하니?!2");
 					$("#searchlist").empty();
 					multimarker.setMap(null);
 					if(data.length == 0) {
+					//	alert("search하니?!3");
+						alert("1");
 						$("#noresultp").remove();
 						$("#rowbuildinglist").append("<p id='noresultp'>검색결과가 없습니다.</p>");
 					} else {
+					//	alert("search하니?!4");
+					//	alert("2");
 						$.each(data, function(index, vo) {
 							let str = "<tr>"
 							+ "<td style='width:10%;'>" + (index +1) + "</td>"
@@ -251,17 +331,17 @@
 		
 		
 		function search() { //searchdata
-			//alert("search하니?!");
+			alert("search하니?!");
 			$.ajax({
-				url:'${root}/house/searchdata',  
+				url:'${root}/searchdata',  
 				type:'GET',
-				
-				dealType: "${searchbean.getDealType()}", 
-				searchType:"${searchbean.getSearchType()}", 
-				keyword:"${searchbean.getKeyword()}",
-				
 				contentType:'application/json;charset=utf-8',
 				dataType:'json',
+				data :{
+					dealType: "${searchbean.getDealType()}", 
+					searchType:"${searchbean.getSearchType()}", 
+					keyword:"${searchbean.getKeyword()}"
+				   },
 				success:function(data, status){
 						$("#searchlist").empty();
 						if(data.length == 0) {
@@ -313,7 +393,7 @@
 				avglng += parseFloat(vo.lng);
 				//console.log(vo.lat + " " + vo.lng);
 				//console.log(avglat + " " + avglng);
-				
+				//alert(vo.code);
 				curGungu = vo.code;
 				
 				tmp.setMap(map);
@@ -335,7 +415,36 @@
 
 		function getDetail(n){
 			//alert(n);
-			$.get("${root}/main"
+			
+			
+			$.ajax({
+				url:'${root}/detail',  
+				type:'GET',
+				contentType:'application/json;charset=utf-8',
+				dataType:'json',
+				data :{
+					no:n
+				   },
+				success:function(data, status){
+					$("#detailbody").empty();
+					let str = "<tr><td style='width:20%;'>이름</td><td>"+data.aptName+"</td></tr>"
+							+ "<tr><td>주소</td><td>"+data.dong+" "+data.jibun+"번지 "+data.floor+"층</td></tr>"
+							+ "<tr><td>거래금액</td><td>"+data.dealAmount+"</td></tr>"
+							+ "<tr><td>건축연도</td><td>"+data.buildYear+"</td></tr>"
+							+ "<tr><td>전용면적</td><td>"+data.area+"</td></tr>";
+					$("#detailbody").append(str);
+					zoomin(data);
+					curDong = data.dong;
+				},//function,//function
+				error:function(xhr,status,error){
+					console.log("상태값 : " + xhr.status + "\nHttp에러메시지 : " + xhr.responseText + "\nerror : " + error);
+				}
+				}
+			);//get
+			
+			
+			
+		/*	$.get("${root}/main"
 					,{act:"detail", no: n}
 					,function(data, status){
 						$("#detailbody").empty();
@@ -350,6 +459,9 @@
 					}//function
 					, "json"
 			);//get
+			*/
+			
+			
 		}
 		
 		function zoomin(data) {
@@ -365,6 +477,7 @@
 			});
 			
 			curGungu = data.code;
+			alert(curGungu);
 			
 			marker.setMap(map);
 			markers.push(marker);
@@ -381,7 +494,45 @@
 					}
 					hos0flag= false;
 				} else {
-					$.get("${root}/main"
+					
+					
+					
+					
+					alert("wow");
+					$.ajax({
+						url:'${root}/hospital',  
+						type:'GET',
+						contentType:'application/json;charset=utf-8',
+						dataType:'json',
+						data :{
+							 type: t, code: curGungu
+						   },
+						success:function(data, status){
+							alert(curGungu);
+							var tmp;
+							$.each(data, function(index, vo) {
+								tmp = new google.maps.Marker({
+									position: new google.maps.LatLng(parseFloat(vo.lat), parseFloat(vo.lng)),
+									icon: hos0icon,
+									label: vo.name, 
+									title: vo.name 
+								});
+								tmp.setMap(map);
+								h0markers.push(tmp);
+								map.setZoom(15);
+							});
+							hos0flag = true;
+						},//function,//function
+							error:function(xhr,status,error){
+								console.log("상태값 : " + xhr.status + "\nHttp에러메시지 : " + xhr.responseText + "\nerror : " + error);
+							}
+					}
+					);//get
+					
+					
+					
+					
+				/*	$.get("${root}"
 							,{act:"hospital", type: t, code: curGungu}
 							,function(data, status){
 								var tmp;
@@ -399,7 +550,13 @@
 								hos0flag = true;
 							}//function
 							, "json"
-					);//get
+					);//get*/
+					
+					
+					
+					
+					
+					
 				}
 			} else {
 				if (hos1flag) {
@@ -408,7 +565,7 @@
 					}
 					hos1flag= false;
 				} else {
-					$.get("${root}/main"
+					$.get("${root}"
 							,{act:"hospital", type: t, code: curGungu}
 							,function(data, status){
 								var tmp;

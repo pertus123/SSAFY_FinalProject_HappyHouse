@@ -7,7 +7,8 @@ import com.project.happyhouse.model.HouseDealDto;
 import com.project.happyhouse.model.SearchBean;
 
 public interface HouseService {
-	List<HouseDealDto> search(SearchBean bean) throws Exception;
+	List<HouseDealDto> searchZero(SearchBean bean) throws Exception;
+	List<HouseDealDto> searchOne(SearchBean bean) throws Exception;
 	HouseDealDto getDealInfo(int no) throws Exception;	
 	List<HospitalDto> getHospital(String type, String code) throws Exception;	
 }

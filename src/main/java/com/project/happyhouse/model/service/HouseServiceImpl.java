@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.project.happyhouse.model.HospitalDto;
 import com.project.happyhouse.model.HouseDealDto;
 import com.project.happyhouse.model.SearchBean;
+import com.project.happyhouse.model.mapper.ArticleMapper;
+import com.project.happyhouse.model.mapper.HouseMapper;
 
 @Service
 public class HouseServiceImpl implements HouseService {
@@ -17,21 +19,25 @@ public class HouseServiceImpl implements HouseService {
 	private SqlSession sqlSession;
 
 	@Override
-	public List<HouseDealDto> search(SearchBean bean) throws Exception {
+	public List<HouseDealDto> searchZero(SearchBean bean) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.getMapper(HouseMapper.class).searchZero(bean);
+	}
+	public List<HouseDealDto> searchOne(SearchBean bean) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.getMapper(HouseMapper.class).searchOne(bean);
 	}
 
 	@Override
 	public HouseDealDto getDealInfo(int no) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.getMapper(HouseMapper.class).getDealInfo(no);
 	}
 
 	@Override
 	public List<HospitalDto> getHospital(String type, String code) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.getMapper(HouseMapper.class).getHospital(type, code);
 	}
 	
 
