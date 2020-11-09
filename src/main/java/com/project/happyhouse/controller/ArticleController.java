@@ -43,7 +43,7 @@ public class ArticleController {
 		
 	//	articleService.getnoticelist(currentPage, sizePerPage, key, word);
 		System.out.println("noticelist");
-		return "notice/noticelist";
+		return "notice/noticeList";
 	}
 	
 	
@@ -51,7 +51,7 @@ public class ArticleController {
 	public String noticedetail(@PathVariable int no) {
 		//articleService.getnoticedetail(no);
 		System.out.println("noticedetail");
-		return "redirect:/notice/noticelist";
+		return "redirect:/notice/noticeList";
 	}
 	
 	
@@ -67,7 +67,7 @@ public class ArticleController {
 	public String noticewriteaf( ) {
 	//	articleService.noticewrite(noticeDto);
 		System.out.println("noticewriteaf");
-		return "redirect:/notice/noticelist";
+		return "redirect:/notice/noticeList";
 	}
 	
 	
@@ -75,7 +75,7 @@ public class ArticleController {
 	public String noticedelete( ) {
 	//	articleService.noticedelete(articleno);
 		System.out.println("noticedelete");
-		return "redirect:/notice/noticelist";
+		return "redirect:/notice/noticeList";
 	}
 	
 }
