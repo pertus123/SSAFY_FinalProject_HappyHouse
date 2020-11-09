@@ -1,1 +1,45 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- <mapper namespace="member"> -->
+<mapper namespace="com.projet.happyhouse.model.mapper.HouseMapper">
+<!--  	<select id="login"			parameterType="map"  	resultType="Member">
+		select * from member where id = #{id} and pw = #{pw}
+	</select>
+	<insert id="register"			parameterType="member">
+		select * from member where id = #{id} and pw = #{pw}
+	</insert>
+	<update id="update"			parameterType="member">
+		select * from member where id = #{id} and pw = #{pw}
+	</update>
+		<delete id="delete"			parameterType="String">
+		select * from member where id = #{id}
+	</delete>
+	
+	concat('%', #{word}, '%')-->
+	
+	<select id="search"			parameterType="map"  	resultType="HouseDealDto">
+		SELECT no, dong, aptName, gunguCode, jibun, lat, lng FROM housedeal WHERE type = ?
+		 <if test="key == 'subject'">
+				AND dong = ? ORDER BY AptName
+			</if>
+			<if test="key != 'subject'">
+				AND AptName LIKE concat('%', #{}, '%') ORDER BY dong
+			</if>
+	</select>
+	
+	<select id="getDealInfo"			parameterType="map"  	resultType="HouseDealDto">
+		SELECT no, dong, aptName, gunguCode, dealAmount, buildYear,
+					  area, floor, jibun  FROM housedeal WHERE no = #{no}
+	</select>
+	<select id="getHospital"			parameterType="map"  	resultType="HouseDealDto">
+		SELECT name, address, weekdayop, tel, lat, lng 
+		 FROM hospital WHERE type = #{type} AND gunguCode = #{code}00000 
+	</select>
+	
+	
+<!--  	List<HouseDealDto> search(SearchBean bean) throws Exception;
+	HouseDealDto getDealInfo(int no) throws Exception;	
+	List<HospitalDto> getHospital(String type, String code) throws Exception;	-->
+	
+</mapper>

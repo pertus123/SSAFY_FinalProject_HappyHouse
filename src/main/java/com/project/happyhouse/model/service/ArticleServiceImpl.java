@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.happyhouse.model.NoticeDto;
+import com.project.happyhouse.model.mapper.ArticleMapper;
+import com.project.happyhouse.model.mapper.MemberMapper;
 import com.project.util.PageNavigation;
 import com.ssafy.happyhouse.model.dao.NoticeDaoImpl;
 
@@ -21,8 +23,19 @@ public class ArticleServiceImpl implements ArticleService {
 	public List<NoticeDto> getnoticelist(int currentPage, int sizePerPage, String key, String word) {
 		key = key == null ? "" : key;
 		word = word == null ? "" : word;
+		sqlSession.getMapper(ArticleMapper.class).getnoticelist(currentPage, sizePerPage, key, word);
 		return NoticeDaoImpl.getNoticeDao().getnoticelist(currentPage, sizePerPage, key, word);
 	}
+	
+	/*
+	 * 
+	 * 
+	 	@Override
+	public Member login(Map<String, String> map) throws Exception{
+		return sqlSession.getMapper(MemberMapper.class).login(map);
+	}
+
+*/
 
 	@Override
 	public PageNavigation makePageNavigation(int currentPage, int sizePerPage, String key, String word) throws SQLException {
