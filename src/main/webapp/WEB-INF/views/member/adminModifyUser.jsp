@@ -37,7 +37,7 @@
 			<ul class="navbar-nav">
 				<li class="nav-item ">
 					<h5>
-						<a class="nav-link" href="./notice?act=noticelist&pg=1&key=&word=">공지사항 관리</a>
+						<a class="nav-link" href="./notice/noticelist?pg=1&key=&word=">공지사항 관리</a>
 					</h5>
 				</li>
 				<li class="nav-item ">
@@ -47,13 +47,13 @@
 				</li>
 				<li class="nav-item ">
 					<h5>
-						<a class="nav-link" href="./user?act=modifyuser">회원 관리</a>
+						<a class="nav-link" href="./member/userList">회원 관리</a>
 					</h5>
 				</li>
 			</ul>
 			<div class="hb ml-auto">
 				<button id="logout" class="navbar-nav btn btn-secondary btn-sm"
-					onclick="location.href='./user?act=logout'" style="float: left">&nbsp;&nbsp;로그아웃</button>
+					onclick="location.href='member/logout'" style="float: left">&nbsp;&nbsp;로그아웃</button>
 			</div>
 		</div>
 	</nav>
@@ -62,7 +62,6 @@
 		<div class="col-md-2"></div>
 		<div class="col-md-8">
 			<form id="userSearchForm" action="" method="get">
-				<input type="hidden" name="act" value="usersearch">
 				<div class="search-container">
 					<select class="custom-select form-control" id="select" name="select">
 						<option value="idsearch" selected>ID로 검색</option>
