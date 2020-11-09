@@ -4,11 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.project.happyhouse.model.service.ArticleService;
 
 @Controller
+@RequestMapping("/notice")
 public class ArticleController {
 	@Autowired
 	private ArticleService articleService;
@@ -24,15 +27,15 @@ public class ArticleController {
 	public String noticelist( ) {
 		articleService.getnoticelist(currentPage, sizePerPage, key, word);
 		System.out.println("noticelist");
-		return "index";
+		return "noticelist";
 	}
 	
 	
-	@GetMapping(value = "/noticedetail") // 글 상세 보기?
-	public String noticedetail( ) {
-		articleService.getnoticedetail(articleno);
+	@GetMapping(value = "/noticedetail/{no}") // 글 상세 보기?
+	public String noticedetail(@PathVariable int no) {
+		articleService.getnoticedetail(no);
 		System.out.println("noticedetail");
-		return "index";
+		return "redirect:/noticelist";
 	}
 	
 	
@@ -40,7 +43,7 @@ public class ArticleController {
 	public String noticewrite( ) {
 		articleService.noticewrite(noticeDto);
 		System.out.println("noticewrite");
-		return "index";
+		return "noticewrite";
 	}
 	
 	
@@ -48,7 +51,7 @@ public class ArticleController {
 	public String noticewriteaf( ) {
 		articleService.noticewrite(noticeDto);
 		System.out.println("noticewriteaf");
-		return "index";
+		return "redirect:/noticelist";
 	}
 	
 	
@@ -56,19 +59,7 @@ public class ArticleController {
 	public String noticedelete( ) {
 		articleService.noticedelete(articleno);
 		System.out.println("noticedelete");
-		return "index";
+		return "redirect:/noticelist";
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 }

@@ -34,7 +34,7 @@
 	</select>
 	<select id="getHospital"			parameterType="map"  	resultType="HouseDealDto">
 		SELECT name, address, weekdayop, tel, lat, lng 
-		 FROM hospital WHERE type = #{type} AND gunguCode = #{code}00000 
+		 FROM hospital WHERE type = #{type} AND gunguCode = concat(#{code},'00000')
 	</select>
 	
 	
