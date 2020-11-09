@@ -37,7 +37,7 @@
 							<tr>
 								<th>제목</th>
 								<td>
-									<input type="text" class="form-control" id = "subj" name="subject">
+									<input type="text" class="form-control" id = "subj" name="subject" value="${article.subject}">
 								</td>
 							</tr>
 						</thead>
@@ -45,21 +45,21 @@
 							<tr>
 								<th>내용</th>
 								<td>
-									<textarea class="form-control" rows="15" id = "cont" name="content"></textarea>
+									<textarea class="form-control" rows="15" id = "cont" name="content"}>${article.content}</textarea>
 								</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
 			<div class="buttonDiv">
-				<button type="submit" class="btn btn-lg btn-primary" onclick="javascript:writeArticle();" style="background-color: #DBC3AB; border: 0;">글작성</button>
+				<button type="submit" class="btn btn-lg btn-primary" onclick="javascript:updateArticle();" style="background-color: #DBC3AB; border: 0;">글수정</button>
 				<button type="button" class="btn btn-secondary btn-lg" onclick="location.href='${root}/notice/noticelist?pg=1&key=&word='" style="border: 0;">글목록</button>
 			</div>
 			</form>
 		</div>
 	</div>
 	<script type="text/javascript">
-		function writeArticle() {
+		function updateArticle() {
 			if($("#subj").val() == "") {
 				alert("제목을 입력해주세요.");
 				return;
@@ -67,7 +67,7 @@
 				alert("내용을 입력해주세요");
 				return;
 			} else {
-				$("#writeform").attr("action", "${root}/notice/noticewriteaf").submit();
+				$("#writeform").attr("action", "${root}/notice/noticeupdate").submit();
 			}
 		  }
 	</script>

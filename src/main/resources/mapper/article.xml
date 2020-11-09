@@ -15,6 +15,7 @@
 				where articleno = #{word}
 			</if>
 		</if>
+		order by articleno desc
 		limit #{StartProductNo}, #{sizePerPage}
 
 	</select>
@@ -52,10 +53,7 @@
 		happyhouse.notice where articleno = #{articleno}
 	</delete>
 
-	<!-- List<NoticeDto> getnoticelist(int currentPage, int sizePerPage, String 
-		key, String word); select int getTotalCount(String key, String word) throws 
-		SQLException; select NoticeDto getnoticedetail(int articleno); select int 
-		noticewrite(NoticeDto noticeDto); insert int noticedelete(int articleno); 
-		delete -->
-
+	<update id="noticeupdate" parameterType="ArticleDto">
+	
+	</update>
 </mapper>

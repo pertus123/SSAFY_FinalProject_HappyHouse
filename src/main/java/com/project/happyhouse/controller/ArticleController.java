@@ -88,5 +88,16 @@ public class ArticleController {
 		System.out.println("noticedelete");
 		return "redirect:/notice/noticelist";
 	}
+	
+	@GetMapping(value="/noticeupdate")
+	public String noticeupdate(int articleno, Model model) {
+		ArticleDto articleDto = articleService.getnoticedetail(articleno);
+		model.addAttribute("article", articleDto);
+		return "article/noticeupdate";
+	}
 
+	@PostMapping(value="/noticeupdate")
+	public String noticeupdate(ArticleDto articleDto) {
+		
+	}
 }

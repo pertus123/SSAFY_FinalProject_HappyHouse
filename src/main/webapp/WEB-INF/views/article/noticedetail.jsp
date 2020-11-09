@@ -50,6 +50,7 @@
 			<div>
 				<button type="button" class="btn-secondary btn-lg" onclick="location.href='${root}/notice/noticelist?pg=1&key=&word='">글목록</button>
 				<c:if test="${userinfo.isadmin}">
+				<button type="button" class="btn-secondary btn-lg" onclick="location.href='${root}/notice/noticeupdate?articleno=${article.articleno}'">글수정</button>
 				<button type="button" class="btn-secondary btn-lg" onclick="location.href='${root}/notice/noticedelete?articleno=${article.articleno}'">글삭제</button>
 				</c:if>
 			</div>
