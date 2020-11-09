@@ -28,8 +28,8 @@ public class ArticleController {
 	}
 	
 	//@GetMapping(value = "/noticelist&pg= {no}&key= {key}&word= {word}") // 글 목록 보기
-	@GetMapping(value = "/noticelist&pg={no}&key={key}&word={word}") 
-	public String noticelist(Model model, @PathVariable int no, @PathVariable String key, @PathVariable String word) throws SQLException {
+	@GetMapping(value = "/noticelist") 
+	public String noticelist(Model model, int no, String key, String word) throws SQLException {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("currentPage", no);
         map.put("sizePerPage", 10);

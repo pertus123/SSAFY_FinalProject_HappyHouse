@@ -31,10 +31,27 @@ public class HouseController {
 	private ArticleService articleService;
 	
 	@GetMapping(value = "/")
-	public String hello( ) {
+	public String hello(Model model ) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		int currentPage = 1;
+		int sizePerPage = 4;
+		System.out.println(currentPage + " " + sizePerPage);
+		try {
+			map.put("currentPage", currentPage);
+			map.put("sizePerPage", sizePerPage);
+			
+			List<ArticleDto> articles = articleService.getnoticelist(map);
+			model.addAttribute("articles", articles);
 
-		System.out.println("3");
-		return "index";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println("main");
+		return "/house/index";
+
+		//System.out.println("3");
+		//return "index";
 	}
 	
 	@GetMapping(value = "/main") // 글 상세 보기?
