@@ -2,6 +2,7 @@ package com.project.happyhouse.model.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import com.project.happyhouse.model.NoticeDto;
 import com.project.happyhouse.model.mapper.ArticleMapper;
 import com.project.happyhouse.model.mapper.MemberMapper;
 import com.project.util.PageNavigation;
-import com.ssafy.happyhouse.model.dao.NoticeDaoImpl;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -20,7 +20,47 @@ public class ArticleServiceImpl implements ArticleService {
 	private SqlSession sqlSession;
 
 	@Override
-	public List<NoticeDto> getnoticelist(int currentPage, int sizePerPage, String key, String word) {
+	public List<NoticeDto> getnoticelist(Map<String, Object> map) {
+	/*	word = word == null ? "" : word;
+		sqlSession.getMapper(ArticleMapper.class).getnoticelist(currentPage, sizePerPage, key, word);
+		return NoticeDaoImpl.getNoticeDao().getnoticelist(currentPage, sizePerPage, key, word);*/
+		return null;
+	}
+
+	@Override
+	public PageNavigation makePageNavigation(Map<String, Object> map) throws SQLException {
+		
+		return null;
+	}
+
+	@Override
+	public NoticeDto getnoticedetail(int articleno) {
+		
+		return null;
+	}
+
+	@Override
+	public int noticewrite(NoticeDto noticeDto) {
+		
+		return 0;
+	}
+
+	@Override
+	public int noticedelete(int articleno) {
+		
+		return 0;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+
+	//@Override
+/*	public List<NoticeDto> getnoticelist(int currentPage, int sizePerPage, String key, String word) {
 		key = key == null ? "" : key;
 		word = word == null ? "" : word;
 		sqlSession.getMapper(ArticleMapper.class).getnoticelist(currentPage, sizePerPage, key, word);
@@ -35,7 +75,7 @@ public class ArticleServiceImpl implements ArticleService {
 		return sqlSession.getMapper(MemberMapper.class).login(map);
 	}
 
-*/
+
 
 	@Override
 	public PageNavigation makePageNavigation(int currentPage, int sizePerPage, String key, String word) throws SQLException {
@@ -70,5 +110,17 @@ public class ArticleServiceImpl implements ArticleService {
 	public int noticedelete(int articleno) {
 		return NoticeDaoImpl.getNoticeDao().noticedelete(articleno);
 	}
+
+	@Override
+	public List<NoticeDto> getnoticelist(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PageNavigation makePageNavigation(Map<String, Object> map) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}*/
 
 }

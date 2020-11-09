@@ -2,15 +2,16 @@ package com.project.happyhouse.model.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import com.project.happyhouse.model.NoticeDto;
 import com.project.util.PageNavigation;
 
 public interface ArticleService {
 
-	List<NoticeDto> getnoticelist(int currentPage, int sizePerPage, String key, String word);
+	List<NoticeDto> getnoticelist(Map<String, Object> map);
 	
-	PageNavigation makePageNavigation(int currentPage, int sizePerPage, String key, String word) throws SQLException;
+	PageNavigation makePageNavigation(Map<String, Object> map) throws SQLException;
 
 	NoticeDto getnoticedetail(int articleno);
 

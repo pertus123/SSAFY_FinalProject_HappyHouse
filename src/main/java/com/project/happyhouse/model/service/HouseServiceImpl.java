@@ -15,20 +15,24 @@ public class HouseServiceImpl implements HouseService {
 
 	@Autowired
 	private SqlSession sqlSession;
-	
+
 	@Override
 	public List<HouseDealDto> search(SearchBean bean) throws Exception {
-		return sqlSession.getHouseDao().search(bean);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public HouseDealDto getDealInfo(int no) throws Exception {
-		return sqlSession.getHouseDao().getDealInfo(no);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public List<HospitalDto> getHospital(String type, String code) throws Exception {
-		return sqlSession.getHouseDao().getHospital(type, code);
+		// TODO Auto-generated method stub
+		return null;
 	}
+	
 
 }
