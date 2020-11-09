@@ -30,7 +30,7 @@
 	
 	
 	<select id="getnoticedetail"			parameterType="map"  	resultType="ArticleDto">
-		select subject, content, regidate from happyhouse.notice
+		select articleno, subject, content, regidate from happyhouse.notice
 		where articleno = #{articleno}
 	</select>
 	

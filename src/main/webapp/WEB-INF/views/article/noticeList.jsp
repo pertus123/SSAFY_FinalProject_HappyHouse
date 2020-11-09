@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+<c:set var="root" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="${root}./css/notice.css">
+<link rel="stylesheet" href="${root}/css/notice.css">
 <link rel="stylesheet" href="${root}/css/header_footer.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -36,7 +37,7 @@
 	</div>
 	<div class="container" align="center">
 		<div class="col-md-10">
-			<form id="searchform" method="get" action="">
+			<form id="searchform" method="get" action="${root}/notice/noticelist">
 				<input type="hidden" name="act" id="act" value="noticelist">
 	  			<input type="hidden" name="pg" id="pg" value="1">
 				<div class="search-container">
@@ -45,12 +46,12 @@
 						<option value="subject">제목</option>
 					</select> 
 					<input type="text" class="form-control" name="word" id="word" placeholder="글 검색...">
-					<button type="button" id="searchBtn" onclick="javascript:searchArticle();"><i class="fa fa-search"></i></button>
+					<button type="submit" id="searchBtn" ><i class="fa fa-search"></i></button>
 				</div>
 			</form>
 			<!-- admin이면 글작성 버튼 생성 -->
 			<c:if test="${userinfo.isadmin}">
-			<button id="noticewrite" class="btn-secondary btn-sm" onclick="location.href='./notice?act=noticewrite'">글작성</button>
+			<button id="noticewrite" class="btn-secondary btn-sm" onclick="location.href='${root}/notice/noticewrite'">글작성</button>
 			</c:if>
 			
 			<c:if test="${articles.size() != 0}">	
@@ -64,7 +65,7 @@
 					</thead>
 		    		<tbody>
 		    			<c:forEach items="${articles}" var="a">
-		      			<tr onclick = "location.href='./notice?act=noticedetail&articleno=${a.articleno}'">
+		      			<tr onclick = "location.href='${root}/notice/noticedetail?articleno=${a.articleno}'">
 		      				<td class = "articleno">${a.articleno}</td>
 		        			<td>${a.subject}</td>
 		        			<c:set var = "regidate2" value = "${fn:split(a.regidate, ' ')}" />
@@ -94,9 +95,7 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		function searchArticle() {
-			$("#searchform").attr("action", "./notice").submit();
-		}
+
 		
 		function pageMove(pg) { 
 			$("#pg").val(pg);

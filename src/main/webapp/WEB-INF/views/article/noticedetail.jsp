@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="root" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,9 +48,9 @@
 				</table>
 			</div>
 			<div>
-				<button type="button" class="btn-secondary btn-lg" onclick="location.href='./notice?act=noticelist&pg=1&key=&word='">글목록</button>
+				<button type="button" class="btn-secondary btn-lg" onclick="location.href='${root}/notice/noticelist?pg=1&key=&word='">글목록</button>
 				<c:if test="${userinfo.isadmin}">
-				<button type="button" class="btn-secondary btn-lg" onclick="location.href='./notice?act=noticedelete&articleno=${article.articleno}'">글삭제</button>
+				<button type="button" class="btn-secondary btn-lg" onclick="location.href='${root}/notice/noticedelete?articleno=${article.articleno}'">글삭제</button>
 				</c:if>
 			</div>
 		</div>
