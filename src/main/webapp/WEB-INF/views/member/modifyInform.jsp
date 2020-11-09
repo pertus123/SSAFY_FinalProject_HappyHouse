@@ -62,7 +62,7 @@
 						onclick="javascript:modify();">UPDATE</button>
 				</div>
 				<div>
-					<a id="wantleave" href="./user?act=leave">회원탈퇴를 진행하고싶은신가요..?</a>
+					<a id="wantleave" href="${root}/member/leavemv">회원탈퇴를 진행하고싶은신가요..?</a>
 				</div>
 			</form>
 		</div>

@@ -36,8 +36,7 @@
 		</div>
 		<div class="col-md-1"></div>
 		<div class="col-md-5">
-			<form id="modifyForm" method="post">
-				<input type="hidden" name="act" id="act" value="leaveaf">
+			<form id="modifyForm" method="get">
 				<div class="container-fluid border">
 					<h3>회원 탈퇴</h3>
 					<br>
@@ -68,7 +67,7 @@
 				return;
 			} 
 			else {
-				$("#modifyForm").attr("action", "./user").submit();
+				$("#modifyForm").attr("action", "${root}/member/leave").submit();
 			}
 		}
 	</script>

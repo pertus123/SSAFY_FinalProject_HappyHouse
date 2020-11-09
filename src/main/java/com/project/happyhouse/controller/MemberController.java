@@ -237,8 +237,14 @@ public class MemberController {
 		}
 		return "redirect:/member/userInform";
 	}
+	
+	// 회원탈퇴 창으로 이동
+		@RequestMapping(value = "/leavemv", method = RequestMethod.GET)
+		public String leave() {
+			return "member/leaveUser";
+		}
 
-	// 회원탈퇴(마이페이지)
+	// 회원탈퇴(마이페이지) 실행
 	@RequestMapping(value = "/leave", method = RequestMethod.GET)
 	public String leave(HttpSession session, Model model) {
 		String userid = ((MemberDto) session.getAttribute("userinfo")).getUserid();
