@@ -98,6 +98,7 @@ public class ArticleController {
 
 	@PostMapping(value="/noticeupdate")
 	public String noticeupdate(ArticleDto articleDto) {
-		
+		articleService.noticeupdate(articleDto);
+		return "redirect:/notice/noticedetail?articleno="+articleDto.getArticleno();
 	}
 }

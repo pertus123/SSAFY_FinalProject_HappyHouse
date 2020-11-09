@@ -54,6 +54,8 @@
 	</delete>
 
 	<update id="noticeupdate" parameterType="ArticleDto">
-	
+		update notice
+		set subject = #{subject}, content = #{content}, regidate = now()
+		where articleno = #{articleno}
 	</update>
 </mapper>

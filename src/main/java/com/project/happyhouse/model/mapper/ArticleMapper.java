@@ -17,4 +17,6 @@ public interface ArticleMapper {
 	int noticewrite(ArticleDto noticeDto);
 
 	int noticedelete(int articleno);
+	
+	int noticeupdate(ArticleDto articleDto);
 }

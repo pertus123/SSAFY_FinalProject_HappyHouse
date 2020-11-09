@@ -26,43 +26,29 @@
 <body>
 	<div id="blackbox">
 		<img alt="logo" src="./img/logo_text1.png" width="50%">
-		<form id="loginForm" action="" method="post">
+		<form id="updateForm" action="" method="post">
+			<input type = "hidden" name="userid" value ="${userid}" />
 			<div class="container">
-				<label for="id"><b>ID</b></label> <input type="text"
-					placeholder="아이디를 입력해주세요." name="userid" id="userid" value="${saveid}"> <label
-					for="psw"><b>Password</b></label> <input type="password"
-					placeholder="비밀번호를 입력해주세요." name="userpwd" id="userpwd">
+				<label for="id"><b>Password</b></label> 
+				<input type="password" placeholder="새로운 비밀번호를 입력해주세요." name="new_userpwd" id="new_userpwd"> 
+				<label for="psw"><b>Password 확인</b></label> 
+				<input type="password" placeholder="비밀번호를 다시 입력해주세요." name="new_userpwd_ok" id="new_userpwd_ok">
 				<div class="wrapper">
-					<button type="submit" onclick="javascript:login();">로그인</button>
-				</div>
-				<div class="row">
-					<div class="col-5 pt-1">
-						<label for="idsave"> <input type="checkbox"
-							id="idsave" name="idsave" value="saveok" ${idck}> 아이디 저장
-						</label>
-					</div>
-					<div class="col-7 pt-1">
-						<span class="psw">Forgot <a href="${root}/member/idValidate">password?</a></span>
-					</div>
-				</div>
-				<div class="signup">
-					<p>
-						아직 회원이 아니신가요? <a href="${root}/member/join">회원가입</a>
-					</p>
+					<button type="button" onclick="javascript:updatePassword();">비밀번호 변경하기</button>
 				</div>
 			</div>
 		</form>
 	</div>
 	<script type="text/javascript">
-		function login() {
-			if (document.getElementById("userid").value == "") {
-				alert("아이디를 입력해주세요.");
+		function updatePassword() {
+			if (document.getElementById("new_userpwd").value == "") {
+				alert("변경할 비밀번호를 입력해주세요.");
 				return;
-			} else if (document.getElementById("userpwd").value == "") {
-				alert("비밀번호를 입력해주세요.");
+			} else if (document.getElementById("new_userpwd").value != document.getElementById("new_userpwd_ok").value) {
+				alert("비밀번호를 확인해주세요.");
 				return;
 			} else {
-				$("#loginForm").attr("action", "${root}/member/login").submit();
+				$("#updateForm").attr("action", "${root}/member/findPassword").submit();
 			}
 		}
 	</script>

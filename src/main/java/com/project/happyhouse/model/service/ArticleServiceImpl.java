@@ -58,6 +58,11 @@ public class ArticleServiceImpl implements ArticleService {
 		return sqlSession.getMapper(ArticleMapper.class).noticedelete(articleno);
 	}
 
+	@Override
+	public int noticeupdate(ArticleDto articleDto) {
+		return sqlSession.getMapper(ArticleMapper.class).noticeupdate(articleDto);
+	}
+
 
 
 	

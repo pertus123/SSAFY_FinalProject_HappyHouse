@@ -32,6 +32,7 @@
 		<div class="col-md-10">
 			<form id="writeform" method="post" action="">
 				<div class="content">
+					<input type="hidden" name="articleno" value="${article.articleno}"/>
 					<table>
 						<thead>
 							<tr>

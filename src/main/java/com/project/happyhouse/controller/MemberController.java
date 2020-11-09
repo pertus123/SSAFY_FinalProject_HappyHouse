@@ -1,5 +1,6 @@
 package com.project.happyhouse.controller;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class MemberController {
 	public String join() {
 		return "member/join";
 	}
-	
+
 	// 회원가입
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	public String join(MemberDto memberDto, Model model) throws Exception {
@@ -46,7 +47,50 @@ public class MemberController {
 		}
 		return "redirect:/";
 	}
-	
+
+	// 아이디 인증하기 화면으로 이동
+	@RequestMapping(value = "/idValidate", method = RequestMethod.GET)
+	public String idValidate() {
+		return "member/idValidate";
+	}
+
+	// 아이디 인증 후 비밀번호찾기(비밀번호변경)화면으로 이동
+	@RequestMapping(value = "/idValidate", method = RequestMethod.POST)
+	public String idValidate(String userid, HttpServletResponse response,Model model) throws Exception {
+		String userpwd = memberService.pwdValidate(userid);
+		System.out.println(userpwd);
+		if (userpwd==null) {
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>alert('변경가능한 아이디가 없습니다.\\n다시 확인해주세요.');location.href='./idValidate'</script>");
+			out.flush();
+		}
+		model.addAttribute("userid",userid);
+		return "member/findPassword";
+	}
+
+	// 비밀번호찾기(비밀번호변경)
+	@RequestMapping(value = "/findPassword", method = RequestMethod.POST)
+	public String findPassword(String new_userpwd, String userid, HttpSession session, Model model) {
+		System.out.println(new_userpwd);
+		System.out.println(userid);
+		MemberDto memberDto = new MemberDto();
+		memberDto.setUserid(userid);
+		memberDto.setUserpwd(new_userpwd);
+		try {
+			int cnt = memberService.userPwdUpdate(memberDto);
+			if (cnt == 0) {
+				model.addAttribute("msg", "서버에 문제가 있어 비밀번호 변경을 실패했습니다.\\n다시 시도해주세요.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("msg", "비밀번호 변경 처리 중 문제가 발생했습니다.");
+			return "error/error";
+		}
+		return "redirect:/";
+	}
+
 	// 로그인
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(@RequestParam Map<String, String> map, Model model, HttpSession session,
@@ -69,7 +113,7 @@ public class MemberController {
 				response.setCharacterEncoding("UTF-8");
 				response.setContentType("text/html; charset=UTF-8");
 				PrintWriter out = response.getWriter();
-				out.println("<script>alert('아이디 또는 비밀번호 확인 후 로그인해 주세요.');location.href='../'</script>"); 
+				out.println("<script>alert('아이디 또는 비밀번호 확인 후 로그인해 주세요.');location.href='../'</script>");
 				out.flush();
 			}
 		} catch (Exception e) {
@@ -145,16 +189,16 @@ public class MemberController {
 		}
 		return "redirect:/member/userInform";
 	}
-	
+
 	// 비밀번호 확인 창이동(마이페이지)
 	@RequestMapping(value = "/pwdValidate", method = RequestMethod.GET)
 	public String pwdValidateMv() {
 		return "member/passwordValidation";
 	}
-	
+
 	// 비밀번호 확인(마이페이지)
 	@RequestMapping(value = "/pwdValidate", method = RequestMethod.POST)
-	public String pwdValidate(String insertpwd, HttpSession session, Model model,HttpServletResponse response) {
+	public String pwdValidate(String insertpwd, HttpSession session, Model model, HttpServletResponse response) {
 		try {
 			String userid = ((MemberDto) session.getAttribute("userinfo")).getUserid();
 			System.out.println(insertpwd);
@@ -164,7 +208,7 @@ public class MemberController {
 				response.setCharacterEncoding("UTF-8");
 				response.setContentType("text/html; charset=UTF-8");
 				PrintWriter out = response.getWriter();
-				out.println("<script>alert('비밀번호를 틀렸습니다.\\n다시 확인해주세요.');location.href='./pwdValidate'</script>"); 
+				out.println("<script>alert('비밀번호를 틀렸습니다.\\n다시 확인해주세요.');location.href='./pwdValidate'</script>");
 				out.flush();
 			}
 		} catch (Exception e) {
@@ -217,7 +261,7 @@ public class MemberController {
 
 	// 관심지역리스트(마이페이지)
 	@RequestMapping(value = "/interestloc", method = RequestMethod.GET)
-	private String interestloc(HttpSession session,Model model) {
+	private String interestloc(HttpSession session, Model model) {
 		try {
 			String userid = ((MemberDto) session.getAttribute("userinfo")).getUserid();
 			System.out.println(userid);
@@ -233,10 +277,10 @@ public class MemberController {
 		}
 		return "member/interestloc";
 	}
-	
+
 	// 관심매물리스트(마이페이지)
-		@RequestMapping(value = "/interestdeal", method = RequestMethod.GET)
-		private String interestdeal() {
-			return "member/interestdeal";
-		}
+	@RequestMapping(value = "/interestdeal", method = RequestMethod.GET)
+	private String interestdeal() {
+		return "member/interestdeal";
+	}
 }
