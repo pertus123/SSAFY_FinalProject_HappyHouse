@@ -1,10 +1,12 @@
 package com.project.interceptor;
 
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.ssafy.guestbook.model.MemberDto;
+import com.project.happyhouse.model.MemberDto;
 
 public class ConfirmInterceptor extends HandlerInterceptorAdapter {
 
@@ -12,7 +14,7 @@ public class ConfirmInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		HttpSession session = request.getSession();
-		memberDto memberDto = (MemberDto) session.getAttribute("userinfo");
+		MemberDto memberDto = (MemberDto) session.getAttribute("userinfo");
 		if(memberDto == null) {
 			response.sendRedirect(request.getContextPath());
 			return false;

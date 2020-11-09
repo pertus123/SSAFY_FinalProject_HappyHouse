@@ -83,14 +83,14 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${users}" var="u" varStatus="vs">
+					<c:forEach items="${members}" var="m" varStatus="vs">
 						<tr onclick = "./notice?act=noticedetail&articleno='${a.articleno}'">
 							<th scope="row">${vs.count}</th>
-							<td>${u.userid}</td>
-							<td>${u.username}</td>
-							<td>${u.userbirth}</td>
-							<td>${u.userphone}</td>
-							<td><button type="button" class="msgbtn" dear='${u.userid}'>쪽지보내기</button></td>
+							<td>${m.userid}</td>
+							<td>${m.username}</td>
+							<td>${m.userbirth}</td>
+							<td>${m.userphone}</td>
+							<td><button type="button" class="msgbtn" dear='${m.userid}'>쪽지보내기</button></td>
 						</tr>
 					</c:forEach>
 				</tbody>

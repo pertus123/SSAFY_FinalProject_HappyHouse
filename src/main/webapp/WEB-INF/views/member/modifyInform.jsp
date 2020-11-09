@@ -35,19 +35,18 @@
 		<div class="col-md-1"></div>
 		<div class="col-md-5">
 			<form id="modifyForm" method="post">
-				<input type="hidden" name="act" id="act" value="informaf">
 				<div class="container-fluid border">
 					<div class="form-group">
 						<label for="usrname">*이름</label> 
-						<input type="text" class="form-control" name="username" value='${user.username}'>
+						<input type="text" class="form-control" name="username" value='${member.username}'>
 					</div>
 					<div class="form-group">
 						<label for="birth">생년월일</label> 
-						<input type="date" class="form-control" name="userbirth" value='${user.userbirth}'>
+						<input type="date" class="form-control" name="userbirth" value='${member.userbirth}'>
 					</div>
 					<div class="form-group">
 						<label for="phone">핸드폰</label> 
-						<input type="number" class="form-control" name="userphone" value='${user.userphone}'>
+						<input type="number" class="form-control" name="userphone" value='${member.userphone}'>
 					</div>
 					<!-- <div class="form-group">
                         <label for="email">이메일</label>
@@ -72,7 +71,7 @@
 				alert("이름을 입력해주세요.");
 				return;
 			} else {
-				$("#modifyForm").attr("action", "./user").submit();
+				$("#modifyForm").attr("action", "member/userInform").submit();
 			}
 		}
 	</script>
