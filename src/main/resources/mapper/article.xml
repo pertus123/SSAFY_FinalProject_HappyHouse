@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- <mapper namespace="member"> -->
-<mapper namespace="com.projet.happyhouse.model.mapper.ArticleMapper">
+<mapper namespace="com.project.happyhouse.model.mapper.ArticleMapper">
 	<select id="getnoticelist"			parameterType="map"  	resultType="ArticleDto">
 		select articleno,subject,regidate from happyhouse.notice
 		<if test="word != null and word != ''">

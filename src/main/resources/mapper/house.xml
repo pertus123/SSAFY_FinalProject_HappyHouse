@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- <mapper namespace="member"> -->
-<mapper namespace="com.projet.happyhouse.model.mapper.HouseMapper">
+<mapper namespace="com.project.happyhouse.model.mapper.HouseMapper">
 
 	<!--  d여기 -->
 	<select id="search"			parameterType="SearchBean"  	resultType="HouseDealDto">
@@ -11,7 +11,7 @@
 				AND dong = #{dong} ORDER BY AptName
 			</if>
 			<if test="key != 'subject'">
-				AND AptName LIKE concat('%', #{}, '%') ORDER BY dong
+				AND AptName LIKE concat('%', #{keyword}, '%') ORDER BY dong
 			</if>
 	</select>
 	
