@@ -24,34 +24,38 @@ import com.project.happyhouse.model.service.ArticleService;
 public class ArticleController {
 	@Autowired
 	private ArticleService articleService;
-	
+
 	@GetMapping(value = "/")
-	public String hello( ) {
+	public String hello() {
 		System.out.println("3");
 		return "index";
 	}
-	
-	//@GetMapping(value = "/noticelist&pg= {no}&key= {key}&word= {word}") // 글 목록 보기
-	@GetMapping(value = "/noticelist") 
-	public String noticelist( Model model, @RequestParam(defaultValue="1") int no, String key, String word) throws SQLException {
-		Map<String, Object> map = new HashMap<String, Object>();
-		System.out.println("111111111111111111111");
-		System.out.println(no + " ||" + key + "|| " + word + "wow");
-        map.put("currentPage", no);
-        map.put("sizePerPage", 10);
-        map.put("key", key);
-        map.put("word", word);
 
-        model.addAttribute("articles",articleService.getnoticelist(map));
-        model.addAttribute("navigation",articleService.makePageNavigation(map));
-		
-	//	articleService.getnoticelist(map);
-		
-	//	articleService.getnoticelist(currentPage, sizePerPage, key, word);
-		System.out.println("noticelist");
+	// @GetMapping(value = "/noticelist&pg= {no}&key= {key}&word= {word}") // 글 목록
+	// 보기
+	@GetMapping(value = "/noticelist")
+	public String noticelist(Model model, @RequestParam(defaultValue = "1") int pg, String key, String word)
+			throws SQLException {
+		Map<String, Object> map = new HashMap<String, Object>();
+		System.out.println(pg + " ||" + key + "|| " + word + "wow");
+		map.put("currentPage", pg);
+		map.put("sizePerPage", 10);
+		map.put("StartProductNo", (pg - 1) * (int) map.get("sizePerPage"));
+		map.put("key", key);
+		map.put("word", word);
+
+		model.addAttribute("articles", articleService.getnoticelist(map));
+		model.addAttribute("navigation", articleService.makePageNavigation(map));
+		model.addAttribute("StartProductNo", map.get("StartProductNo"));
+		model.addAttribute("key", key);
+		model.addAttribute("word", word);
+		// articleService.getnoticelist(map);
+
+		// articleService.getnoticelist(currentPage, sizePerPage, key, word);
+		//System.out.println(articleService.getnoticelist(map));
 		return "article/noticeList";
 	}
-	
+
 	@GetMapping(value = "/noticedetail") // 글 상세 보기?
 	public String noticedetail(int articleno, Model model) {
 		System.out.println(articleno);
@@ -60,16 +64,14 @@ public class ArticleController {
 		model.addAttribute("article", articleDto);
 		return "article/noticedetail";
 	}
-	
-	
-	@GetMapping(value = "/noticewrite") // 글쓰기 페이지 이동 
-	public String noticewrite( ) {
-	//	articleService.noticewrite(noticeDto);
+
+	@GetMapping(value = "/noticewrite") // 글쓰기 페이지 이동
+	public String noticewrite() {
+		// articleService.noticewrite(noticeDto);
 		System.out.println("noticewrite");
 		return "article/noticewrite";
 	}
-	
-	
+
 	@PostMapping(value = "/noticewriteaf") // 글쓰기 엑션
 	public String noticewriteaf(ArticleDto articleDto) {
 		System.out.println(articleDto);
@@ -78,14 +80,13 @@ public class ArticleController {
 		System.out.println("noticewriteaf");
 		return "redirect:/notice/noticelist";
 	}
-	
-	
-	@GetMapping(value = "/noticedelete")// articleno/articleno
-	public String noticedelete(int articleno ) {
+
+	@GetMapping(value = "/noticedelete") // articleno/articleno
+	public String noticedelete(int articleno) {
 		System.out.println(articleno);
 		articleService.noticedelete(articleno);
 		System.out.println("noticedelete");
 		return "redirect:/notice/noticelist";
 	}
-	
+
 }

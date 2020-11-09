@@ -2,21 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- <mapper namespace="member"> -->
-<mapper namespace="com.project.happyhouse.model.mapper.ArticleMapper">
-	<select id="getnoticelist"			parameterType="map"  	resultType="ArticleDto">
-		select articleno,subject,regidate from happyhouse.notice
+<mapper
+	namespace="com.project.happyhouse.model.mapper.ArticleMapper">
+	<select id="getnoticelist" parameterType="map"
+		resultType="ArticleDto">
+		select articleno,subject,regidate from notice
 		<if test="word != null and word != ''">
-			<if test="key == 'subject'">
+			<if test="key.equals('subject')">
 				where subject like concat('%', #{word}, '%')
 			</if>
-			<if test="key != 'subject'">
-				where ${key} = #{word}
+			<if test="key.equals('articleno')">
+				where articleno = #{word}
 			</if>
 		</if>
+		limit #{StartProductNo}, #{sizePerPage}
+
 	</select>
-	
-	
-	<select id="getTotalCount"			parameterType="map"  	resultType="int">
+
+
+	<select id="getTotalCount" parameterType="map" resultType="int">
 		select count(articleno) from happyhouse.notice
 		<if test="word != null and word != ''">
 			<if test="key == 'subject'">
@@ -27,27 +31,31 @@
 			</if>
 		</if>
 	</select>
-	
-	
-	<select id="getnoticedetail"			parameterType="map"  	resultType="ArticleDto">
-		select articleno, subject, content, regidate from happyhouse.notice
+
+
+	<select id="getnoticedetail" parameterType="map"
+		resultType="ArticleDto">
+		select articleno, subject, content, regidate from
+		happyhouse.notice
 		where articleno = #{articleno}
 	</select>
-	
-	
-	<insert id="noticewrite"			parameterType="ArticleDto">
-		INSERT INTO happyhouse.notice (subject, content) values (#{subject}, #{content})
+
+
+	<insert id="noticewrite" parameterType="ArticleDto">
+		INSERT INTO
+		happyhouse.notice (subject, content) values (#{subject}, #{content})
 	</insert>
-	
-	
-	<delete id="noticedelete"			parameterType="int">
-		delete from happyhouse.notice where articleno = #{articleno}
+
+
+	<delete id="noticedelete" parameterType="int">
+		delete from
+		happyhouse.notice where articleno = #{articleno}
 	</delete>
-	
-<!--	List<NoticeDto> getnoticelist(int currentPage, int sizePerPage, String key, String word); select
-	int getTotalCount(String key, String word) throws SQLException; select
-	NoticeDto getnoticedetail(int articleno); select
-	int noticewrite(NoticeDto noticeDto); insert
-	int noticedelete(int articleno); delete  -->
-	
+
+	<!-- List<NoticeDto> getnoticelist(int currentPage, int sizePerPage, String 
+		key, String word); select int getTotalCount(String key, String word) throws 
+		SQLException; select NoticeDto getnoticedetail(int articleno); select int 
+		noticewrite(NoticeDto noticeDto); insert int noticedelete(int articleno); 
+		delete -->
+
 </mapper>

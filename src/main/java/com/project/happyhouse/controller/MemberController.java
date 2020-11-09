@@ -233,4 +233,10 @@ public class MemberController {
 		}
 		return "member/interestloc";
 	}
+	
+	// 관심매물리스트(마이페이지)
+		@RequestMapping(value = "/interestdeal", method = RequestMethod.GET)
+		private String interestdeal() {
+			return "member/interestdeal";
+		}
 }

@@ -116,12 +116,12 @@
 									<th scope="col"></th>
 									<th scope="col">공지사항</th>
 									<th scope="col"></th>
-									<th scope="col"><a href="./notice/noticelist?pg=1&key=&word=">+</a></th>
+									<th scope="col"><a href="${root}/notice/noticelist?pg=1&key=&word=">+</a></th>
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach items="${articles}" var="a" varStatus="vs">
-					      			<tr onclick = "location.href='./notice/noticedetail?articleno=${a.articleno}'">
+					      			<tr onclick = "location.href='${root}/notice/noticedetail?articleno=${a.articleno}'">
 					      				<td class = "articleno">${vs.count}</td>
 					        			<td>${a.subject}</td>
 					        			<c:set var = "regidate2" value = "${fn:split(a.regidate, ' ')}" />

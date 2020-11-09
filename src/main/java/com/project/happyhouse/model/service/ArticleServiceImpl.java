@@ -19,8 +19,8 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Override
 	public List<ArticleDto> getnoticelist(Map<String, Object> map) {
-		String word = (String) map.get("word");
-		word = word == null ? "" : word;
+		System.out.println(map.get("StartProductNo")+" 스타트");
+		System.out.println(map.get("sizePerPage")+" spp");
 		return sqlSession.getMapper(ArticleMapper.class).getnoticelist(map);
 	}
 
