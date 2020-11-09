@@ -27,7 +27,7 @@
 	<nav class="navbar navbar-expand-lg">
 		<!-- Brand/logo -->
 		<a class="navbar-brand" href="${root}"> <img
-			src="./img/logo.png" alt="logo" style="width: 150px;">
+			src="${root}/img/logo.png" alt="logo" style="width: 150px;">
 		</a>
 		<!-- Toggler/collapsibe Button -->
 		<img src="./img/menu_button.png" width="70px"
@@ -131,7 +131,7 @@
 				alert("검색어를 입력하세요");
 				return;
 			} else {
-				$("#userSearchForm").attr("action", "./member/userSearch").submit();
+				$("#userSearchForm").attr("action", "${root}}/member/userSearch").submit();
 			}
 		}
 		

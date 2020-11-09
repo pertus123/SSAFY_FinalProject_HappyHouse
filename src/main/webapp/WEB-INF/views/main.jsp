@@ -138,7 +138,7 @@
 									<th scope="col"></th>
 									<th scope="col">부동산 뉴스</th>
 									<th scope="col"></th>
-									<th scope="col"><a href="./news?act=newslist">+</a></th>
+									<th scope="col"><a href="#">+</a></th>
 								</tr>
 							</thead>
 							<tbody>
