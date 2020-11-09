@@ -27,6 +27,7 @@ public class HouseController {
 	
 	@Autowired
 	private HouseService houseService;
+	@Autowired
 	private ArticleService articleService;
 	
 	@GetMapping(value = "/")
