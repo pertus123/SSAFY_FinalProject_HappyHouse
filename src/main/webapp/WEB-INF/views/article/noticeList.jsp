@@ -10,8 +10,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="./css/notice.css">
-<link rel="stylesheet" href="./css/header_footer.css">
+<link rel="stylesheet" href="${root}./css/notice.css">
+<link rel="stylesheet" href="${root}/css/header_footer.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
@@ -28,8 +28,8 @@
 		<input type="hidden" name="key" id="key" value="${key}">
 		<input type="hidden" name="word" id="word" value="${word}">
 	</form>
-	<jsp:include page="session.jsp" />
-	<header><jsp:include page="mainHeader.jsp" /></header>
+	<jsp:include page="../includes/session.jsp" />
+	<header><jsp:include page="../includes/mainHeader.jsp" /></header>
 	
 	<div class="banner">
 		<h2>공지사항</h2>

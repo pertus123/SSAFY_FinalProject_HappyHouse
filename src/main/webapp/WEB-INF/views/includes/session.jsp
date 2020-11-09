@@ -13,6 +13,6 @@
 <c:if test="${empty userinfo}">
 	<script type="text/javascript">
 		alert('로그인 하십시오.');
-		location.href = './user?act=login';
+		location.href = '${root}';
 	</script>
 </c:if>

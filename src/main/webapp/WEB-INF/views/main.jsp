@@ -12,8 +12,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="./css/main.css">
-<link rel="stylesheet" href="./css/header_footer.css">
+<link rel="stylesheet" href="${root}/css/main.css">
+<link rel="stylesheet" href="${root}/css/header_footer.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
@@ -23,7 +23,7 @@
 </head>
 
 <body>
-	<jsp:include page="session.jsp" />
+	<jsp:include page="includes/session.jsp" />
 	<header><jsp:include page="includes/mainHeader.jsp" /></header>
 	<div class="container-fluid">
 		<div class="row">
@@ -73,7 +73,7 @@
 							</ol>
 							<div class="carousel-inner">
 								<div class="carousel-item">
-									<img class="d-block w-100" alt="room" src="./img/slide1.jpg" />
+									<img class="d-block w-100" alt="room" src="${root}/img/slide1.jpg" />
 									<div class="carousel-caption">
 										<h4>어떤 집에서 살고 싶나요?</h4>
 										<p>집은 사람이나 동물이 거주하기 위해 지은 건물로, 보통 벽과 지붕이 있으며, 추위와 더위, 비바람을
@@ -116,12 +116,12 @@
 									<th scope="col"></th>
 									<th scope="col">공지사항</th>
 									<th scope="col"></th>
-									<th scope="col"><a href="./notice?act=noticelist&pg=1&key=&word=">+</a></th>
+									<th scope="col"><a href="./notice/noticelist?pg=1&key=&word=">+</a></th>
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach items="${articles}" var="a" varStatus="vs">
-					      			<tr onclick = "location.href='./notice?act=noticedetail&articleno=${a.articleno}'">
+					      			<tr onclick = "location.href='./notice/noticedetail?articleno=${a.articleno}'">
 					      				<td class = "articleno">${vs.count}</td>
 					        			<td>${a.subject}</td>
 					        			<c:set var = "regidate2" value = "${fn:split(a.regidate, ' ')}" />

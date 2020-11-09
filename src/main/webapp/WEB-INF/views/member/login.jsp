@@ -15,7 +15,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link href="./css/index.css" rel="stylesheet" type="text/css">
+<link href="${root}/css/index.css" rel="stylesheet" type="text/css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
@@ -27,7 +27,6 @@
 	<div id="blackbox">
 		<img alt="logo" src="./img/logo_text1.png" width="50%">
 		<form id="loginForm" action="" method="post">
-			<input type="hidden" name="act" id="act" value="loginaf">
 			<div class="container">
 				<label for="id"><b>ID</b></label> <input type="text"
 					placeholder="아이디를 입력해주세요." name="userid" id="userid" value="${saveid}"> <label
@@ -48,7 +47,7 @@
 				</div>
 				<div class="signup">
 					<p>
-						아직 회원이 아니신가요? <a href="${root}/user?act=join">회원가입</a>
+						아직 회원이 아니신가요? <a href="./member/join">회원가입</a>
 					</p>
 				</div>
 			</div>
@@ -63,7 +62,7 @@
 				alert("비밀번호를 입력해주세요.");
 				return;
 			} else {
-				$("#loginForm").attr("action", "${root}/user").submit();
+				$("#loginForm").attr("action", "./member/login").submit();
 			}
 		}
 	</script>

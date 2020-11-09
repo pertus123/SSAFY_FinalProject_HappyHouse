@@ -79,7 +79,7 @@ public class MemberController {
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpSession session) {
 		session.invalidate();
-		return "redirect:/member/login";
+		return "redirect:/";
 	}
 
 	// 회원 목록 (Admin)
@@ -92,7 +92,7 @@ public class MemberController {
 
 	// 아이디로 회원 검색 (Admin)
 	// 이름으로 회원 검색 (Admin)
-	@RequestMapping(value = "/userSearch", method = RequestMethod.GET)
+	@RequestMapping(value = "/userSearch", method = RequestMethod.POST)
 	public String userSearch(String select, String search, Model model) {
 		List<MemberDto> members;
 		if ("idsearch".equals(select)) {
@@ -198,8 +198,8 @@ public class MemberController {
 	}
 
 	// 관심지역리스트(마이페이지)
-	@RequestMapping(value = "/interloc", method = RequestMethod.GET)
-	private String interloc(HttpSession session,Model model) {
+	@RequestMapping(value = "/interestloc", method = RequestMethod.GET)
+	private String interestloc(HttpSession session,Model model) {
 		try {
 			String userid = ((MemberDto) session.getAttribute("userinfo")).getUserid();
 			System.out.println(userid);

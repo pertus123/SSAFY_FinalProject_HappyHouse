@@ -21,8 +21,8 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-	<jsp:include page="session.jsp" />
-	<header><jsp:include page="mainHeader.jsp" /></header>
+	<jsp:include page="../includes/session.jsp" />
+	<header><jsp:include page="../includes/mainHeader.jsp" /></header>
 
 	<div class="banner">
 		<h2>공지사항</h2>

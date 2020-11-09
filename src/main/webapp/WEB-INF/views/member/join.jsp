@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="./css/index.css">
+<link rel="stylesheet" href="${root}/css/index.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
@@ -21,10 +21,9 @@
 </head>
 <body>
 	<div id="blackbox">
-		<a href="./index.jsp"><img alt="logo" src="./img/logo_text1.png"
+		<a href="${root}"><img alt="logo" src="./img/logo_text1.png"
 			width="50%"></a>
 		<form id="joinForm" action="" method="post">
-			<input type="hidden" name="act" id="act" value="joinaf">
 			<div class="container">
 				<label for="id"><b>*아이디</b></label> <input type="text"
 					placeholder="아이디를 입력해주세요." name="userid" id="userid" required>
@@ -61,7 +60,7 @@
 				alert("이름을 입력해주세요.");
 				return;
 			} else {
-				$("#joinForm").attr("action", "${root}/user").submit();
+				$("#joinForm").attr("action", "${root}/member/join").submit();
 			}
 		}
 	</script>
