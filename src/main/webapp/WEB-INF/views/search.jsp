@@ -31,8 +31,8 @@
 				<div class="row">
 					<div class="col-md-5">
 						<div class="row">
-							<div class="search-container">
-								<form class="form-inline" id="searchForm" method="post" action="${root}/search">
+							<div class="search-container form-inline">
+							
 									<input type="hidden" name="act" id="act" value="search">
 									<select id="dealType" name="dealType" style="display: none;">
 										<option value="1" selected></option>
@@ -46,11 +46,11 @@
 										<option value="2">역이름으로 검색</option>
 									</select> 
 									<input class="form-control mr-sm-3" id="keyword" name="keyword"
-										type="search" placeholder="Search" aria-label="Search">
+										type="search" placeholder="Search" aria-label="Search" onkeyup="enterkey();">
 									<button type="button" id="searchbtn" onclick="search()">
 										<i class="fa fa-search"></i>
 									</button>
-								</form>
+								
 							</div>
 						</div>
 						<div class="row">
@@ -100,106 +100,7 @@
 			$("#searchType").val("${searchbean.getSearchType()}");
 			$("#keyword").val("${searchbean.getKeyword()}");
 			initSearch();
-			
-			
-			
-			
-		/*	$("#registerBtn").click(function() {
-				let registerinfo = JSON.stringify({
-					"username" : $("#username").val(), 
-					"userid" : $("#userid").val(), 
-					"userpwd" : $("#userpwd").val(), 
-					"email" : $("#email").val(), 
-					"address" : $("#address").val()
-				   });
-				$.ajax({
-					url:'${root}/admin/user',  
-					type:'POST',
-					contentType:'application/json;charset=utf-8',
-					dataType:'json',
-					data: registerinfo,
-					success:function(users) {
-						$("#username").val('');
-						$("#userid").val('');
-						$("#userpwd").val('');
-						$("#email").val('');
-						$("#address").val('');
-						$("#userRegModal").modal("hide");
-						makeList(users);
-					},
-					error:function(xhr,status,msg){
-						console.log("상태값 : " + status + " Http에러메시지 : "+msg);
-					}
-				});
-			});*/
-			
-			
-			
-			
-			
 		});
-		
-	/*	$(document).ready(function() {
-			$.ajax({
-				url:'${root}/house/search',  
-				type:'GET',
-				contentType:'application/json;charset=utf-8',
-				dataType:'json',
-				success:function(list) {
-					makeList(list);
-				},
-				error:function(xhr,status,error){
-					console.log("상태값 : " + xhr.status + "\nHttp에러메시지 : " + xhr.responseText + "\nerror : " + error);
-				}
-			});
-			
-			$("#searchbtn").click(function() {
-				$.ajax({
-					url:'${root}/house/searchdata',  
-					type:'GET',
-					contentType:'application/json;charset=utf-8',
-					dataType:'json',
-					success:function(list) {
-						makeList(list);
-					},
-					error:function(xhr,status,msg){
-						console.log("상태값 : " + status + " Http에러메시지 : "+msg);
-					}
-				});
-			});
-		}
-		
-	
-	function makeList(list) {
-			$("#searchlist").empty();
-			if(list.length == 0) {
-				$("#noresultp").remove();
-				$("#rowbuildinglist").append("<p id='noresultp'>검색결과가 없습니다.</p>");
-			}
-			else{
-				$(list).each(function(index, user) {
-					let str = "<tr id=\"view_" + user.no + "\" class=\"view\" data-id=\"" + user.no + "\">"
-					+ "	<td>" + index + "</td>"
-					+ "	<td>" + user.dong + "</td>" // pw
-					+ "	<td>" + user.aptName + "</td>" // name
-					+ "	<td><button type=\"button\" class=\"modiBtn btn btn-outline-primary btn-sm\">상세정보</button> "
-					+ "		<button type=\"button\" class=\"delBtn btn btn-outline-danger btn-sm\">삭제</button></td>"
-					+ "</tr>"
-					+ "<tr id=\"mview_" + user.userid + "\" data-id=\"" + user.userid + "\" style=\"display: none;\">"
-					+ "	<td>" + user.userid + "</td>"
-					+ "	<td><input type=\"text\" name=\"userpwd\" id=\"userpwd" + user.userid + "\" value=\"" + user.userpwd + "\"></td>"
-					+ "	<td>" + user.username + "</td>"
-					+ "	<td><input type=\"text\" name=\"email\" id=\"email" + user.userid + "\" value=\"" + user.email + "\"></td>"
-					+ "	<td><input type=\"text\" name=\"address\" id=\"address" + user.userid + "\" value=\"" + user.address + "\"></td>" 
-					+ "	<td>" + user.joindate + "</td>"
-					+ "	<td><button type=\"button\" class=\"modifyBtn btn btn-primary btn-sm\">수정</button> "
-					+ "		<button type=\"button\" class=\"cancelBtn btn btn-danger btn-sm\">취소</button></td>"
-					+ "</tr>";
-					$("#searchlist").append(str);
-				});//each
-			}
-		}*/
-		
 		
 		$("#deal1btn").click(function() {
 			$("#dealType").val("1");
@@ -247,46 +148,7 @@
 			hos1icon = new google.maps.MarkerImage("./img/hos1.png", null, null, null, new google.maps.Size(40,40)); 
 		}
 		
-		
-	/*	function initSearch() {
-			alert("search하니?!");
-			$.get("${root}"
-					,{act:"searchdata", dealType: "${searchbean.getDealType()}", searchType:"${searchbean.getSearchType()}", keyword:"${searchbean.getKeyword()}"}
-					,function(data, status){//alert("search하니?!33");
-						$("#searchlist").empty();
-						multimarker.setMap(null);
-						if(data.length == 0) {
-							alert("search하니?!2");
-							$("#noresultp").remove();
-							$("#rowbuildinglist").append("<p id='noresultp'>검색결과가 없습니다.</p>");
-						} else {
-							alert("search하니?!3");
-							$.each(data, function(index, vo) {
-								let str = "<tr>"
-								+ "<td style='width:10%;'>" + (index+1) + "</td>"
-								+ "<td style='width:15%;'>" + vo.dong + "</td>"
-								+ "<td style='width:50%;'>" + vo.aptName + "</td>"
-								+ "<td style='width:20%;'><button calss='btn' onclick=getDetail("+vo.no+")>상세정보</button> </td>" 
-								+ "<td id='lat"+vo.no+"' style='display:none;'>"+vo.lat+"</td>"
-								+ "<td id='lng"+vo.no+"' style='display:none;'>"+vo.lng+"</td></tr>";
-								$("#searchlist").append(str);
-							});//each
-							addMarkers(data);
-						}
-					}//function
-					, "json"
-			);//get
-		}*/
-		
-		
 		function initSearch() { // 처음
-			//alert("search하니?!1");
-			let registerinfo = {
-				dealType: "${searchbean.getDealType()}", 
-				searchType:"${searchbean.getSearchType()}", 
-				keyword:"${searchbean.getKeyword()}"
-			   };
-			//alert("search하니?!1-2");
 			$.ajax({
 				url:'${root}/searchdata',  
 				type:'GET',
@@ -298,17 +160,12 @@
 					keyword:"${searchbean.getKeyword()}"
 				   },
 				success:function(data, status){
-				//	alert("search하니?!2");
 					$("#searchlist").empty();
 					multimarker.setMap(null);
 					if(data.length == 0) {
-					//	alert("search하니?!3");
-						alert("1");
 						$("#noresultp").remove();
 						$("#rowbuildinglist").append("<p id='noresultp'>검색결과가 없습니다.</p>");
 					} else {
-					//	alert("search하니?!4");
-					//	alert("2");
 						$.each(data, function(index, vo) {
 							let str = "<tr>"
 							+ "<td style='width:10%;'>" + (index +1) + "</td>"
@@ -318,29 +175,27 @@
 							+ "<td id='lat"+vo.no+"' style='display:none;'>"+vo.lat+"</td>"
 							+ "<td id='lng"+vo.no+"' style='display:none;'>"+vo.lng+"</td></tr>";
 							$("#searchlist").append(str);
-						});//each
+						});
 						addMarkers(data);
 					}
-				},//function
+				},
 				error:function(xhr,status,error){
 					console.log("상태값 : " + xhr.status + "\nHttp에러메시지 : " + xhr.responseText + "\nerror : " + error);
 				}
-				}
-			);//get
+			});
 		}
 		
 		
 		function search() { //searchdata
-			alert("search하니?!");
 			$.ajax({
 				url:'${root}/searchdata',  
 				type:'GET',
 				contentType:'application/json;charset=utf-8',
 				dataType:'json',
 				data :{
-					dealType: "${searchbean.getDealType()}", 
-					searchType:"${searchbean.getSearchType()}", 
-					keyword:"${searchbean.getKeyword()}"
+					dealType: $("#dealType").val(), 
+					searchType:$("#searchType").val(), 
+					keyword:$("#keyword").val()
 				   },
 				success:function(data, status){
 						$("#searchlist").empty();
@@ -357,15 +212,15 @@
 								+ "<td id='lat"+vo.no+"' style='display:none;'>"+vo.lat+"</td>"
 								+ "<td id='lng"+vo.no+"' style='display:none;'>"+vo.lng+"</td></tr>";
 								$("#searchlist").append(str);
-							});//each
+							});
 							addMarkers(data);
 						}
-					},//function
+					},
 					error:function(xhr,status,error){
 						console.log("상태값 : " + xhr.status + "\nHttp에러메시지 : " + xhr.responseText + "\nerror : " + error);
 					}
 			}
-			);//get
+			);
 		}
 		
 		function addMarkers(data){
@@ -391,10 +246,8 @@
 				});
 				avglat += parseFloat(vo.lat);
 				avglng += parseFloat(vo.lng);
-				//console.log(vo.lat + " " + vo.lng);
-				//console.log(avglat + " " + avglng);
-				//alert(vo.code);
-				curGungu = vo.code;
+				console.log(vo);
+				curGungu = vo.gunguCode;
 				
 				tmp.setMap(map);
 				markers.push(tmp);
@@ -402,7 +255,6 @@
 			avglat /= markers.length;
 			avglng /= markers.length;
 			var center = {	lat : avglat, lng : avglng };
-			//console.log(center);
 			
 			if($("#searchType").val() == 1) {
 				map.setCenter(multi);
@@ -414,9 +266,6 @@
 		}
 
 		function getDetail(n){
-			//alert(n);
-			
-			
 			$.ajax({
 				url:'${root}/detail',  
 				type:'GET',
@@ -435,33 +284,12 @@
 					$("#detailbody").append(str);
 					zoomin(data);
 					curDong = data.dong;
-				},//function,//function
+				},
 				error:function(xhr,status,error){
 					console.log("상태값 : " + xhr.status + "\nHttp에러메시지 : " + xhr.responseText + "\nerror : " + error);
 				}
 				}
-			);//get
-			
-			
-			
-		/*	$.get("${root}/main"
-					,{act:"detail", no: n}
-					,function(data, status){
-						$("#detailbody").empty();
-						let str = "<tr><td style='width:20%;'>이름</td><td>"+data.aptName+"</td></tr>"
-								+ "<tr><td>주소</td><td>"+data.dong+" "+data.jibun+"번지 "+data.floor+"층</td></tr>"
-								+ "<tr><td>거래금액</td><td>"+data.dealAmount+"</td></tr>"
-								+ "<tr><td>건축연도</td><td>"+data.buildYear+"</td></tr>"
-								+ "<tr><td>전용면적</td><td>"+data.area+"</td></tr>";
-						$("#detailbody").append(str);
-						zoomin(data);
-						curDong = data.dong;
-					}//function
-					, "json"
-			);//get
-			*/
-			
-			
+			);
 		}
 		
 		function zoomin(data) {
@@ -476,8 +304,7 @@
 				title: data.aptName
 			});
 			
-			curGungu = data.code;
-			alert(curGungu);
+			curGungu = data.gunguCode;
 			
 			marker.setMap(map);
 			markers.push(marker);
@@ -494,11 +321,6 @@
 					}
 					hos0flag= false;
 				} else {
-					
-					
-					
-					
-					alert("wow");
 					$.ajax({
 						url:'${root}/hospital',  
 						type:'GET',
@@ -508,7 +330,6 @@
 							 type: t, code: curGungu
 						   },
 						success:function(data, status){
-							alert(curGungu);
 							var tmp;
 							$.each(data, function(index, vo) {
 								tmp = new google.maps.Marker({
@@ -522,71 +343,59 @@
 								map.setZoom(15);
 							});
 							hos0flag = true;
-						},//function,//function
+						},
 							error:function(xhr,status,error){
 								console.log("상태값 : " + xhr.status + "\nHttp에러메시지 : " + xhr.responseText + "\nerror : " + error);
 							}
 					}
-					);//get
-					
-					
-					
-					
-				/*	$.get("${root}"
-							,{act:"hospital", type: t, code: curGungu}
-							,function(data, status){
-								var tmp;
-								$.each(data, function(index, vo) {
-									tmp = new google.maps.Marker({
-										position: new google.maps.LatLng(parseFloat(vo.lat), parseFloat(vo.lng)),
-										icon: hos0icon,
-										label: vo.name, 
-										title: vo.name 
-									});
-									tmp.setMap(map);
-									h0markers.push(tmp);
-									map.setZoom(15);
-								});
-								hos0flag = true;
-							}//function
-							, "json"
-					);//get*/
-					
-					
-					
-					
-					
-					
+					);
 				}
-			} else {
+			} 
+			
+			else {
 				if (hos1flag) {
 					while (h1markers.length > 0) {
 						h1markers.pop().setMap(null);
 					}
 					hos1flag= false;
 				} else {
-					$.get("${root}"
-							,{act:"hospital", type: t, code: curGungu}
-							,function(data, status){
-								var tmp;
-								$.each(data, function(index, vo) {
-									tmp = new google.maps.Marker({
-										position: new google.maps.LatLng(parseFloat(vo.lat), parseFloat(vo.lng)),
-										icon: hos1icon,
-										label: vo.name, 
-										title: vo.name 
-									});
-									tmp.setMap(map);
-									h1markers.push(tmp);
-									map.setZoom(15);
+					
+					$.ajax({
+						url:'${root}/hospital',  
+						type:'GET',
+						contentType:'application/json;charset=utf-8',
+						dataType:'json',
+						data :{
+							 type: t, code: curGungu
+						   },
+						success:function(data, status){
+							var tmp;
+							$.each(data, function(index, vo) {
+								tmp = new google.maps.Marker({
+									position: new google.maps.LatLng(parseFloat(vo.lat), parseFloat(vo.lng)),
+									icon: hos1icon,
+									label: vo.name, 
+									title: vo.name 
 								});
-								hos1flag = true;
-							}//function
-							, "json"
-					);//get
+								tmp.setMap(map);
+								h1markers.push(tmp);
+								map.setZoom(15);
+							});
+							hos1flag = true;
+						},
+							error:function(xhr,status,error){
+								console.log("상태값 : " + xhr.status + "\nHttp에러메시지 : " + xhr.responseText + "\nerror : " + error);
+							}
+					}
+					);
 				}
 			}
 		}
+		function enterkey() {
+	        if (window.event.keyCode == 13) {
+	             search();
+	        }
+	}
 	</script>
 </body>
 

@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -98,25 +99,26 @@ public class HouseController {
 	}
 	
 	
-	@ResponseBody
+	//@ResponseBody
 	@GetMapping(value = "/searchdata", headers = { "Content-type=application/json" })
-	public List<HouseDealDto> searchdata(HttpServletRequest request, HttpServletResponse response) {
-		int dealType = Integer.parseInt(request.getParameter("dealType"));
-		int searchType = Integer.parseInt(request.getParameter("searchType"));
-		String keyword = request.getParameter("keyword");
+	public @ResponseBody List<HouseDealDto> searchdata( SearchBean bean) {
+//		int dealType = Integer.parseInt(request.getParameter("dealType"));
+//		int searchType = Integer.parseInt(request.getParameter("searchType"));
+//		String keyword = request.getParameter("keyword");
 
 		List<HouseDealDto> list = null;
 		System.out.println("search1");
+	//	System.out.println(dealType + " " + searchType + " " + keyword);
 		try {
 			System.out.println("s2");
-			SearchBean bean = new SearchBean();
-			bean.setDealType(dealType);
-			bean.setSearchType(searchType);
-			bean.setKeyword(keyword);
-			request.setAttribute("searchbean", bean);
+	//		SearchBean bean = new SearchBean();
+	//		bean.setDealType(dealType);
+	//		bean.setSearchType(searchType);
+	//		bean.setKeyword(keyword);
+	//		request.setAttribute("searchbean", bean);
 			System.out.println(bean + "Zzzzzzzzz");
 //			list = houseService.search(bean);
-			if(searchType == 0) {
+			if(bean.getSearchType() == 0) {
 				list = houseService.searchZero(bean);
 			}
 			else {
@@ -125,7 +127,7 @@ public class HouseController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			request.setAttribute("msg", "매물 검색 중 문제가 발생했습니다.");
+		//	request.setAttribute("msg", "매물 검색 중 문제가 발생했습니다.");
 		} 
 		
 		System.out.println("searchdata");
@@ -150,11 +152,11 @@ public class HouseController {
 		return dto;
 	}
 	
-	@ResponseBody
+	
 	@GetMapping(value = "/hospital", headers = { "Content-type=application/json" })
-	public List<HospitalDto> hospital(HttpServletRequest request) {
-		String type = request.getParameter("type");
-		String code = request.getParameter("code");
+	public @ResponseBody List<HospitalDto> hospital(String type, String code) {
+	//	String type = request.getParameter("type");
+	//	String code = request.getParameter("code");
 
 		System.out.println("메인" + type + " " + code);
 
@@ -171,7 +173,7 @@ public class HouseController {
 		//	obj.put("message_code", "-1");
 		//	arr.add(obj);
 			e.printStackTrace();
-			request.setAttribute("msg", "매물 검색 중 문제가 발생했습니다.");
+		//	request.setAttribute("msg", "매물 검색 중 문제가 발생했습니다.");
 		}
 		System.out.println(list);
 		
