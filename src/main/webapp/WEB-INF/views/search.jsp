@@ -82,14 +82,17 @@
 								<button type="button" class="btn subfuncbtn" onclick='getHospital(1)'>안심 병원</button>
 							</div>
 						</div>
-						<div class="row">
-							<div id="map" style="width: 100%; height: 500px; margin: auto;"></div>
+						<div class = "row">
+						<div id="map" style=" height: 500px; margin: auto;"></div>
 						</div>
+					
+						
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	
 	<script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
 	<script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCoeYF0y0MXUVo3DBdHsFn4Pescd9ZSvE4&callback=initMap"></script>
 
@@ -140,9 +143,11 @@
 
 		function initMap() {
 			map = new google.maps.Map(document.getElementById('map'), {
-				center: multi, zoom: 12
+				center: multi, zoom: 12,
+				mapTypeId:google.maps.MapTypeId.ROADMAP,
+				mapTypeControl:false
 			});
-			multimarker = new google.maps.Marker({position: multi, map: map});
+			multimarker = new google.maps.Marker({position: multi, map: map});//////////////
 			dealicon = new google.maps.MarkerImage("./img/deal.png", null, null, null, new google.maps.Size(40,40)); 
 			hos0icon = new google.maps.MarkerImage("./img/hos0.png", null, null, null, new google.maps.Size(40,40)); 
 			hos1icon = new google.maps.MarkerImage("./img/hos1.png", null, null, null, new google.maps.Size(40,40)); 
@@ -274,7 +279,18 @@
 				data :{
 					no:n
 				   },
-				success:function(data, status){
+				success:function(data, status){	
+					while (h0markers.length > 0) {
+						h0markers.pop().setMap(null);
+					}
+					hos0flag= false;
+				//	hos1flag= false;
+				//	hos0flag= false;
+					while (h1markers.length > 0) {
+						h1markers.pop().setMap(null);
+					}
+					hos1flag= false;
+
 					$("#detailbody").empty();
 					let str = "<tr><td style='width:20%;'>이름</td><td>"+data.aptName+"</td></tr>"
 							+ "<tr><td>주소</td><td>"+data.dong+" "+data.jibun+"번지 "+data.floor+"층</td></tr>"
@@ -334,6 +350,7 @@
 							$.each(data, function(index, vo) {
 								tmp = new google.maps.Marker({
 									position: new google.maps.LatLng(parseFloat(vo.lat), parseFloat(vo.lng)),
+		
 									icon: hos0icon,
 									label: vo.name, 
 									title: vo.name 
@@ -373,6 +390,7 @@
 							$.each(data, function(index, vo) {
 								tmp = new google.maps.Marker({
 									position: new google.maps.LatLng(parseFloat(vo.lat), parseFloat(vo.lng)),
+			
 									icon: hos1icon,
 									label: vo.name, 
 									title: vo.name 
