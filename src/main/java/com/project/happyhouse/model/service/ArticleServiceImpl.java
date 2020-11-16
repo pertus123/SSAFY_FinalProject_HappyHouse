@@ -30,7 +30,7 @@ public class ArticleServiceImpl implements ArticleService {
 		int naviSize = 10;
 		pageNavigation.setCurrentPage((int) map.get("currentPage"));
 		pageNavigation.setNaviSize(naviSize);
-		int totalCount = sqlSession.getMapper(ArticleMapper.class).getTotalCount((String)map.get("key"), (String)map.get("word"));
+		int totalCount = sqlSession.getMapper(ArticleMapper.class).qnaGetTotalCount((String)map.get("key"), (String)map.get("word"));
 		//int totalCount = NoticeDaoImpl.getNoticeDao().getTotalCount(key, word);
 		pageNavigation.setTotalCount(totalCount);
 		int totalPageCount = (totalCount - 1) / (int) map.get("sizePerPage") + 1;
@@ -61,6 +61,42 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public int noticeupdate(ArticleDto articleDto) {
 		return sqlSession.getMapper(ArticleMapper.class).noticeupdate(articleDto);
+	}
+//////////////////////////////////////////////////////////////////////
+	@Override
+	public List<ArticleDto> qnaGetnoticelist(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return sqlSession.getMapper(ArticleMapper.class).qnaGetnoticelist(map);
+	}
+
+	@Override
+	public PageNavigation qnaMakePageNavigation(Map<String, Object> map) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArticleDto qnaGetnoticedetail(int articleno) {
+		// TODO Auto-generated method stub
+		return sqlSession.getMapper(ArticleMapper.class).qnaGetnoticedetail(articleno);
+	}
+
+	@Override
+	public int qnaNoticewrite(ArticleDto noticeDto) {
+		// TODO Auto-generated method stub
+		return sqlSession.getMapper(ArticleMapper.class).qnaNoticewrite(noticeDto);
+	}
+
+	@Override
+	public int qnaNoticedelete(int articleno) {
+		// TODO Auto-generated method stub
+		return sqlSession.getMapper(ArticleMapper.class).qnaNoticedelete(articleno);
+	}
+
+	@Override
+	public int qnaNoticeupdate(ArticleDto articleDto) {
+		// TODO Auto-generated method stub
+		return sqlSession.getMapper(ArticleMapper.class).qnaNoticeupdate(articleDto);
 	}
 
 

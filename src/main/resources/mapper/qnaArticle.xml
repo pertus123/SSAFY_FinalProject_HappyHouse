@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- <mapper namespace="member"> -->
+<mapper
+	namespace="com.project.happyhouse.model.mapper.ArticleMapper">
+	<select id="qnaGetnoticelist" parameterType="map"
+		resultType="ArticleDto">
+		select articleno,subject,regidate from qnanotice
+		<if test="word != null and word != ''">
+			<if test="key.equals('subject')">
+				where subject like concat('%', #{word}, '%')
+			</if>
+			<if test="key.equals('articleno')">
+				where articleno = #{word}
+			</if>
+		</if>
+		order by articleno desc
+		limit #{StartProductNo}, #{sizePerPage}
+
+	</select>
+
+
+	<select id="qnaGetTotalCount" parameterType="map" resultType="int">
+		select count(articleno) from happyhouse.qnanotice
+		<if test="word != null and word != ''">
+			<if test="key == 'subject'">
+				where subject like concat('%', #{word}, '%')
+			</if>
+			<if test="key != 'subject'">
+				where ${key} = #{word}
+			</if>
+		</if>
+	</select>
+
+
+	<select id="qnaGetnoticedetail" parameterType="map"
+		resultType="ArticleDto">
+		select articleno, subject, content, regidate from
+		happyhouse.qnanotice
+		where articleno = #{articleno}
+	</select>
+
+
+	<insert id="qnaNoticewrite" parameterType="ArticleDto">
+		INSERT INTO
+		happyhouse.qnanotice (subject, content) values (#{subject}, #{content})
+	</insert>
+
+
+	<delete id="qnaNoticedelete" parameterType="int">
+		delete from
+		happyhouse.qnanotice where articleno = #{articleno}
+	</delete>
+
+	<update id="qnaNoticeupdate" parameterType="ArticleDto">
+		update qnanotice
+		set subject = #{subject}, content = #{content}, regidate = now()
+		where articleno = #{articleno}
+	</update>
+</mapper>
