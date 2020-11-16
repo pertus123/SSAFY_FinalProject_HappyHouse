@@ -3,10 +3,12 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- <mapper namespace="member"> -->
 <mapper
-	namespace="com.project.happyhouse.model.mapper.ArticleMapper">
+	namespace="com.project.happyhouse.model.mapper.QnaArticleMapper">
+
+	<!-- QnA글 전체 조회 -->
 	<select id="qnaGetnoticelist" parameterType="map"
-		resultType="ArticleDto">
-		select articleno,subject,regidate from qnanotice
+		resultType="QnaArticleDto">
+		select articleno,author,subject,regidate from qnanotice
 		<if test="word != null and word != ''">
 			<if test="key.equals('subject')">
 				where subject like concat('%', #{word}, '%')
@@ -16,12 +18,12 @@
 			</if>
 		</if>
 		order by articleno desc
-		limit #{StartProductNo}, #{sizePerPage}
-
+		<!-- limit #{StartProductNo}, #{sizePerPage} -->
 	</select>
 
 
-	<select id="qnaGetTotalCount" parameterType="map" resultType="int">
+	<!-- <select id="qnaGetTotalCount" parameterType="map"
+		resultType="int">
 		select count(articleno) from happyhouse.qnanotice
 		<if test="word != null and word != ''">
 			<if test="key == 'subject'">
@@ -31,32 +33,33 @@
 				where ${key} = #{word}
 			</if>
 		</if>
-	</select>
+	</select> -->
 
-
-
-	<select id="qnaGetnoticedetail" parameterType="map"
-		resultType="ArticleDto">
-		select articleno, subject, content, regidate from
-		happyhouse.qnanotice
+	<!-- QnA글 상세 조회 -->
+	<select id="qnaGetnoticedetail" parameterType="map" resultType="QnaArticleDto">
+		select articleno, author, subject, content, regidate 
+		from qnanotice
 		where articleno = #{articleno}
 	</select>
 
-
-	<insert id="qnaNoticewrite" parameterType="ArticleDto">
-		INSERT INTO
-		happyhouse.qnanotice (subject, content) values (#{subject}, #{content})
+	<!-- QnA글 등록 -->
+	<insert id="qnaNoticewrite" parameterType="QnaArticleDto">
+		INSERT INTO qnanotice (author, subject, content) 
+		values (#{author}, #{subject}, #{content})
 	</insert>
 
-
-	<delete id="qnaNoticedelete" parameterType="int">
-		delete from
-		happyhouse.qnanotice where articleno = #{articleno}
-	</delete>
-
-	<update id="qnaNoticeupdate" parameterType="ArticleDto">
+	<!-- QnA글 수정 -->
+	<update id="qnaNoticeupdate" parameterType="QnaArticleDto">
 		update qnanotice
 		set subject = #{subject}, content = #{content}, regidate = now()
 		where articleno = #{articleno}
 	</update>
+
+	<!-- QnA글 삭제 -->
+	<delete id="qnaNoticedelete" parameterType="int">
+		delete 
+		from qnanotice where articleno = #{articleno}
+	</delete>
+
+	
 </mapper>
