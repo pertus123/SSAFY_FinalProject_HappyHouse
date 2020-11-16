@@ -34,6 +34,7 @@
 	</select>
 
 
+
 	<select id="qnaGetnoticedetail" parameterType="map"
 		resultType="ArticleDto">
 		select articleno, subject, content, regidate from
