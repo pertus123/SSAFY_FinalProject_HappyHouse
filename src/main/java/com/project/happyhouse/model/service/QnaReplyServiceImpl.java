@@ -10,50 +10,43 @@ import org.springframework.stereotype.Service;
 
 import com.project.happyhouse.model.ArticleDto;
 import com.project.happyhouse.model.QnaArticleDto;
+import com.project.happyhouse.model.QnaReplyDto;
 import com.project.happyhouse.model.mapper.ArticleMapper;
 import com.project.happyhouse.model.mapper.QnaArticleMapper;
+import com.project.happyhouse.model.mapper.QnaReplyMapper;
 import com.project.util.PageNavigation;
 
 @Service
-public class QnaReplyServiceImpl implements QnaArticleService {
+public class QnaReplyServiceImpl implements QnaReplyService {
 	@Autowired
 	private SqlSession sqlSession;
 
 //////////////////////////////////////////////////////////////////////
+	
+	
+	
 	@Override
-	public List<QnaArticleDto> qnaGetnoticelist(Map<String, Object> map) {
+	public List<QnaReplyDto> qnaGetreplylist(QnaReplyDto map) {
 		// TODO Auto-generated method stub
-		return sqlSession.getMapper(QnaArticleMapper.class).qnaGetnoticelist(map);
+		return sqlSession.getMapper(QnaReplyMapper.class).qnaGetreplylist(map);
 	}
 
 	@Override
-	public PageNavigation qnaMakePageNavigation(Map<String, Object> map) throws SQLException {
+	public int qnaReplywrite(QnaReplyDto noticeDto) {
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.getMapper(QnaReplyMapper.class).qnaReplywrite(noticeDto);
 	}
 
 	@Override
-	public QnaArticleDto qnaGetnoticedetail(int articleno) {
+	public int qnaReplyupdate(QnaReplyDto articleDto) {
 		// TODO Auto-generated method stub
-		return sqlSession.getMapper(QnaArticleMapper.class).qnaGetnoticedetail(articleno);
+		return sqlSession.getMapper(QnaReplyMapper.class).qnaReplyupdate(articleDto);
 	}
 
 	@Override
-	public int qnaNoticewrite(QnaArticleDto noticeDto) {
+	public int qnaReplydelete(int articleno) {
 		// TODO Auto-generated method stub
-		return sqlSession.getMapper(QnaArticleMapper.class).qnaNoticewrite(noticeDto);
-	}
-
-	@Override
-	public int qnaNoticedelete(int articleno) {
-		// TODO Auto-generated method stub
-		return sqlSession.getMapper(QnaArticleMapper.class).qnaNoticedelete(articleno);
-	}
-
-	@Override
-	public int qnaNoticeupdate(QnaArticleDto articleDto) {
-		// TODO Auto-generated method stub
-		return sqlSession.getMapper(QnaArticleMapper.class).qnaNoticeupdate(articleDto);
+		return sqlSession.getMapper(QnaReplyMapper.class).qnaReplydelete(articleno);
 	}
 
 

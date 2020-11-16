@@ -1,23 +1,17 @@
 package com.project.happyhouse.model.mapper;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import com.project.happyhouse.model.ArticleDto;
-import com.project.happyhouse.model.QnaArticleDto;
+import com.project.happyhouse.model.QnaReplyDto;
 
 public interface QnaReplyMapper {
 	////////////////////////////////////////////////////
-	List<QnaArticleDto> qnaGetnoticelist(Map<String, Object> map);
+	List<QnaReplyDto> qnaGetreplylist(QnaReplyDto map);
 
-	int qnaGetTotalCount(String key, String word) throws SQLException;
+	int qnaReplywrite(QnaReplyDto noticeDto);
+
+	int qnaReplyupdate(QnaReplyDto articleDto);
 	
-	QnaArticleDto qnaGetnoticedetail(int articleno);
-
-	int qnaNoticewrite(QnaArticleDto noticeDto);
-
-	int qnaNoticedelete(int articleno);
-	
-	int qnaNoticeupdate(QnaArticleDto articleDto);
+	int qnaReplydelete(int articleno);
 }

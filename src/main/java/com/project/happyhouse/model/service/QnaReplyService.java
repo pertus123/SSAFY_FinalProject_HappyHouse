@@ -6,18 +6,15 @@ import java.util.Map;
 
 import com.project.happyhouse.model.ArticleDto;
 import com.project.happyhouse.model.QnaArticleDto;
+import com.project.happyhouse.model.QnaReplyDto;
 import com.project.util.PageNavigation;
 
 public interface QnaReplyService {
-	List<QnaArticleDto> qnaGetnoticelist(Map<String, Object> map);
+	List<QnaReplyDto> qnaGetreplylist(QnaReplyDto map);
 
-	PageNavigation qnaMakePageNavigation(Map<String, Object> map) throws SQLException;
+	int qnaReplywrite(QnaReplyDto noticeDto);
+
+	int qnaReplyupdate(QnaReplyDto articleDto);
 	
-	QnaArticleDto qnaGetnoticedetail(int articleno);
-
-	int qnaNoticewrite(QnaArticleDto noticeDto);
-
-	int qnaNoticedelete(int articleno);
-
-	int qnaNoticeupdate(QnaArticleDto articleDto);
+	int qnaReplydelete(int articleno);
 }
