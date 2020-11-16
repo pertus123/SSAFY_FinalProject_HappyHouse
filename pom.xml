@@ -51,7 +51,17 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+		<!-- java 사용할 수 있게 설정 -->
+		<!-- jsp/jstl 설정 -->
+		<!-- 버전을 적지 않아도 부트가 알아서 최신버전으로 가져옴 -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+		</dependency>
 		<!-- Swagger2 -->
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -69,6 +79,8 @@
 		   <groupId>com.fasterxml.jackson.core</groupId>
 		   <artifactId>jackson-databind</artifactId>
 		</dependency>
+
+
 	</dependencies>
 
 	<build>
