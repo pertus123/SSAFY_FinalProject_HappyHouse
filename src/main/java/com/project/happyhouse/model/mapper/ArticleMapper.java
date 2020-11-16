@@ -19,17 +19,4 @@ public interface ArticleMapper {
 	int noticedelete(int articleno);
 	
 	int noticeupdate(ArticleDto articleDto);
-	
-	////////////////////////////////////////////////////
-	List<ArticleDto> qnaGetnoticelist(Map<String, Object> map);
-
-	int qnaGetTotalCount(String key, String word) throws SQLException;
-	
-	ArticleDto qnaGetnoticedetail(int articleno);
-
-	int qnaNoticewrite(ArticleDto noticeDto);
-
-	int qnaNoticedelete(int articleno);
-	
-	int qnaNoticeupdate(ArticleDto articleDto);
 }

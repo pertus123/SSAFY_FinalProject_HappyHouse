@@ -9,60 +9,62 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.happyhouse.model.ArticleDto;
+import com.project.happyhouse.model.QnaArticleDto;
 import com.project.happyhouse.model.mapper.ArticleMapper;
+import com.project.happyhouse.model.mapper.QnaArticleMapper;
 import com.project.util.PageNavigation;
 
 @Service
-public class ArticleServiceImpl implements ArticleService {
+public class QnaReplyServiceImpl implements QnaArticleService {
 	@Autowired
 	private SqlSession sqlSession;
 
-	@Override
-	public List<ArticleDto> getnoticelist(Map<String, Object> map) {
-		System.out.println(map.get("StartProductNo")+" 스타트");
-		System.out.println(map.get("sizePerPage")+" spp");
-		return sqlSession.getMapper(ArticleMapper.class).getnoticelist(map);
-	}
-
-	@Override
-	public PageNavigation makePageNavigation(Map<String, Object> map) throws SQLException {
-		PageNavigation pageNavigation = new PageNavigation();
-		int naviSize = 10;
-		pageNavigation.setCurrentPage((int) map.get("currentPage"));
-		pageNavigation.setNaviSize(naviSize);
-		int totalCount = sqlSession.getMapper(ArticleMapper.class).getTotalCount((String)map.get("key"), (String)map.get("word"));
-		//int totalCount = NoticeDaoImpl.getNoticeDao().getTotalCount(key, word);
-		pageNavigation.setTotalCount(totalCount);
-		int totalPageCount = (totalCount - 1) / (int) map.get("sizePerPage") + 1;
-		pageNavigation.setTotalPageCount(totalPageCount);
-		boolean startRange = (int) map.get("currentPage") <= naviSize;
-		pageNavigation.setStartRange(startRange);
-		boolean endRange = (totalPageCount - 1) / naviSize * naviSize <  (int) map.get("currentPage");
-		pageNavigation.setEndRange(endRange);
-		pageNavigation.makeNavigator();
-		return pageNavigation;
-	}
-
-	@Override
-	public ArticleDto getnoticedetail(int articleno) {
-		return sqlSession.getMapper(ArticleMapper.class).getnoticedetail(articleno);
-	}
-
-	@Override
-	public int noticewrite(ArticleDto noticeDto) {
-		return sqlSession.getMapper(ArticleMapper.class).noticewrite(noticeDto);
-	}
-
-	@Override
-	public int noticedelete(int articleno) {
-		return sqlSession.getMapper(ArticleMapper.class).noticedelete(articleno);
-	}
-
-	@Override
-	public int noticeupdate(ArticleDto articleDto) {
-		return sqlSession.getMapper(ArticleMapper.class).noticeupdate(articleDto);
-	}
 //////////////////////////////////////////////////////////////////////
+	@Override
+	public List<QnaArticleDto> qnaGetnoticelist(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return sqlSession.getMapper(QnaArticleMapper.class).qnaGetnoticelist(map);
+	}
+
+	@Override
+	public PageNavigation qnaMakePageNavigation(Map<String, Object> map) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public QnaArticleDto qnaGetnoticedetail(int articleno) {
+		// TODO Auto-generated method stub
+		return sqlSession.getMapper(QnaArticleMapper.class).qnaGetnoticedetail(articleno);
+	}
+
+	@Override
+	public int qnaNoticewrite(QnaArticleDto noticeDto) {
+		// TODO Auto-generated method stub
+		return sqlSession.getMapper(QnaArticleMapper.class).qnaNoticewrite(noticeDto);
+	}
+
+	@Override
+	public int qnaNoticedelete(int articleno) {
+		// TODO Auto-generated method stub
+		return sqlSession.getMapper(QnaArticleMapper.class).qnaNoticedelete(articleno);
+	}
+
+	@Override
+	public int qnaNoticeupdate(QnaArticleDto articleDto) {
+		// TODO Auto-generated method stub
+		return sqlSession.getMapper(QnaArticleMapper.class).qnaNoticeupdate(articleDto);
+	}
+
+
+
+	
+	
+	
+	
+	
+	
+	
 	
 
 	//@Override

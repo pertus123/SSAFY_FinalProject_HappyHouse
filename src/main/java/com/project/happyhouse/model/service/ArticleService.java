@@ -21,15 +21,4 @@ public interface ArticleService {
 	
 	int noticeupdate(ArticleDto articleDto);
 	////////////////////////////////////////////////////
-	List<ArticleDto> qnaGetnoticelist(Map<String, Object> map);
-
-	PageNavigation qnaMakePageNavigation(Map<String, Object> map) throws SQLException;
-	
-	ArticleDto qnaGetnoticedetail(int articleno);
-
-	int qnaNoticewrite(ArticleDto noticeDto);
-
-	int qnaNoticedelete(int articleno);
-	
-	int qnaNoticeupdate(ArticleDto articleDto);
 }
