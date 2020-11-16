@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,26 +19,33 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.happyhouse.model.QnaArticleDto;
-import com.project.happyhouse.model.service.ArticleService;
 import com.project.happyhouse.model.service.QnaArticleService;
 
+import io.swagger.annotations.ApiOperation;
+//http://localhost:8197/project/swagger-ui.html
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequestMapping("/qnanotice")
 public class QnaArticleController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(QnaArticleController.class);
+	private static final String SUCCESS = "success";
+	private static final String FAIL = "fail";
+	
 	@Autowired
 	private QnaArticleService articleService;
 
-	@GetMapping(value = "/noticelist",  headers = { "Content-type=application/json" })
-	public List<QnaArticleDto> noticelist(Model model, @RequestParam(defaultValue = "1") int pg, String key, String word)
+	@ApiOperation(value = "모든 QnA글의 정보를 반환한다.", response = List.class)
+	@GetMapping(value = "/noticelist")
+	public ResponseEntity<List<QnaArticleDto>> noticelist(String key, String word)
 			throws SQLException {
 		Map<String, Object> map = new HashMap<String, Object>();
 	//	key = "";
 	//	word = "";
-		System.out.println(pg + " ||" + key + "|| " + word + "wow");
+		System.out.println(key + "|| " + word + "wow");
 		//map.put("currentPage", pg);
 		//map.put("sizePerPage", 10);
 		//map.put("StartProductNo", (pg - 1) * (int) map.get("sizePerPage"));
@@ -46,13 +53,13 @@ public class QnaArticleController {
 		map.put("word", word);
 
 		List<QnaArticleDto> article = articleService.qnaGetnoticelist(map);
-		model.addAttribute("articles", article);
-		model.addAttribute("navigation", articleService.qnaMakePageNavigation(map));
-		model.addAttribute("StartProductNo", map.get("StartProductNo"));
-		model.addAttribute("key", key);
-		model.addAttribute("word", word);
-
-		return article;
+//		model.addAttribute("articles", article);
+//		model.addAttribute("navigation", articleService.qnaMakePageNavigation(map));
+//		model.addAttribute("StartProductNo", map.get("StartProductNo"));
+//		model.addAttribute("key", key);
+//		model.addAttribute("word", word);
+//
+		return new ResponseEntity<List<QnaArticleDto>>(articleService.qnaGetnoticelist(map), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/noticedetail/{articleno}",  headers = { "Content-type=application/json" }) // 글 상세 보기?

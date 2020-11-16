@@ -6,20 +6,20 @@
 	namespace="com.project.happyhouse.model.mapper.QnaReplyMapper">
 
 	<!-- 댓글 전체 조회 -->
-	<select id="qnaGetreplylist" parameterType="map" resultType="QnaReplyDto">
+	<select id="qnaGetreplylist" parameterType="QnaReplyDto" resultType="QnaReplyDto">
 		select replyno,replyauthor,replycontent,replyregidate from qnareply
 		where articleno = #{articleno}
 		order by replyno desc
 	</select>
 	
 	<!-- 댓글 등록 -->
-	<insert id="qnaReplywrite" parameterType="QnaArticleDto">
+	<insert id="qnaReplywrite" parameterType="QnaReplyDto">
 		INSERT INTO qnareply (articleno, replyauthor, replycontent) 
 		values (#{articleno}, #{replyauthor}, #{replycontent})
 	</insert>
 
 	<!-- 댓글 수정 -->
-	<update id="qnaReplyupdate" parameterType="QnaArticleDto">
+	<update id="qnaReplyupdate" parameterType="QnaReplyDto">
 		update qnareply
 		set replycontent = #{replycontent}
 		where articleno = #{articleno}
