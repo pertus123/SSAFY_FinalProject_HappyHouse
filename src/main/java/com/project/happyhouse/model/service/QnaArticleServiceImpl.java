@@ -21,15 +21,9 @@ public class QnaArticleServiceImpl implements QnaArticleService {
 
 //////////////////////////////////////////////////////////////////////
 	@Override
-	public List<QnaArticleDto> qnaGetnoticelist(Map<String, Object> map) {
+	public List<QnaArticleDto> qnaGetnoticelist() {
 		// TODO Auto-generated method stub
-		return sqlSession.getMapper(QnaArticleMapper.class).qnaGetnoticelist(map);
-	}
-
-	@Override
-	public PageNavigation qnaMakePageNavigation(Map<String, Object> map) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.getMapper(QnaArticleMapper.class).qnaGetnoticelist();
 	}
 
 	@Override

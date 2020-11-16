@@ -26,9 +26,9 @@ public class QnaReplyServiceImpl implements QnaReplyService {
 	
 	
 	@Override
-	public List<QnaReplyDto> qnaGetreplylist(QnaReplyDto map) {
+	public List<QnaReplyDto> qnaGetreplylist(int articleno) {
 		// TODO Auto-generated method stub
-		return sqlSession.getMapper(QnaReplyMapper.class).qnaGetreplylist(map);
+		return sqlSession.getMapper(QnaReplyMapper.class).qnaGetreplylist(articleno);
 	}
 
 	@Override

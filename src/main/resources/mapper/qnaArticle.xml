@@ -6,34 +6,10 @@
 	namespace="com.project.happyhouse.model.mapper.QnaArticleMapper">
 
 	<!-- QnA글 전체 조회 -->
-	<select id="qnaGetnoticelist" parameterType="map"
-		resultType="QnaArticleDto">
+	<select id="qnaGetnoticelist" resultType="QnaArticleDto">
 		select articleno,author,subject,regidate from qnanotice
-		<if test="word != null and word != ''">
-			<if test="key.equals('subject')">
-				where subject like concat('%', #{word}, '%')
-			</if>
-			<if test="key.equals('articleno')">
-				where articleno = #{word}
-			</if>
-		</if>
 		order by articleno desc
-		<!-- limit #{StartProductNo}, #{sizePerPage} -->
 	</select>
-
-
-	<!-- <select id="qnaGetTotalCount" parameterType="map"
-		resultType="int">
-		select count(articleno) from happyhouse.qnanotice
-		<if test="word != null and word != ''">
-			<if test="key == 'subject'">
-				where subject like concat('%', #{word}, '%')
-			</if>
-			<if test="key != 'subject'">
-				where ${key} = #{word}
-			</if>
-		</if>
-	</select> -->
 
 	<!-- QnA글 상세 조회 -->
 	<select id="qnaGetnoticedetail" parameterType="map" resultType="QnaArticleDto">
@@ -60,6 +36,4 @@
 		delete 
 		from qnanotice where articleno = #{articleno}
 	</delete>
-
-	
 </mapper>

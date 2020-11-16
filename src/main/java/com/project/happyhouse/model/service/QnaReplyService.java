@@ -10,7 +10,7 @@ import com.project.happyhouse.model.QnaReplyDto;
 import com.project.util.PageNavigation;
 
 public interface QnaReplyService {
-	List<QnaReplyDto> qnaGetreplylist(QnaReplyDto map);
+	List<QnaReplyDto> qnaGetreplylist(int articleno);
 
 	int qnaReplywrite(QnaReplyDto noticeDto);
 

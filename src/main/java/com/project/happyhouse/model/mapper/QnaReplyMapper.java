@@ -7,7 +7,7 @@ import com.project.happyhouse.model.QnaReplyDto;
 
 public interface QnaReplyMapper {
 	////////////////////////////////////////////////////
-	List<QnaReplyDto> qnaGetreplylist(QnaReplyDto map);
+	List<QnaReplyDto> qnaGetreplylist(int articleno);
 
 	int qnaReplywrite(QnaReplyDto noticeDto);
 
