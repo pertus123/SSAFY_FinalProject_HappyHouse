@@ -5,23 +5,23 @@ public class QnaReplyDto {
 	private int articleno;
 	private String replyauthor;
 	private String replycontent;
-	private String regidate;
+	private String replyregidate;
 	public QnaReplyDto() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public QnaReplyDto(int replyno, int articleno, String replyauthor, String replycontent, String regidate) {
+	public QnaReplyDto(int replyno, int articleno, String replyauthor, String replycontent, String replyregidate) {
 		super();
 		this.replyno = replyno;
 		this.articleno = articleno;
 		this.replyauthor = replyauthor;
 		this.replycontent = replycontent;
-		this.regidate = regidate;
+		this.replyregidate = replyregidate;
 	}
 	@Override
 	public String toString() {
 		return "QnaReplyDto [replyno=" + replyno + ", articleno=" + articleno + ", replyauthor=" + replyauthor
-				+ ", replycontent=" + replycontent + ", regidate=" + regidate + "]";
+				+ ", replycontent=" + replycontent + ", replyregidate=" + replyregidate + "]";
 	}
 	public int getReplyno() {
 		return replyno;
@@ -47,11 +47,11 @@ public class QnaReplyDto {
 	public void setReplycontent(String replycontent) {
 		this.replycontent = replycontent;
 	}
-	public String getRegidate() {
-		return regidate;
+	public String getreplyregidate() {
+		return replyregidate;
 	}
-	public void setRegidate(String regidate) {
-		this.regidate = regidate;
+	public void setreplyregidate(String replyregidate) {
+		this.replyregidate = replyregidate;
 	}
 	
 	
