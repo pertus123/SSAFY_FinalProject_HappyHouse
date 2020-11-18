@@ -1,0 +1,54 @@
+/*header*/
+@import
+	url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700;800&family=Noto+Sans+KR:wght@500&display=swap')
+	;
+
+* {
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+.nav-item {
+	margin: 20px;
+}
+
+h5 {
+	font-size: 18px;
+	font-weight: bolder;
+}
+
+h6 {
+	font-size: 13px;
+}
+
+#mypage {
+	background-color: #CFB8A1;
+	border-color: #CFB8A1;
+}
+
+#logout {
+	background-color: #CFB8A1;
+	border-color: #CFB8A1;
+}
+
+.nav-link {
+	color: black;
+	text-decoration: none;
+}
+
+.custom-header{
+	display: flex;
+	justify-content: flex-end;/* 요소 오른쪽정렬 */
+	align-items: center;/* 요소 세로방향 가운데정렬 */
+}
+
+/*footer*/
+footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	text-align: center;
+	padding: 10px;
+	background-color: #CFB8A1;
+	color: black;
+	font-size: 12px;
+}
