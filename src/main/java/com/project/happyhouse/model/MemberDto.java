@@ -80,7 +80,7 @@ public class MemberDto {
 		this.joindate = joindate;
 	}
 
-	public boolean isIsadmin() {
+	public boolean getIsadmin() {
 		return isadmin;
 	}
 

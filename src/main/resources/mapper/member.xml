@@ -11,8 +11,8 @@
 	</insert>
 
 	<!-- 로그인 -->
-	<select id="login" parameterType="map" resultType="MemberDto">
-		select username, userid, isadmin
+	<select id="login" parameterType="MemberDto" resultType="MemberDto">
+		select userid, userpwd, username, userbirth, userphone, isadmin
 		from user
 		where userid = #{userid} and userpwd = #{userpwd}
 	</select>

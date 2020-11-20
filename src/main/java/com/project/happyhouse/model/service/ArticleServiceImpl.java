@@ -18,29 +18,8 @@ public class ArticleServiceImpl implements ArticleService {
 	private SqlSession sqlSession;
 
 	@Override
-	public List<ArticleDto> getnoticelist(Map<String, Object> map) {
-		System.out.println(map.get("StartProductNo")+" 스타트");
-		System.out.println(map.get("sizePerPage")+" spp");
-		return sqlSession.getMapper(ArticleMapper.class).getnoticelist(map);
-	}
-
-	@Override
-	public PageNavigation makePageNavigation(Map<String, Object> map) throws SQLException {
-		PageNavigation pageNavigation = new PageNavigation();
-		int naviSize = 10;
-		pageNavigation.setCurrentPage((int) map.get("currentPage"));
-		pageNavigation.setNaviSize(naviSize);
-		int totalCount = sqlSession.getMapper(ArticleMapper.class).getTotalCount((String)map.get("key"), (String)map.get("word"));
-		//int totalCount = NoticeDaoImpl.getNoticeDao().getTotalCount(key, word);
-		pageNavigation.setTotalCount(totalCount);
-		int totalPageCount = (totalCount - 1) / (int) map.get("sizePerPage") + 1;
-		pageNavigation.setTotalPageCount(totalPageCount);
-		boolean startRange = (int) map.get("currentPage") <= naviSize;
-		pageNavigation.setStartRange(startRange);
-		boolean endRange = (totalPageCount - 1) / naviSize * naviSize <  (int) map.get("currentPage");
-		pageNavigation.setEndRange(endRange);
-		pageNavigation.makeNavigator();
-		return pageNavigation;
+	public List<ArticleDto> getnoticelist() {
+		return sqlSession.getMapper(ArticleMapper.class).getnoticelist();
 	}
 
 	@Override

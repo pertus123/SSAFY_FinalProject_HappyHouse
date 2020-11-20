@@ -42,9 +42,10 @@ public class HouseController {
 			map.put("currentPage", currentPage);
 			map.put("sizePerPage", sizePerPage);
 			map.put("StartProductNo", 0);
-			
-			List<ArticleDto> articles = articleService.getnoticelist(map);
-			model.addAttribute("articles", articles);
+
+// 우선 임시로
+//			List<ArticleDto> articles = articleService.getnoticelist(map);
+//			model.addAttribute("articles", articles);
 
 		} catch (Exception e) {
 			e.printStackTrace();

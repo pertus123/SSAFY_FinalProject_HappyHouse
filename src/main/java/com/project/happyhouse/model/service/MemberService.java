@@ -8,7 +8,7 @@ import com.project.happyhouse.model.MemberDto;
 public interface MemberService {
 
 	public int join(MemberDto memberdto) throws Exception;
-	public MemberDto login(Map<String, String> map) throws Exception;
+	public MemberDto login(MemberDto memberDto) throws Exception;
 	List<MemberDto> userList();
 	List<MemberDto> userSearchById(String keyword);
 	List<MemberDto> userSearchByName(String keyword);

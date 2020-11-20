@@ -7,16 +7,7 @@
 	<select id="getnoticelist" parameterType="map"
 		resultType="ArticleDto">
 		select articleno,subject,regidate from notice
-		<if test="word != null and word != ''">
-			<if test="key.equals('subject')">
-				where subject like concat('%', #{word}, '%')
-			</if>
-			<if test="key.equals('articleno')">
-				where articleno = #{word}
-			</if>
-		</if>
 		order by articleno desc
-		limit #{StartProductNo}, #{sizePerPage}
 
 	</select>
 

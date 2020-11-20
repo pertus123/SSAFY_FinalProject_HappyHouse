@@ -1,104 +1,89 @@
 package com.project.happyhouse.controller;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.project.happyhouse.model.ArticleDto;
+import com.project.happyhouse.model.QnaArticleDto;
 import com.project.happyhouse.model.service.ArticleService;
 
-@Controller
+import io.swagger.annotations.ApiOperation;
+
+//http://localhost:8197/project/swagger-ui.html
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
+@RestController
 @RequestMapping("/notice")
 public class ArticleController {
 	@Autowired
 	private ArticleService articleService;
 
-	@GetMapping(value = "/")
-	public String hello() {
-		System.out.println("3");
-		return "index";
-	}
+	private static final Logger logger = LoggerFactory.getLogger(QnaArticleController.class);
+	private static final String SUCCESS = "success";
+	private static final String FAIL = "fail";
 
-	// @GetMapping(value = "/noticelist&pg= {no}&key= {key}&word= {word}") // 글 목록
-	// 보기
+//	@GetMapping(value = "/")
+//	public String hello() {
+//		System.out.println("3");
+//		return "index";
+//	}
+
+	@ApiOperation(value = "모든 공지사항의 정보를 반환한다.", response = List.class)
 	@GetMapping(value = "/noticelist")
-	public String noticelist(Model model, @RequestParam(defaultValue = "1") int pg, String key, String word)
-			throws SQLException {
-		Map<String, Object> map = new HashMap<String, Object>();
-		System.out.println(pg + " ||" + key + "|| " + word + "wow");
-		map.put("currentPage", pg);
-		map.put("sizePerPage", 10);
-		map.put("StartProductNo", (pg - 1) * (int) map.get("sizePerPage"));
-		map.put("key", key);
-		map.put("word", word);
+	public ResponseEntity<List<ArticleDto>> noticelist() throws SQLException {
+		logger.info("NoticeList - 호출 ");
 
-		model.addAttribute("articles", articleService.getnoticelist(map));
-		model.addAttribute("navigation", articleService.makePageNavigation(map));
-		model.addAttribute("StartProductNo", map.get("StartProductNo"));
-		model.addAttribute("key", key);
-		model.addAttribute("word", word);
-		// articleService.getnoticelist(map);
-
-		// articleService.getnoticelist(currentPage, sizePerPage, key, word);
-		//System.out.println(articleService.getnoticelist(map));
-		return "article/noticeList";
+		return new ResponseEntity<List<ArticleDto>>(articleService.getnoticelist(), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/noticedetail") // 글 상세 보기?
-	public String noticedetail(int articleno, Model model) {
-		System.out.println(articleno);
-		ArticleDto articleDto = articleService.getnoticedetail(articleno);
-		System.out.println(articleDto + "wow");
-		model.addAttribute("article", articleDto);
-		return "article/noticedetail";
+	@ApiOperation(value = "글번호에 해당하는 공지사항글의 정보를 반환한다.", response = QnaArticleDto.class)
+	@GetMapping(value = "/noticedetail/{articleno}")
+	public ResponseEntity<ArticleDto> noticedetail(@PathVariable int articleno) {
+		logger.info("noticedetail - 호출 : articleno = " + articleno);
+		return new ResponseEntity<ArticleDto>(articleService.getnoticedetail(articleno), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/noticewrite") // 글쓰기 페이지 이동
-	public String noticewrite() {
-		// articleService.noticewrite(noticeDto);
-		System.out.println("noticewrite");
-		return "article/noticewrite";
+	@ApiOperation(value = "새로운 공지사항글을 작성한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@PostMapping(value = "/noticewrite")
+	public ResponseEntity<String> noticewrite(@RequestBody ArticleDto articleDto) {
+		logger.info("noticewrite - 호출 : articleDto = " + articleDto);
+		if(articleService.noticewrite(articleDto)>0) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
 
-	@PostMapping(value = "/noticewriteaf") // 글쓰기 엑션
-	public String noticewriteaf(ArticleDto articleDto) {
-		System.out.println(articleDto);
-		System.out.println("1");
-		articleService.noticewrite(articleDto);
-		System.out.println("noticewriteaf");
-		return "redirect:/notice/noticelist";
+	@ApiOperation(value = "글번호에 해당하는 공지사항글의 정보를 삭제한다. 그리고 DB삭제 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@DeleteMapping(value = "/noticedelete/{articleno}")
+	public ResponseEntity<String> noticedelete(@PathVariable int articleno) {
+		logger.info("noticedelete - 호출 : articleno = " + articleno);
+		if (articleService.noticedelete(articleno) > 0) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
 
-	@GetMapping(value = "/noticedelete") // articleno/articleno
-	public String noticedelete(int articleno) {
-		System.out.println(articleno);
-		articleService.noticedelete(articleno);
-		System.out.println("noticedelete");
-		return "redirect:/notice/noticelist";
-	}
-	
-	@GetMapping(value="/noticeupdate")
-	public String noticeupdate(int articleno, Model model) {
-		ArticleDto articleDto = articleService.getnoticedetail(articleno);
-		model.addAttribute("article", articleDto);
-		return "article/noticeupdate";
-	}
-
-	@PostMapping(value="/noticeupdate")
-	public String noticeupdate(ArticleDto articleDto) {
-		articleService.noticeupdate(articleDto);
-		return "redirect:/notice/noticedetail?articleno="+articleDto.getArticleno();
+	@ApiOperation(value = "글번호에 해당하는 공지사항글의 정보를 수정한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@PutMapping(value = "/qnanoticeupdate")
+	public ResponseEntity<String> qnanoticeupdate(@RequestBody ArticleDto articleDto) {
+		logger.info("qnanoticeupdate - 호출 : articleDto = " + articleDto);
+		if (articleService.noticeupdate(articleDto) > 0) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
 }

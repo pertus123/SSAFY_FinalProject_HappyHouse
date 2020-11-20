@@ -17,10 +17,10 @@ public class MemberServiceImpl implements MemberService {
 	private SqlSession sqlSession;
 
 	@Override
-	public MemberDto login(Map<String, String> map) throws Exception {
-		if(map.get("userid") == null || map.get("userpwd") == null)
+	public MemberDto login(MemberDto memberDto) throws Exception {
+		if(memberDto.getUserid() == null || memberDto.getUserpwd() == null)
 			return null;
-		return sqlSession.getMapper(MemberMapper.class).login(map);
+		return sqlSession.getMapper(MemberMapper.class).login(memberDto);
 	}
 
 	@Override

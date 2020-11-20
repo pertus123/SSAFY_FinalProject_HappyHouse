@@ -79,6 +79,14 @@
 		   <groupId>com.fasterxml.jackson.core</groupId>
 		   <artifactId>jackson-databind</artifactId>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
+		<!-- 로그인 할 때 사용 -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
 
 
 	</dependencies>

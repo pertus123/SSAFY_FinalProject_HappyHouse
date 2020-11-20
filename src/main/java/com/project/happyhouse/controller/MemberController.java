@@ -1,291 +1,177 @@
 package com.project.happyhouse.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.project.happyhouse.model.MemberDto;
+import com.project.happyhouse.model.service.JwtService;
 import com.project.happyhouse.model.service.MemberService;
 
-@Controller
+import io.swagger.annotations.ApiOperation;
+
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
+@RestController
 @RequestMapping("/member")
 public class MemberController {
+	@Autowired
+	private JwtService jwtService;
 
 	@Autowired
 	private MemberService memberService;
 
-	// 회원가입 창으로 이동
-	@RequestMapping(value = "/join", method = RequestMethod.GET)
-	public String join() {
-		return "member/join";
+	public static final Logger logger = LoggerFactory.getLogger(MemberController.class);
+	private static final String SUCCESS = "success";
+	private static final String FAIL = "fail";
+
+	@ApiOperation(value = "회원가입 - 회원의 정보를 입력한다", response = String.class)
+	@PostMapping(value = "/join")
+	public ResponseEntity<String> join(@RequestBody MemberDto memberDto) throws Exception {
+		logger.info("회원가입 - 호출 : memberDto = " + memberDto);
+		if (memberService.join(memberDto) > 0) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
 
-	// 회원가입
-	@RequestMapping(value = "/join", method = RequestMethod.POST)
-	public String join(MemberDto memberDto, Model model) throws Exception {
+	@ApiOperation(value = "아이디 인증(비밀번호 가져오기)", response = String.class)
+	@PostMapping(value = "/idValidate")
+	public ResponseEntity<String> idValidate(@RequestBody String userid) throws Exception {
+		logger.info("아이디인증 : userid = " + userid);
+		if (memberService.pwdValidate(userid) != null) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
+
+	@ApiOperation(value = "비밀번호 변경(찾기) (로그인, 마이페이지)", response = String.class)
+	@PutMapping(value = "/updatePassword")
+	public ResponseEntity<String> updatePassword(@RequestBody MemberDto memberDto) {
+		logger.info("비밀번호 변경 : memberDto = " + memberDto);
+		if (memberService.userPwdUpdate(memberDto) > 0) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
+
+	@ApiOperation(value = "로그인", response = Map.class)
+	@PostMapping(value = "/login")
+	public ResponseEntity<Map<String, Object>> login(@RequestBody MemberDto memberDto) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
 		try {
-			int cnt = memberService.join(memberDto);
-			if (cnt == 0) {
-				model.addAttribute("msg", "서버에 문제가 있어 회원가입을 실패했습니다.\\\\n다시 시도해주세요.");
+			MemberDto loginUser = memberService.login(memberDto);
+
+			if (loginUser != null) {
+//				jwt.io에서 확인
+//				로그인 성공했다면 토큰을 생성한다.
+				String token = jwtService.create(loginUser);
+				logger.trace("로그인 토큰정보 : {}", token);
+
+//				토큰 정보는 response의 헤더로 보내고 나머지는 Map에 담는다.
+//				response.setHeader("auth-token", token);
+				resultMap.put("auth-token", token);
+				resultMap.put("isadmin", loginUser.getIsadmin());
+				resultMap.put("user-id", loginUser.getUserid());
+				resultMap.put("user-name", loginUser.getUsername());
+//				resultMap.put("status", true);
+//				resultMap.put("data", loginUser);
+				status = HttpStatus.ACCEPTED;
+			} else {
+				resultMap.put("message", "로그인 실패");
+				status = HttpStatus.ACCEPTED;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			model.addAttribute("msg", "회원가입 처리 중 문제가 발생했습니다.");
-			return "error/error";
+			logger.error("로그인 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		return "redirect:/";
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	// 아이디 인증하기 화면으로 이동
-	@RequestMapping(value = "/idValidate", method = RequestMethod.GET)
-	public String idValidate() {
-		return "member/idValidate";
+	// 회원 검색은 vue로 해결
+	@ApiOperation(value = "회원목록(admin)", response = String.class)
+	@GetMapping(value = "/userList")
+	public ResponseEntity<List<MemberDto>> userList() {
+		logger.info("회원목록 - 호출 ");
+		return new ResponseEntity<List<MemberDto>>(memberService.userList(), HttpStatus.OK);
 	}
 
-	// 아이디 인증 후 비밀번호찾기(비밀번호변경)화면으로 이동
-	@RequestMapping(value = "/idValidate", method = RequestMethod.POST)
-	public String idValidate(String userid, HttpServletResponse response,Model model) throws Exception {
+	@ApiOperation(value = "회원정보(마이페이지)", response = Map.class)
+	@GetMapping(value = "/userInform")
+	public ResponseEntity<Map<String, Object>> userInform(HttpServletRequest request) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		System.out.println(">>>>>> " + jwtService.get(request.getHeader("auth-token")));
+		try {
+			resultMap.putAll(jwtService.get(request.getHeader("auth-token")));
+			status = HttpStatus.ACCEPTED;
+		} catch (RuntimeException e) {
+			logger.error("정보조회 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
+	@ApiOperation(value = "회원정보 수정(마이페이지)", response = String.class)
+	@PutMapping(value = "/userInform")
+	public ResponseEntity<String> userInformUpdate(@RequestBody MemberDto memberDto) {
+		if (memberService.userInformUpdate(memberDto) > 0) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
+
+	@ApiOperation(value = "비밀번호 확인(마이페이지)", response = String.class)
+	@PostMapping(value = "/pwdValidate")
+	public ResponseEntity<String> pwdValidate(HttpServletRequest request, @RequestBody String insertpwd) {
+		String userid = request.getHeader("user-id");
+		logger.info("비밀번호 확인 - 호출 : userid = " + userid + " insertpwd = " + insertpwd);
 		String userpwd = memberService.pwdValidate(userid);
-		System.out.println(userpwd);
-		if (userpwd==null) {
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			out.println("<script>alert('변경가능한 아이디가 없습니다.\\n다시 확인해주세요.');location.href='./idValidate'</script>");
-			out.flush();
+		if (insertpwd.equals(userpwd)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
-		model.addAttribute("userid",userid);
-		return "member/findPassword";
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
 
-	// 비밀번호찾기(비밀번호변경)
-	@RequestMapping(value = "/findPassword", method = RequestMethod.POST)
-	public String findPassword(String new_userpwd, String userid, HttpSession session, Model model) {
-		System.out.println(new_userpwd);
-		System.out.println(userid);
-		MemberDto memberDto = new MemberDto();
-		memberDto.setUserid(userid);
-		memberDto.setUserpwd(new_userpwd);
-		try {
-			int cnt = memberService.userPwdUpdate(memberDto);
-			if (cnt == 0) {
-				model.addAttribute("msg", "서버에 문제가 있어 비밀번호 변경을 실패했습니다.\\n다시 시도해주세요.");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			model.addAttribute("msg", "비밀번호 변경 처리 중 문제가 발생했습니다.");
-			return "error/error";
+	@ApiOperation(value = "회원탈퇴(마이페이지)", response = String.class)
+	@DeleteMapping(value = "/leave")
+	public ResponseEntity<String> leave(HttpServletRequest request) {
+		String userid = request.getHeader("user-id");
+		logger.info("회원탈퇴 - 호출 : userid" + userid);
+		if (memberService.userLeave(userid) > 0) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
-		return "redirect:/";
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
 	}
 
-	// 로그인
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(@RequestParam Map<String, String> map, Model model, HttpSession session,
-			HttpServletResponse response) {
-		try {
-			MemberDto memberDto = memberService.login(map);
-			if (memberDto != null) {
-				session.setAttribute("userinfo", memberDto);
-
-				Cookie cookie = new Cookie("user_id", memberDto.getUserid());
-				cookie.setPath("/");
-				if ("saveok".equals(map.get("idsave"))) {
-					cookie.setMaxAge(60 * 60 * 24 * 365 * 40);// 40년간 저장.
-				} else {
-					cookie.setMaxAge(0);
-				}
-				response.addCookie(cookie);
-
-			} else {
-				response.setCharacterEncoding("UTF-8");
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
-				out.println("<script>alert('아이디 또는 비밀번호 확인 후 로그인해 주세요.');location.href='../'</script>");
-				out.flush();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			model.addAttribute("msg", "로그인 중 문제가 발생했습니다.");
-			return "error/error";
-		}
-		return "redirect:/";
-	}
-
-	// 로그아웃
-	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String logout(HttpSession session) {
-		session.invalidate();
-		return "redirect:/";
-	}
-
-	// 회원 목록 (Admin)
-	@RequestMapping(value = "/userList", method = RequestMethod.GET)
-	public String userList(Model model) {
-		List<MemberDto> members = memberService.userList();
-		model.addAttribute("members", members);
-		return "member/adminModifyUser";
-	}
-
-	// 아이디로 회원 검색 (Admin)
-	// 이름으로 회원 검색 (Admin)
-	@RequestMapping(value = "/userSearch", method = RequestMethod.GET)
-	public String userSearch(String select, String search, Model model) {
-		System.out.println(select);
-		System.out.println("냥왜실행안되냥");
-		System.out.println(search);
-		List<MemberDto> members;
-		if ("idsearch".equals(select)) {
-			members = memberService.userSearchById(search);
-		} else if ("namesearch".equals(select)) {
-			members = memberService.userSearchByName(search);
-		} else {
-			members = null;
-		}
-		model.addAttribute("members", members);
-		System.out.println(members);
-
-		return "member/adminModifyUser";
-	}
-
-	// 회원정보(마이페이지)
-	@RequestMapping(value = "/userInform", method = RequestMethod.GET)
-	public String userInform(HttpSession session, Model model) {
-		System.out.println("userInform");
-		String userid = ((MemberDto) session.getAttribute("userinfo")).getUserid();
-		MemberDto memberDto = memberService.getUserInform(userid);
-		model.addAttribute("member", memberDto);
-		return "member/modifyInform";
-	}
-
-	// 회원정보 수정(마이페이지)
-	@RequestMapping(value = "/userInform", method = RequestMethod.POST)
-	public String userInformUpdate(MemberDto memberDto, HttpSession session, Model model) {
-		System.out.println("userInformUpdate");
-		memberDto.setUserid(((MemberDto) session.getAttribute("userinfo")).getUserid());
-		System.out.println(memberDto);
-		try {
-			int cnt = memberService.userInformUpdate(memberDto);
-			if (cnt == 0) {
-				model.addAttribute("msg", "서버에 문제가 있어 정보 수정을 실패했습니다.\n다시 시도해주세요.");
-				return "error/error";
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			model.addAttribute("msg", "정보 수정 처리 중 문제가 발생했습니다.");
-			return "error/error";
-		}
-		return "redirect:/member/userInform";
-	}
-
-	// 비밀번호 확인 창이동(마이페이지)
-	@RequestMapping(value = "/pwdValidate", method = RequestMethod.GET)
-	public String pwdValidateMv() {
-		return "member/passwordValidation";
-	}
-
-	// 비밀번호 확인(마이페이지)
-	@RequestMapping(value = "/pwdValidate", method = RequestMethod.POST)
-	public String pwdValidate(String insertpwd, HttpSession session, Model model, HttpServletResponse response) {
-		try {
-			String userid = ((MemberDto) session.getAttribute("userinfo")).getUserid();
-			System.out.println(insertpwd);
-			String userpwd = memberService.pwdValidate(userid);
-			System.out.println(userpwd);
-			if (!insertpwd.equals(userpwd)) {
-				response.setCharacterEncoding("UTF-8");
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
-				out.println("<script>alert('비밀번호를 틀렸습니다.\\n다시 확인해주세요.');location.href='./pwdValidate'</script>");
-				out.flush();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			model.addAttribute("msg", "비밀번호 인증 중 문제가 발생했습니다.");
-			return "error/error";
-		}
-		return "member/modifyPwd";
-	}
-
-	// 비밀번호 수정(마이페이지)
-	@RequestMapping(value = "/userPwdUpdate", method = RequestMethod.POST)
-	public String userPwdUpdate(String new_pwd, HttpSession session, Model model) {
-		MemberDto memberDto = new MemberDto();
-		memberDto.setUserid(((MemberDto) session.getAttribute("userinfo")).getUserid());
-		memberDto.setUserpwd(new_pwd);
-		try {
-			int cnt = memberService.userPwdUpdate(memberDto);
-			if (cnt == 0) {
-				model.addAttribute("msg", "서버에 문제가 있어 비밀번호 변경을 실패했습니다.\\n다시 시도해주세요.");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			model.addAttribute("msg", "비밀번호 변경 처리 중 문제가 발생했습니다.");
-			return "error/error";
-		}
-		return "redirect:/member/userInform";
-	}
-	
-	// 회원탈퇴 창으로 이동
-		@RequestMapping(value = "/leavemv", method = RequestMethod.GET)
-		public String leave() {
-			return "member/leaveUser";
-		}
-
-	// 회원탈퇴(마이페이지) 실행
-	@RequestMapping(value = "/leave", method = RequestMethod.GET)
-	public String leave(HttpSession session, Model model) {
-		String userid = ((MemberDto) session.getAttribute("userinfo")).getUserid();
-		try {
-			int cnt = memberService.userLeave(userid);
-
-			if (cnt != 0) {
-				session.invalidate();
-			} else {
-				model.addAttribute("msg", "서버에 문제가 있어 회원 탈퇴에 실패했습니다.\\n다시 시도해주세요.");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			model.addAttribute("msg", "회원 탈퇴 처리 중 문제가 발생했습니다.");
-			return "error/error";
-		}
-
-		return "redirect:/";
-	}
-
-	// 관심지역리스트(마이페이지)
-	@RequestMapping(value = "/interestloc", method = RequestMethod.GET)
-	private String interestloc(HttpSession session, Model model) {
-		try {
-			String userid = ((MemberDto) session.getAttribute("userinfo")).getUserid();
-			System.out.println(userid);
-			List<String> interestloc = memberService.getInterestLoc(userid);
-			for (int i = 0; i < interestloc.size(); i++) {
-				System.out.println(interestloc.get(i));
-			}
-			model.addAttribute("interestloc", interestloc);
-		} catch (Exception e) {
-			e.printStackTrace();
-			model.addAttribute("msg", "회원 탈퇴 처리 중 문제가 발생했습니다.");
-			return "error/error";
-		}
-		return "member/interestloc";
+	@ApiOperation(value = "관심지역리스트(마이페이지)", response = String.class)
+	@GetMapping(value = "/interestloc")
+	private ResponseEntity<List<String>> interestloc(HttpServletRequest request) {
+		String userid = request.getHeader("user-id");
+		logger.info("관심지역리스트 - 호출 : userid = " + userid);
+		return new ResponseEntity<List<String>>(memberService.getInterestLoc(userid), HttpStatus.OK);
 	}
 
 	// 관심매물리스트(마이페이지)
-	@RequestMapping(value = "/interestdeal", method = RequestMethod.GET)
+	@GetMapping(value = "/interestdeal")
 	private String interestdeal() {
 		return "member/interestdeal";
 	}

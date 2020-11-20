@@ -11,7 +11,7 @@ public interface MemberMapper {
 	// 회원가입 
 	public int join(MemberDto memberdto);
 	// 로그인
-	public MemberDto login(Map<String, String> map) throws SQLException;
+	public MemberDto login(MemberDto memberDto) throws SQLException;
 	// 회원 목록 (Admin)
 	public List<MemberDto> userList();
 	// 아이디로 회원 검색 (Admin)
