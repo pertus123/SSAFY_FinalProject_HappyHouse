@@ -5,6 +5,9 @@ import java.util.List;
 import com.project.happyhouse.model.QnaArticleDto;
 
 public interface QnaArticleService {
+	
+	List<QnaArticleDto> getmainqnalist();
+	
 	List<QnaArticleDto> qnaGetnoticelist();
 	
 	QnaArticleDto qnaGetnoticedetail(int articleno);

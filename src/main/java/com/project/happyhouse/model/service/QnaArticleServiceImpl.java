@@ -1,18 +1,13 @@
 package com.project.happyhouse.model.service;
 
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.project.happyhouse.model.ArticleDto;
 import com.project.happyhouse.model.QnaArticleDto;
-import com.project.happyhouse.model.mapper.ArticleMapper;
 import com.project.happyhouse.model.mapper.QnaArticleMapper;
-import com.project.util.PageNavigation;
 
 @Service
 public class QnaArticleServiceImpl implements QnaArticleService {
@@ -20,6 +15,11 @@ public class QnaArticleServiceImpl implements QnaArticleService {
 	private SqlSession sqlSession;
 
 //////////////////////////////////////////////////////////////////////
+	@Override
+	public List<QnaArticleDto> getmainqnalist() {
+		return sqlSession.getMapper(QnaArticleMapper.class).getmainqnalist();
+	}
+	
 	@Override
 	public List<QnaArticleDto> qnaGetnoticelist() {
 		// TODO Auto-generated method stub

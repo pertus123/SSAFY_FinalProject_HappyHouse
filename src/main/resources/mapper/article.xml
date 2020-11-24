@@ -4,8 +4,14 @@
 <!-- <mapper namespace="member"> -->
 <mapper
 	namespace="com.project.happyhouse.model.mapper.ArticleMapper">
-	<select id="getnoticelist" parameterType="map"
-		resultType="ArticleDto">
+	
+	<select id="getmainnoticelist" resultType="ArticleDto">
+		select articleno,subject,regidate from notice
+		order by articleno desc
+		limit 0,4;
+	</select>
+	
+	<select id="getnoticelist" resultType="ArticleDto">
 		select articleno,subject,regidate from notice
 		order by articleno desc
 

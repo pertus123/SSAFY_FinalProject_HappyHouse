@@ -6,6 +6,8 @@ import com.project.happyhouse.model.ArticleDto;
 
 public interface ArticleService {
 
+	List<ArticleDto> getmainnoticelist();
+	
 	List<ArticleDto> getnoticelist();
 
 	ArticleDto getnoticedetail(int articleno);

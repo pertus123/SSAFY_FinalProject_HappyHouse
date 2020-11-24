@@ -42,6 +42,14 @@ public class ArticleController {
 //		return "index";
 //	}
 
+	@ApiOperation(value = "가장최근 공지사항 4개의 정보를 반환한다.", response = List.class)
+	@GetMapping(value = "/mainnoticelist")
+	public ResponseEntity<List<ArticleDto>> mainnoticelist() throws SQLException {
+		logger.debug("MainNoticeList - 호출 ");
+
+		return new ResponseEntity<List<ArticleDto>>(articleService.getmainnoticelist(), HttpStatus.OK);
+	}
+	
 	@ApiOperation(value = "모든 공지사항의 정보를 반환한다.", response = List.class)
 	@GetMapping(value = "/noticelist")
 	public ResponseEntity<List<ArticleDto>> noticelist() throws SQLException {

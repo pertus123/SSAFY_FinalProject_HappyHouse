@@ -15,4 +15,6 @@ public interface QnaArticleMapper {
 	int qnaNoticedelete(int articleno);
 	
 	int qnaNoticeupdate(QnaArticleDto articleDto);
+
+	List<QnaArticleDto> getmainqnalist();
 }

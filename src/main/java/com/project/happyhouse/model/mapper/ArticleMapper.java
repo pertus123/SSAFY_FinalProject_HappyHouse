@@ -5,6 +5,8 @@ import java.util.List;
 import com.project.happyhouse.model.ArticleDto;
 
 public interface ArticleMapper {
+	
+	List<ArticleDto> getmainnoticelist();
 
 	List<ArticleDto> getnoticelist();
 	

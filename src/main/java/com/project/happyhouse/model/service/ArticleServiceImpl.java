@@ -1,8 +1,6 @@
 package com.project.happyhouse.model.service;
 
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +8,17 @@ import org.springframework.stereotype.Service;
 
 import com.project.happyhouse.model.ArticleDto;
 import com.project.happyhouse.model.mapper.ArticleMapper;
-import com.project.util.PageNavigation;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
 	@Autowired
 	private SqlSession sqlSession;
-
+	
+	@Override
+	public List<ArticleDto> getmainnoticelist() {
+		return sqlSession.getMapper(ArticleMapper.class).getmainnoticelist();
+	}
+	
 	@Override
 	public List<ArticleDto> getnoticelist() {
 		return sqlSession.getMapper(ArticleMapper.class).getnoticelist();

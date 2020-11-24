@@ -38,6 +38,14 @@ public class QnaArticleController {
 	@Autowired
 	private QnaArticleService articleService;
 
+	@ApiOperation(value = "QnA글 4개의 정보를 반환한다.", response = List.class)
+	@GetMapping(value = "/mainqnanoticelist")
+	public ResponseEntity<List<QnaArticleDto>> mainqnanoticelist() throws SQLException {
+		logger.debug("QnaNoticeList - 호출 ");
+
+		return new ResponseEntity<List<QnaArticleDto>>(articleService.getmainqnalist(), HttpStatus.OK);
+	}
+	
 	@ApiOperation(value = "모든 QnA글의 정보를 반환한다.", response = List.class)
 	@GetMapping(value = "/qnanoticelist")
 	public ResponseEntity<List<QnaArticleDto>> qnanoticelist() throws SQLException {
