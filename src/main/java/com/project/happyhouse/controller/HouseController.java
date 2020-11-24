@@ -96,17 +96,21 @@ public class HouseController {
 	
 	
 	@ApiOperation(value = "상권정보를 동 조건으로 받는다.", response = HospitalDto.class)
-	@GetMapping(value = "/commerce/{dongName}", headers = { "Content-type=application/json" })
-	public  ResponseEntity<List<CommerceDto>> commerce(@PathVariable String dongName) {
+	@GetMapping(value = "/commerce", headers = { "Content-type=application/json" })
+	public  ResponseEntity<List<CommerceDto>> commerce(HttpServletRequest request) {
 		logger.info("commerce - 상권 호출 ");
 //		String type = request.getParameter("type");
 //		String code = request.getParameter("code");
-		
+		String curDong = request.getParameter("curDong");
+		String commerClass = request.getParameter("commerClass");
+		System.out.println(commerClass + " " + curDong);
 		try {
 		//	List<HospitalDto> test = houseService.getHospital(type, code);
 		//	System.out.println(test.get(0));
 		//	System.out.println(type + " " + code + " "+ "성공");
-			return new ResponseEntity<List<CommerceDto>>(houseService.getCommerce(dongName), HttpStatus.OK);
+			List<CommerceDto> a = houseService.getCommerce(curDong, commerClass);
+			System.out.println(a.size());
+			return new ResponseEntity<List<CommerceDto>>(houseService.getCommerce(curDong, commerClass), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

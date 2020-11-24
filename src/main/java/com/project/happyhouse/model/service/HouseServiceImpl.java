@@ -41,9 +41,13 @@ public class HouseServiceImpl implements HouseService {
 		return sqlSession.getMapper(HouseMapper.class).getHospital(type, code);
 	}
 	@Override
-	public List<CommerceDto> getCommerce(String dongName) throws Exception {
+	public List<CommerceDto> getCommerce(String curDong, String commerClass) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.getMapper(HouseMapper.class).getCommerce(dongName);
+		if(commerClass.equals("모두")) {
+			System.out.println(commerClass + " " + curDong + "serviceImpl");
+			return sqlSession.getMapper(HouseMapper.class).getCommerce2(curDong);
+		}
+		else return sqlSession.getMapper(HouseMapper.class).getCommerce(curDong, commerClass);
 	}
 	
 

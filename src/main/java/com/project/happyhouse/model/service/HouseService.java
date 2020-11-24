@@ -12,6 +12,6 @@ public interface HouseService {
 	List<HouseDealDto> searchOne(SearchBean bean) throws Exception;
 	HouseDealDto getDealInfo(int no) throws Exception;	
 	List<HospitalDto> getHospital(String type, String code) throws Exception;	
-	List<CommerceDto> getCommerce(String dongName) throws Exception;	
-	
+	List<CommerceDto> getCommerce(String curDong, String commerClass) throws Exception;	
+	//List<CommerceDto> getCommerce2(String curDong) throws Exception;	
 }

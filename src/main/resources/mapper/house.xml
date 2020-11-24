@@ -34,8 +34,13 @@
 	
 	<!-- 상권정보  -->
 	
-	<select id="getCommerce"			parameterType="String"  	resultType="CommerceDto">
-		SELECT * FROM commerce WHERE dongName = #{dongName}
+	<select id="getCommerce"			parameterType="map"  	resultType="CommerceDto">
+		SELECT * FROM commerce WHERE dongName = #{curDong} AND bigClass = #{commerClass}
+
+	</select>
+<select id="getCommerce2"			parameterType="String"  	resultType="CommerceDto">
+		SELECT * FROM commerce WHERE dongName = #{curDong}
+
 	</select>
 	
 	
