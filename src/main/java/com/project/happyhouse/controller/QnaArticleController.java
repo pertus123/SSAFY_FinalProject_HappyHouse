@@ -41,7 +41,7 @@ public class QnaArticleController {
 	@ApiOperation(value = "모든 QnA글의 정보를 반환한다.", response = List.class)
 	@GetMapping(value = "/qnanoticelist")
 	public ResponseEntity<List<QnaArticleDto>> qnanoticelist() throws SQLException {
-		logger.info("QnaNoticeList - 호출 ");
+		logger.debug("QnaNoticeList - 호출 ");
 
 		return new ResponseEntity<List<QnaArticleDto>>(articleService.qnaGetnoticelist(), HttpStatus.OK);
 	}
@@ -49,7 +49,7 @@ public class QnaArticleController {
 	@ApiOperation(value = "글번호에 해당하는 QnA글의 정보를 반환한다.", response = QnaArticleDto.class)
 	@GetMapping(value = "/qnanoticedetail/{articleno}")
 	public ResponseEntity<QnaArticleDto> qnanoticedetail(@PathVariable int articleno) {
-		logger.info("QnaDetailBoard - 호출 : articleno = " + articleno);
+		logger.debug("QnaDetailBoard - 호출 : articleno = " + articleno);
 		return new ResponseEntity<QnaArticleDto>(articleService.qnaGetnoticedetail(articleno), HttpStatus.OK);
 	}
 
@@ -57,7 +57,7 @@ public class QnaArticleController {
 	@ApiOperation(value = "새로운 QnA글 정보를 입력한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@PostMapping(value = "/qnanoticewrite")
 	public ResponseEntity<String> qnanoticewrite(@RequestBody QnaArticleDto articleDto) {
-		logger.info("QnaWriteBoard - 호출 : articleDto = " + articleDto);
+		logger.debug("QnaWriteBoard - 호출 : articleDto = " + articleDto);
 		if (articleService.qnaNoticewrite(articleDto) > 0) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
@@ -67,7 +67,7 @@ public class QnaArticleController {
 	@ApiOperation(value = "글번호에 해당하는 QnA글의 정보를 삭제한다. 그리고 DB삭제 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@DeleteMapping(value = "/qnanoticedelete/{articleno}")
 	public ResponseEntity<String> noticedelete(@PathVariable int articleno) {
-		logger.info("QnaDeleteBoard - 호출 : articleno = " + articleno);
+		logger.debug("QnaDeleteBoard - 호출 : articleno = " + articleno);
 		if (articleService.qnaNoticedelete(articleno) > 0) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
@@ -77,7 +77,7 @@ public class QnaArticleController {
 	@ApiOperation(value = "글번호에 해당하는 QnA글의 정보를 수정한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@PutMapping(value = "/qnanoticeupdate")
 	public ResponseEntity<String> qnanoticeupdate(@RequestBody QnaArticleDto articleDto) {
-		logger.info("QnaUpdateBoard - 호출 : articleDto = " + articleDto);
+		logger.debug("QnaUpdateBoard - 호출 : articleDto = " + articleDto);
 		if (articleService.qnaNoticeupdate(articleDto) > 0) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}

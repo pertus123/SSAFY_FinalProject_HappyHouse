@@ -45,7 +45,7 @@ public class ArticleController {
 	@ApiOperation(value = "모든 공지사항의 정보를 반환한다.", response = List.class)
 	@GetMapping(value = "/noticelist")
 	public ResponseEntity<List<ArticleDto>> noticelist() throws SQLException {
-		logger.info("NoticeList - 호출 ");
+		logger.debug("NoticeList - 호출 ");
 
 		return new ResponseEntity<List<ArticleDto>>(articleService.getnoticelist(), HttpStatus.OK);
 	}
@@ -53,14 +53,14 @@ public class ArticleController {
 	@ApiOperation(value = "글번호에 해당하는 공지사항글의 정보를 반환한다.", response = QnaArticleDto.class)
 	@GetMapping(value = "/noticedetail/{articleno}")
 	public ResponseEntity<ArticleDto> noticedetail(@PathVariable int articleno) {
-		logger.info("noticedetail - 호출 : articleno = " + articleno);
+		logger.debug("noticedetail - 호출 : articleno = " + articleno);
 		return new ResponseEntity<ArticleDto>(articleService.getnoticedetail(articleno), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "새로운 공지사항글을 작성한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@PostMapping(value = "/noticewrite")
 	public ResponseEntity<String> noticewrite(@RequestBody ArticleDto articleDto) {
-		logger.info("noticewrite - 호출 : articleDto = " + articleDto);
+		logger.debug("noticewrite - 호출 : articleDto = " + articleDto);
 		if(articleService.noticewrite(articleDto)>0) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
@@ -70,7 +70,7 @@ public class ArticleController {
 	@ApiOperation(value = "글번호에 해당하는 공지사항글의 정보를 삭제한다. 그리고 DB삭제 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@DeleteMapping(value = "/noticedelete/{articleno}")
 	public ResponseEntity<String> noticedelete(@PathVariable int articleno) {
-		logger.info("noticedelete - 호출 : articleno = " + articleno);
+		logger.debug("noticedelete - 호출 : articleno = " + articleno);
 		if (articleService.noticedelete(articleno) > 0) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
@@ -80,7 +80,7 @@ public class ArticleController {
 	@ApiOperation(value = "글번호에 해당하는 공지사항글의 정보를 수정한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@PutMapping(value = "/qnanoticeupdate")
 	public ResponseEntity<String> qnanoticeupdate(@RequestBody ArticleDto articleDto) {
-		logger.info("qnanoticeupdate - 호출 : articleDto = " + articleDto);
+		logger.debug("qnanoticeupdate - 호출 : articleDto = " + articleDto);
 		if (articleService.noticeupdate(articleDto) > 0) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}

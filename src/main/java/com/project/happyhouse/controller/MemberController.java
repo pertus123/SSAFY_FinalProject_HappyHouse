@@ -43,7 +43,7 @@ public class MemberController {
 	@ApiOperation(value = "회원가입 - 회원의 정보를 입력한다", response = String.class)
 	@PostMapping(value = "/join")
 	public ResponseEntity<String> join(@RequestBody MemberDto memberDto) throws Exception {
-		logger.info("회원가입 - 호출 : memberDto = " + memberDto);
+		logger.debug("회원가입 - 호출 : memberDto = " + memberDto);
 		if (memberService.join(memberDto) > 0) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
@@ -53,7 +53,8 @@ public class MemberController {
 	@ApiOperation(value = "아이디 인증(비밀번호 가져오기)", response = String.class)
 	@PostMapping(value = "/idValidate")
 	public ResponseEntity<String> idValidate(@RequestBody String userid) throws Exception {
-		logger.info("아이디인증 : userid = " + userid);
+		logger.debug("아이디인증 : userid = " + userid);
+		logger.debug(memberService.pwdValidate(userid));
 		if (memberService.pwdValidate(userid) != null) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
@@ -63,7 +64,7 @@ public class MemberController {
 	@ApiOperation(value = "비밀번호 변경(찾기) (로그인, 마이페이지)", response = String.class)
 	@PutMapping(value = "/updatePassword")
 	public ResponseEntity<String> updatePassword(@RequestBody MemberDto memberDto) {
-		logger.info("비밀번호 변경 : memberDto = " + memberDto);
+		logger.debug("비밀번호 변경 : memberDto = " + memberDto);
 		if (memberService.userPwdUpdate(memberDto) > 0) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
@@ -87,14 +88,15 @@ public class MemberController {
 //				토큰 정보는 response의 헤더로 보내고 나머지는 Map에 담는다.
 //				response.setHeader("auth-token", token);
 				resultMap.put("auth-token", token);
-				resultMap.put("isadmin", loginUser.getIsadmin());
+				resultMap.put("is-admin", loginUser.getIsadmin());
 				resultMap.put("user-id", loginUser.getUserid());
 				resultMap.put("user-name", loginUser.getUsername());
+				resultMap.put("status",SUCCESS);
 //				resultMap.put("status", true);
 //				resultMap.put("data", loginUser);
 				status = HttpStatus.ACCEPTED;
 			} else {
-				resultMap.put("message", "로그인 실패");
+				resultMap.put("status",FAIL);
 				status = HttpStatus.ACCEPTED;
 			}
 		} catch (Exception e) {
@@ -109,12 +111,12 @@ public class MemberController {
 	@ApiOperation(value = "회원목록(admin)", response = String.class)
 	@GetMapping(value = "/userList")
 	public ResponseEntity<List<MemberDto>> userList() {
-		logger.info("회원목록 - 호출 ");
+		logger.debug("회원목록 - 호출 ");
 		return new ResponseEntity<List<MemberDto>>(memberService.userList(), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "회원정보(마이페이지)", response = Map.class)
-	@GetMapping(value = "/userInform")
+	@GetMapping(value = "/userinform")
 	public ResponseEntity<Map<String, Object>> userInform(HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
@@ -131,7 +133,7 @@ public class MemberController {
 	}
 
 	@ApiOperation(value = "회원정보 수정(마이페이지)", response = String.class)
-	@PutMapping(value = "/userInform")
+	@PutMapping(value = "/userinformupdate")
 	public ResponseEntity<String> userInformUpdate(@RequestBody MemberDto memberDto) {
 		if (memberService.userInformUpdate(memberDto) > 0) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
@@ -143,7 +145,7 @@ public class MemberController {
 	@PostMapping(value = "/pwdValidate")
 	public ResponseEntity<String> pwdValidate(HttpServletRequest request, @RequestBody String insertpwd) {
 		String userid = request.getHeader("user-id");
-		logger.info("비밀번호 확인 - 호출 : userid = " + userid + " insertpwd = " + insertpwd);
+		logger.debug("비밀번호 확인 - 호출 : userid = " + userid + " insertpwd = " + insertpwd);
 		String userpwd = memberService.pwdValidate(userid);
 		if (insertpwd.equals(userpwd)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
@@ -155,7 +157,7 @@ public class MemberController {
 	@DeleteMapping(value = "/leave")
 	public ResponseEntity<String> leave(HttpServletRequest request) {
 		String userid = request.getHeader("user-id");
-		logger.info("회원탈퇴 - 호출 : userid" + userid);
+		logger.debug("회원탈퇴 - 호출 : userid" + userid);
 		if (memberService.userLeave(userid) > 0) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
@@ -166,7 +168,7 @@ public class MemberController {
 	@GetMapping(value = "/interestloc")
 	private ResponseEntity<List<String>> interestloc(HttpServletRequest request) {
 		String userid = request.getHeader("user-id");
-		logger.info("관심지역리스트 - 호출 : userid = " + userid);
+		logger.debug("관심지역리스트 - 호출 : userid = " + userid);
 		return new ResponseEntity<List<String>>(memberService.getInterestLoc(userid), HttpStatus.OK);
 	}
 
