@@ -104,7 +104,6 @@ public class HouseController {
 		
 		try {
 		//	List<HospitalDto> test = houseService.getHospital(type, code);
-			
 		//	System.out.println(test.get(0));
 		//	System.out.println(type + " " + code + " "+ "성공");
 			return new ResponseEntity<List<CommerceDto>>(houseService.getCommerce(dongName), HttpStatus.OK);
