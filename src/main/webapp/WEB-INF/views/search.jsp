@@ -105,26 +105,6 @@
 			initSearch();
 		});
 		
-		$("#deal1btn").click(function() {
-			$("#dealType").val("1");
-		});
-
-		$("#deal2btn").click(function() {
-			$("#dealType").val("2");
-		});
-
-		$("#deal3btn").click(function() {
-			$("#dealType").val("3");
-		});
-
-		$("#deal4btn").click(function() {
-			$("#dealType").val("4");
-		});
-
-		$("#detailbtn").click(function() {
-			$(".detaildiv").append("<div>안녕</div>");
-		});
-		
 		var multi = {
 			lat : 37.527541,
 			lng : 126.999239
@@ -132,7 +112,7 @@
 		var multimarker;
 		var markers = new Array();
 		var h0markers = new Array();
-		var h1markers = new Array();
+		var h1markers = new Array(); 
 		var dealicon;
 		var hos0icon;
 		var hos1icon;
@@ -328,7 +308,7 @@
 			map.setCenter(marker.getPosition());
 			map.setZoom(17);
 		}
-		
+		/*
 		function getHospital(t){
 			if(t == 0){
 				if(hos0flag) {
@@ -413,7 +393,7 @@
 	        if (window.event.keyCode == 13) {
 	             search();
 	        }
-	}
+	}*/
 	</script>
 </body>
 

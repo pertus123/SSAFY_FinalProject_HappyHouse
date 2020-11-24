@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.project.happyhouse.model.CommerceDto;
 import com.project.happyhouse.model.HospitalDto;
 import com.project.happyhouse.model.HouseDealDto;
 import com.project.happyhouse.model.SearchBean;
@@ -38,6 +39,11 @@ public class HouseServiceImpl implements HouseService {
 	public List<HospitalDto> getHospital(String type, String code) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.getMapper(HouseMapper.class).getHospital(type, code);
+	}
+	@Override
+	public List<CommerceDto> getCommerce(String dongName) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.getMapper(HouseMapper.class).getCommerce(dongName);
 	}
 	
 

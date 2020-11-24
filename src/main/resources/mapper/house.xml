@@ -16,19 +16,26 @@
 	</select> -->
 	
 		<select id="searchZero"			parameterType="SearchBean"  	resultType="HouseDealDto">
-		SELECT no, dong, aptName, gunguCode, jibun, lat, lng FROM housedeal WHERE type = #{dealType} AND dong = #{keyword} ORDER BY AptName
+		SELECT no, dong, aptName, gunguCode, jibun, lat, lng, dealAmount FROM housedeal WHERE type = #{dealType} AND dong = #{keyword} ORDER BY AptName
 	</select>
 	<select id="searchOne"			parameterType="SearchBean"  	resultType="HouseDealDto">
-		SELECT no, dong, aptName, gunguCode, jibun, lat, lng FROM housedeal WHERE type = #{dealType} AND AptName LIKE concat('%', #{keyword}, '%') ORDER BY dong
+		SELECT no, dong, aptName, gunguCode, jibun, lat, lng, dealAmount FROM housedeal WHERE type = #{dealType} AND AptName LIKE concat('%', #{keyword}, '%') ORDER BY dong
 	</select>
 	
 	<select id="getDealInfo"			parameterType="int"  	resultType="HouseDealDto">
 		SELECT no, dong, aptName, gunguCode, dealAmount, buildYear,
 					  area, floor, jibun  FROM housedeal WHERE no = #{no}
 	</select>
-	<select id="getHospital"			parameterType="map"  	resultType="HouseDealDto">
+	<select id="getHospital"			parameterType="map"  	resultType="HospitalDto">
 		SELECT name, address, weekdayop, tel, lat, lng 
 		 FROM hospital WHERE type = #{type} AND gunguCode = concat(#{code},'00000')
+	</select>
+	
+	
+	<!-- 상권정보  -->
+	
+	<select id="getCommerce"			parameterType="String"  	resultType="CommerceDto">
+		SELECT * FROM commerce WHERE dongName = #{dongName}
 	</select>
 	
 	
