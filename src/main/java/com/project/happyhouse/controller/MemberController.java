@@ -153,6 +153,7 @@ public class MemberController {
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
 
+	//수정필요
 	@ApiOperation(value = "회원탈퇴(마이페이지)", response = String.class)
 	@DeleteMapping(value = "/leave")
 	public ResponseEntity<String> leave(HttpServletRequest request) {
