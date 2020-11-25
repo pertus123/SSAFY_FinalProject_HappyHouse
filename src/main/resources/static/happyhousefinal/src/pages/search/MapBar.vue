@@ -29,15 +29,15 @@
         icon="keyboard_arrow_up"
         direction="up"
       >
-        <q-fab-action color="primary" label-position="left" @click="commerceInfo('모두')" icon="mail" label="모두"  value="모두" />
-        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('관광/여가/오락')" icon="alarm" label="관광/여가/오락" value="관광/여가/오락" />
-        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('부동산')" icon="alarm" label="부동산" value="관광/여가/오락"  />
-        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('생활서비스')" icon="alarm" label="생활서비스"  value="관광/여가/오락"  />
-        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('소매')" icon="alarm" label="소매"  value="관광/여가/오락" />
-        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('숙박')" icon="alarm" label="숙박" value="관광/여가/오락"  />
-        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('스포츠')" icon="alarm" label="스포츠" value="관광/여가/오락"  />
-        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('음식')" icon="alarm" label="음식" value="관광/여가/오락"  />
-        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('학문/교육')" icon="alarm" label="학문/교육" value="관광/여가/오락"  />
+        <q-fab-action color="primary" label-position="left" @click="commerceInfo('모두')" icon="search" label="모두"  value="모두" />
+        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('관광/여가/오락')" icon="videogame_asset" label="관광/여가/오락" value="관광/여가/오락" />
+        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('부동산')" icon="home" label="부동산" value="관광/여가/오락"  />
+        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('생활서비스')" icon="layers" label="생활서비스"  value="관광/여가/오락"  />
+        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('소매')" icon="local_grocery_store" label="소매"  value="관광/여가/오락" />
+        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('숙박')" icon="hotel" label="숙박" value="관광/여가/오락"  />
+        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('스포츠')" icon="sports_kabaddi" label="스포츠" value="관광/여가/오락"  />
+        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('음식')" icon="local_dining" label="음식" value="관광/여가/오락"  />
+        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('학문/교육')" icon="school" label="학문/교육" value="관광/여가/오락"  />
       </q-fab>
         </q-page-sticky>
 
@@ -126,21 +126,21 @@
             label-position="left"
             color="primary"
             @click="envirInfo"
-            icon="mail"
+            icon="markunread_mailbox"
             label="환경 시설물"
           />
           <q-fab-action
             label-position="left"
             color="secondary"
             @click="getHospital(0)"
-            icon="alarm"
+            icon="medical_services"
             label="선별 진료소"
           />
           <q-fab-action
             label-position="left"
             color="orange"
             @click="getHospital(1)"
-            icon="airplay"
+            icon="local_hospital"
             label="선별 병원"
           />
         </q-fab>
@@ -454,6 +454,7 @@ export default {
         this.envirflag = false;
       } else {
         //this.guMethod(this.curGungu);
+    //    alert("wow")
         var geocoder = new kakao.maps.services.Geocoder();
         //alert(this.envirList[1].WRKP_ADDR);
         var tmpDong = this.curDong;
@@ -469,9 +470,10 @@ export default {
         var icons = this.enviricon;
 
         this.envirList.forEach(function(element) {
+         // alert(element.WRKP_ADDR);
           if (element.WRKP_ADDR != '') {
             geocoder.addressSearch(element.WRKP_ADDR, function(result, status) {
-              //alert("1");
+        //      alert("1dddd");
               if (status === kakao.maps.services.Status.OK) {
                 if (tmpDong == result[0].address.region_3depth_name) {
                   tmp = new kakao.maps.Marker({
@@ -535,11 +537,11 @@ export default {
         new kakao.maps.Size(40, 40)
       );
       this.hos0icon = new kakao.maps.MarkerImage(
-        'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
+        'https://cdn1.iconfinder.com/data/icons/medicine-pt-8/100/051_-_hospital_map_marker_pin_doctor-128.png',
         new kakao.maps.Size(40, 40)
       );
       this.hos1icon = new kakao.maps.MarkerImage(
-        'https://cdn2.iconfinder.com/data/icons/health-care-4/512/medical_map_marker-256.png',
+        'https://cdn1.iconfinder.com/data/icons/medicine-pt-7/100/051_-_hospital_map_marker_pin_doctor-128.png',
         new kakao.maps.Size(40, 40)
       );
       //https://cdn4.iconfinder.com/data/icons/recycle-and-environment/600/pointer-marker-pin-Conservation-green-recycle-recycling-Ecology-environment-packaging-256.png
@@ -562,6 +564,7 @@ export default {
           .then(response => (this.envirList = response.data.DobongListEnvGuideCheck.row));
       } else if (gugu == '11530') {
         //구로구
+       // alert("1");
         axios
           .get(
             'http://openAPI.guro.go.kr:8088/594a4779786f706538344c42526b75/json/GuroListEnvGuideCheck/1/50'

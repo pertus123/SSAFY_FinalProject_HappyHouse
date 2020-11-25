@@ -141,7 +141,7 @@ export default {
       var tempSearchType;
       if(searchInfo.searchType == "동으로 검색") tempSearchType = "0";
       else tempSearchType = "1";
-alert(tempSearchType)
+//alert(tempSearchType)
       api
         .get('/searchdata/', {
           params: {
@@ -173,10 +173,10 @@ alert(tempSearchType)
    // alert("1");
   //  alert(this.no);
 
-alert(this.no);
+//alert(this.no);
 
-alert(this.no.searchType);
-alert(this.no.keyword);
+//alert(this.no.searchType);
+//alert(this.no.keyword);
 
     api
       .get('/searchdata/', {
