@@ -6,13 +6,25 @@
       <option value="2">역이름으로 검색</option>
     </select> -->
 
+  <form
+        class="col-10 row inline flex-center"
+        id="searchContainer"
+      >
+<q-select
+          outlined
+          v-model="searchCode.searchType"
+          :options="selectOptions"
+          label="검색분류"
+          bg-color="white"
+          style="width:160px; margin-right:10px;"
+        />
     <!-- <q-input color="purple-12" v-model="searchCode.keyword" label="Label">
       <template v-slot:prepend>
         <q-icon name="event" />
       </template>
     </q-input> -->
 
-    <input
+    <!-- <input
       class="form-control mr-sm-3"
       id="keyword"
       name="keyword"
@@ -21,7 +33,16 @@
       aria-label="Search"
       v-model="searchCode.keyword"
       @keypress.enter="searchSendCode"
-    />
+    /> -->
+
+    <q-input
+          outlined
+          v-model="searchCode.keyword"
+          label="search"
+          bg-color="white"
+          style="width:300px; margin-right:10px;"
+          @keydown.enter.prevent="searchSendCode"
+        />
     <!-- <q-input
       style="z-index:3"
       bottom-slots
@@ -38,9 +59,17 @@
       </template>
     </q-input> -->
 
-    <button style="z-index:4" type="button" id="searchbtn" @click="searchSendCode">
+<q-btn
+          label="검색"
+          style="margin:5px;"
+          color="white"
+          text-color="secondary"
+          @click="searchSendCode"
+        />
+  </form>
+    <!-- <button style="z-index:4" type="button" id="searchbtn" @click="searchSendCode">
       <i class="fa fa-search"></i> 아이콘 머지
-    </button>
+    </button> -->
     <!-- 222
     <input type="text" v-model="searchCode" @keypress.enter="searchSendCode"/>
       <button @click="searchSendCode">결과가 잘가나?</button> -->
@@ -65,13 +94,14 @@ export default {
         keyword: '',
       },
       dense: false,
+      selectOptions: ["동으로 검색", "건물명으로 검색"],
     };
   },
   methods: {
     searchSendCode: function() {
       //   alert('검색');
-      alert(this.searchCode.keyword);
-      alert(this.searchCode.searchType);
+     // alert(this.searchCode.keyword);
+    //  alert(this.searchCode.searchType);
       this.$emit('search-send-code', this.searchCode);
       //this.$emit('search-send-map', this.searchCode);
     },
@@ -79,7 +109,8 @@ export default {
   mounted() {
     // this.searchCode.searchType = '0';
     this.searchCode.keyword = this.firstData.keyword;
-    this.searchCode.searchType = this.firstData.searchType;
+    if(this.firstData.searchType == '1')this.searchCode.searchType = "건물명으로 검색";
+    else this.searchCode.searchType = "동으로 검색";
   },
 };
 </script>

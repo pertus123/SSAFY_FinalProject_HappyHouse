@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="row">
-      <q-list bordered class="rounded-borders">
+      <q-list class="rounded-borders">
         <q-expansion-item
           v-for="(apt, index) in aptlist"
           :key="index"

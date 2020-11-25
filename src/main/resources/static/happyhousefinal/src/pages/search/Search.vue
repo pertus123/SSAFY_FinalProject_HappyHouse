@@ -35,10 +35,11 @@
   <q-layout view="hHh lpR fFf">
     <q-header reveal class="bg-white text-black" height-hint="98">
       <q-toolbar>
+        <q-btn dense flat round icon="menu" @click="left = !left" />
         <q-toolbar-title>
           <img src="~assets/logo.png" width="150px" @click="onClickLogo" style="cursor:pointer" />
         </q-toolbar-title>
-        <q-btn dense flat round icon="menu" @click="left = !left" />
+        
 
         <span style="margin-right:15px; font-size:15px;"
           >{{ this.$q.sessionStorage.getItem('userId') }}({{
@@ -71,9 +72,10 @@
       <list-bar :aptlist="aptlist" @select-apt="selectApt"></list-bar>
       <!-- drawer content -->
     </q-drawer>
-
+    
+<!-- style="z-index:10; position: absolute; left: 660px" -->
     <q-page-container>
-      <div class="row" style="float:right">
+      <div class="row" style="z-index:10; position: absolute; left: 1111px; top:90px;">
         <search-bar @search-send-code="searchSendCode" :firstData="no"> </search-bar>
       </div>
       <div>
@@ -109,6 +111,13 @@ export default {
       aptlist: [],
     };
   },
+
+
+  watch:{
+    aptlist : function(newVal, oldVal){
+    this.left = true;
+    }
+  },
   methods: {
     onClickLogo: function() {
       this.$router.push('/');
@@ -124,26 +133,32 @@ export default {
     searchSendCode: function(searchInfo) {
       // 값 저장하게
       //alert(">>>>>" + dongCode);
-      // alert(searchInfo);
-      // alert(searchInfo.keyword);
-      // alert(searchInfo.searchType);
-      // alert(searchInfo.dealType);
+      //  alert(searchInfo);
+      //  alert(searchInfo.keyword);
+      //  alert(searchInfo.searchType);
+      //  alert(searchInfo.dealType);
       //alert('1');
+      var tempSearchType;
+      if(searchInfo.searchType == "동으로 검색") tempSearchType = "0";
+      else tempSearchType = "1";
+alert(tempSearchType)
       api
         .get('/searchdata/', {
           params: {
             dealType: '1',
-            searchType: searchInfo.searchType,
+            searchType: tempSearchType,
             keyword: searchInfo.keyword,
           },
         })
         .then(response => {
           console.log(response); //apt list
-          alert('test1');
+        //  alert('test1');
           this.aptlist = response.data;
         })
         .catch(error => {
           alert('error');
+         // alert(searchInfo.keyword);
+         // alert(searchInfo.searchType);
         });
     },
     selectApt: function(apt) {
@@ -152,7 +167,16 @@ export default {
   },
 
   mounted() {
-    alert('ㅇㄱ');
+    // alert('ㅇㄱ');
+    // alert(this.no);
+
+   // alert("1");
+  //  alert(this.no);
+
+alert(this.no);
+
+alert(this.no.searchType);
+alert(this.no.keyword);
 
     api
       .get('/searchdata/', {
@@ -163,7 +187,7 @@ export default {
         },
       })
       .then(response => {
-        alert('wow2');
+     //   alert('wow2');
         console.log(response); //apt list
 
         this.aptlist = response.data;

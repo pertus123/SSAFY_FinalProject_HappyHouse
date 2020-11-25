@@ -19,6 +19,7 @@
           label="검색어"
           bg-color="white"
           style="width:300px; margin-right:10px"
+          @keydown.enter.prevent="onClickSearch"
         />
         <q-btn
           label="검색"
@@ -129,6 +130,11 @@ export default {
         searchType: "",
         keyword: ""
       },
+       tmpSearchCode: {
+        dealType: "1",
+        searchType: "",
+        keyword: ""
+      },
       selectOptions: ["동으로 검색", "건물명으로 검색"],
       notice_data: [],
       notice_columns: [
@@ -143,8 +149,15 @@ export default {
     };
   },
   methods: {
-    onClickSearch: function() {
-      this.$router.push({ path: "/search", params: { no: this.searchCode } });
+    onClickSearch() {
+   //   alert(this.searchCode.searchType);
+    //  alert(this.searchCode.keyword);
+      if(this.searchCode.searchType == "동으로 검색") this.tmpSearchCode.searchType = '0';
+      else this.tmpSearchCode.searchType = '1';
+ //    this.tmpSearchCode.searchType = this.searchCode.searchType;
+      this.tmpSearchCode.keyword = this.searchCode.keyword;
+
+      this.$router.push({ name: "Search", params: { no: this.tmpSearchCode } });
     },
     loadingNotice: function() {
       api

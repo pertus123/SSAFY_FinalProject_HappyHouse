@@ -6,8 +6,8 @@
       <!-- <div class="col-md-2"></div> -->
       <!--   <div class="col-md-6" id="detail"> -->
       <!-- v-model="searchCode.searchType" -->
-      <select class="custom-select" id="searchType" name="searchType" v-model="commerClass">
-        <option value="" selected>선택하세요</option>
+       <!-- <select class="custom-select" id="searchType" name="searchType" style="z-index:10; position: absolute; left: 500px" v-model="commerClass">
+        <option value="선택하세요" selected>선택하세요</option>
         <option value="모두">모두</option>
         <option value="관광/여가/오락">관광/여가/오락</option>
         <option value="부동산">부동산</option>
@@ -17,31 +17,42 @@
         <option value="스포츠">스포츠</option>
         <option value="음식">음식</option>
         <option value="학문/교육">학문/교육</option>
-      </select>
-      <!-- <button type="button" class="btn subfuncbtn" @click="commerceInfo">상권정보</button> -->
-      <!-- <button type="button" class="btn subfuncbtn" @click="envirInfo">
-          환경정보
-        </button>
-        <button type="button" class="btn subfuncbtn" @click="getHospital(0)">
-          선별 진료소
-        </button> -->
-      <!-- <button type="button" class="btn subfuncbtn" @click="getHospital(1)">
-          안심 병원
-        </button> -->
-      <!-- </div> -->
-    </div>
+      </select>  -->
 
-    <div id="map" style="margin: 10px; height: 700px;" class="map">
-      <!--  -->
-      <div class="row" style="float:right; margin:30px;">
-        <q-fab
+
+        <q-page-sticky position="bottom-right" :offset="[18, 18]" style="z-index:10; position: absolute; right: 100px; bottom:25px;">
+      <q-fab
+        v-model="fabUp"
+        label="상권 정보"
+        label-position="right"
+        color="purple"
+        icon="keyboard_arrow_up"
+        direction="up"
+      >
+        <q-fab-action color="primary" label-position="left" @click="commerceInfo('모두')" icon="mail" label="모두"  value="모두" />
+        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('관광/여가/오락')" icon="alarm" label="관광/여가/오락" value="관광/여가/오락" />
+        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('부동산')" icon="alarm" label="부동산" value="관광/여가/오락"  />
+        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('생활서비스')" icon="alarm" label="생활서비스"  value="관광/여가/오락"  />
+        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('소매')" icon="alarm" label="소매"  value="관광/여가/오락" />
+        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('숙박')" icon="alarm" label="숙박" value="관광/여가/오락"  />
+        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('스포츠')" icon="alarm" label="스포츠" value="관광/여가/오락"  />
+        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('음식')" icon="alarm" label="음식" value="관광/여가/오락"  />
+        <q-fab-action color="secondary" label-position="left" @click="commerceInfo('학문/교육')" icon="alarm" label="학문/교육" value="관광/여가/오락"  />
+      </q-fab>
+        </q-page-sticky>
+
+
+  <!-- <div class="row" style="float:right; margin:30px;">
+        <q-page-sticky position="bottom-right" :offset="[18, 18]" style="z-index:10; position: absolute;">
+        <q-fab 
           v-model="fabRight"
           vertical-actions-align="right"
           color="primary"
           glossy
-          icon="keyboard_arrow_down"
-          direction="down"
+          icon="keyboard_arrow_up"
+          direction="up"
         >
+        
           <q-fab-action
             label-position="left"
             color="primary"
@@ -64,6 +75,76 @@
             label="선별 병원"
           />
         </q-fab>
+        </q-page-sticky>
+      </div> -->
+
+
+
+
+
+
+
+
+
+      <!-- <q-select
+          outlined
+          v-model="searchCode.searchType"
+          :options="selectOptions"
+          label="검색분류"
+          bg-color="white"
+          style="width:160px; margin-right:10px"
+        /> -->
+
+
+      <!-- <button type="button" class="btn subfuncbtn" @click="commerceInfo">상권정보</button> -->
+      <!-- <button type="button" class="btn subfuncbtn" @click="envirInfo">
+          환경정보
+        </button>
+        <button type="button" class="btn subfuncbtn" @click="getHospital(0)">
+          선별 진료소
+        </button> -->
+      <!-- <button type="button" class="btn subfuncbtn" @click="getHospital(1)">
+          안심 병원
+        </button> -->
+      <!-- </div> -->
+    </div>
+
+    <div id="map" style="margin: 10px; height: 700px;" class="map">
+      <!--  -->
+      <div class="row" style="float:right; margin:30px;">
+        <q-page-sticky position="bottom-right" :offset="[18, 18]" style="z-index:10; position: absolute;">
+        <q-fab 
+          v-model="fabRight"
+          vertical-actions-align="right"
+          color="primary"
+          glossy
+          icon="keyboard_arrow_up"
+          direction="up"
+        >
+        
+          <q-fab-action
+            label-position="left"
+            color="primary"
+            @click="envirInfo"
+            icon="mail"
+            label="환경 시설물"
+          />
+          <q-fab-action
+            label-position="left"
+            color="secondary"
+            @click="getHospital(0)"
+            icon="alarm"
+            label="선별 진료소"
+          />
+          <q-fab-action
+            label-position="left"
+            color="orange"
+            @click="getHospital(1)"
+            icon="airplay"
+            label="선별 병원"
+          />
+        </q-fab>
+        </q-page-sticky>
       </div>
       <!--  -->
     </div>
@@ -104,7 +185,11 @@ export default {
       fab1: true,
       fab2: true,
       hideLabels: false,
+      fabUp : false, // right
       fabRight: false, // right
+      fabUpCheck:false,
+      fabRightCheck:false,
+      fabCheck:false,
       map: null,
       tmpAptlist: null,
       tmpApt: null, //////
@@ -129,18 +214,24 @@ export default {
       commermarkers: [],
       //상권 분류
       commerClass: '',
+      //selectOptions: ["선택하세요", "모두", "관광/여가/오락", "부동산", "생활서비스", "소매", "숙박","스포츠","음식","학문/교육"],
     };
   },
 
   watch: {
     apt: function(newVal, oldVal) {
+      this.fabUp = false;
+      this.fabRight = false;
       while (this.envirmarkers.length > 0) {
         this.envirmarkers.pop().setMap(null);
       }
       this.addMarkers(newVal);
     },
     aptlist: function(newVal, oldVal) {
-      alert('zz');
+      
+      this.fabUp = false;
+      this.fabRight = false;
+     // alert('zz');
       while (this.envirmarkers.length > 0) {
         this.envirmarkers.pop().setMap(null);
       }
@@ -157,7 +248,9 @@ export default {
     //   alert("1");
     // },
 
-    commerceInfo() {
+    commerceInfo(commerceName) {
+      this.commerClass = commerceName;
+
       // alert(this.commerClass + " " + this.curDong);
       while (this.commermarkers.length > 0) {
         this.commermarkers.pop().setMap(null);
@@ -415,7 +508,7 @@ export default {
         });
 
         this.envirflag = true;
-        alert('final');
+     //   alert('final');
       }
     },
 
@@ -766,6 +859,17 @@ export default {
   },
   updated() {
     this.$nextTick(function() {
+      if(this.fabUp == true && this.fabCheck== false){
+        this.fabRight = false;
+        this.fabCheck = true;
+        // this.fabUpCheck = true;
+        // this.fabRightCheck = false;
+      }if(this.fabRight == true && this.fabCheck == true){
+        this.fabUp = false;
+        this.fabCheck = false;
+        // this.fabUpCheck = false;
+        // this.fabRightCheck = true;
+      }
       // alert("데이터 바뀜");
       while (this.commermarkers.length > 0) {
         this.commermarkers.pop().setMap(null);
@@ -777,7 +881,7 @@ export default {
         if (this.tmpAptlist != this.aptlist) {
           //    this.addMarkers2(this.aptlist);
           this.tmpAptlist = this.aptlist;
-        } else if (this.commerClass != '') {
+        } else if (this.commerClass != '선택하세요') {
           //this.testfunction();
 
           this.commerceInfo();
