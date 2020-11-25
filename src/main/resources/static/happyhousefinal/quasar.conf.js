@@ -96,7 +96,7 @@ module.exports = function(/* ctx */) {
   
           positive: '#8c9ccf',
           negative: '#cfa297',
-          info: '#b6cfb9',
+          info: '#71D5D2',
           warning: '#a08ccf'
         },
         notify: { /* look at QUASARCONFOPTIONS from the API card (bottom of page) */ }

@@ -7,15 +7,19 @@
       <q-table
         :data="articles"
         :columns="columns"
-        row-key="name"
+        row-key="articleno"
         :pagination.sync="pagination"
         hide-pagination
         :filter="filter"
+        @row-click="detailArticle"
       >
-        <template v-slot:top-left>
+        <template
+          v-slot:top-left
+          v-if="this.$q.sessionStorage.getItem('isAdmin') == 'true'"
+        >
           <q-btn
             color="secondary"
-            label="글작성"
+            label="글 작성"
             size="15px"
             style="padding:5px;"
             @click="insertArticle"
@@ -58,7 +62,6 @@ export default {
   name: "NoticeList",
   data() {
     return {
-      upHere: false,
       columns: [
         {
           name: "articleno",
@@ -98,8 +101,8 @@ export default {
   },
 
   methods: {
-    detailArticle(items) {
-      this.$router.push("/notice/detail/" + items.articleno);
+    detailArticle(evt, row) {
+      this.$router.push("/notice/detail/" + row.articleno);
     },
     retrieveArticles() {
       api
@@ -116,9 +119,6 @@ export default {
   },
   mounted() {
     this.retrieveArticles();
-    // 어드민이 아니면 false
-    //console.log(this.articles);
-    this.adminCondition = true;
   },
   computed: {
     pagesNumber() {

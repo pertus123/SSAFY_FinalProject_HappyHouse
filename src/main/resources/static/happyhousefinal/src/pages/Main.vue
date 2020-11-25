@@ -102,6 +102,7 @@
           row-key="name"
           hide-header
           hide-bottom
+          @row-click="detailNotice"
         />
       </div>
       <div class="col-4" style="padding:10px">
@@ -109,9 +110,10 @@
           title="Q&A"
           :data="qna_data"
           :columns="qna_columns"
-          row-key="name"
+          row-key="articleno"
           hide-header
           hide-bottom
+          @row-click="detailQna"
         />
       </div>
       <div class="col-2"><img src="~assets/ad.png" width="100%" /></div>
@@ -130,7 +132,7 @@ export default {
         searchType: "",
         keyword: ""
       },
-       tmpSearchCode: {
+      tmpSearchCode: {
         dealType: "1",
         searchType: "",
         keyword: ""
@@ -138,11 +140,13 @@ export default {
       selectOptions: ["동으로 검색", "건물명으로 검색"],
       notice_data: [],
       notice_columns: [
+        { name: "articleno", label: "글번호", field: "" },
         { name: "notice", align: "left", label: "제목", field: "subject" },
         { name: "date", label: "작성일", field: "regidate" }
       ],
       qna_data: [],
       qna_columns: [
+        { name: "articleno", label: "글번호", field: "" },
         { name: "notice", align: "left", label: "제목", field: "subject" },
         { name: "date", label: "작성일", field: "regidate" }
       ]
@@ -150,11 +154,9 @@ export default {
   },
   methods: {
     onClickSearch() {
-   //   alert(this.searchCode.searchType);
-    //  alert(this.searchCode.keyword);
-      if(this.searchCode.searchType == "동으로 검색") this.tmpSearchCode.searchType = '0';
-      else this.tmpSearchCode.searchType = '1';
- //    this.tmpSearchCode.searchType = this.searchCode.searchType;
+      if (this.searchCode.searchType == "동으로 검색")
+        this.tmpSearchCode.searchType = "0";
+      else this.tmpSearchCode.searchType = "1";
       this.tmpSearchCode.keyword = this.searchCode.keyword;
 
       this.$router.push({ name: "Search", params: { no: this.tmpSearchCode } });
@@ -180,6 +182,12 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    detailNotice: function(evt, row) {
+      this.$router.push("/notice/detail/" + row.articleno);
+    },
+    detailQna: function(evt, row) {
+      this.$router.push("/qna/detail/" + row.articleno);
     }
   },
   mounted() {

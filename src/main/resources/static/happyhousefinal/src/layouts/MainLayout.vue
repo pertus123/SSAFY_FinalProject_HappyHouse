@@ -15,13 +15,14 @@
             this.$q.sessionStorage.getItem("userName")
           }})님 환영합니다.</span
         >
-        <q-btn
-          label="회원관리"
-          v-if="this.$q.sessionStorage.getItem('isAdmin')"
-          color="secondary"
-          style="margin:5px;"
-          @click="adminMemberList"
-        />
+        <div v-if="this.$q.sessionStorage.getItem('isAdmin') == 'true'">
+          <q-btn
+            label="회원관리"
+            color="secondary"
+            style="margin:5px;"
+            @click="adminMemberList"
+          />
+        </div>
         <q-btn
           label="마이페이지"
           color="primary"
@@ -76,7 +77,6 @@ export default {
 </script>
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700;800&family=Noto+Sans+KR:wght@500&display=swap");
-
 * {
   font-family: "Noto Sans KR", sans-serif;
 }

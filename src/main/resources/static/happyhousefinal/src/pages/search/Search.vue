@@ -37,13 +37,17 @@
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="left = !left" />
         <q-toolbar-title>
-          <img src="~assets/logo.png" width="150px" @click="onClickLogo" style="cursor:pointer" />
+          <img
+            src="~assets/logo.png"
+            width="150px"
+            @click="onClickLogo"
+            style="cursor:pointer"
+          />
         </q-toolbar-title>
-        
 
         <span style="margin-right:15px; font-size:15px;"
-          >{{ this.$q.sessionStorage.getItem('userId') }}({{
-            this.$q.sessionStorage.getItem('userName')
+          >{{ this.$q.sessionStorage.getItem("userId") }}({{
+            this.$q.sessionStorage.getItem("userName")
           }})님 환영합니다.</span
         >
         <q-btn
@@ -53,8 +57,18 @@
           style="margin:5px;"
           @click="adminMemberList"
         />
-        <q-btn label="마이페이지" color="primary" style="margin:5px;" @click="onClickMypage" />
-        <q-btn label="로그아웃" color="accent" style="margin:5px;" @click="onClickLogout" />
+        <q-btn
+          label="마이페이지"
+          color="primary"
+          style="margin:5px;"
+          @click="onClickMypage"
+        />
+        <q-btn
+          label="로그아웃"
+          color="accent"
+          style="margin:5px;"
+          @click="onClickLogout"
+        />
         <!--  -->
 
         <!-- <q-toolbar-title>
@@ -72,11 +86,15 @@
       <list-bar :aptlist="aptlist" @select-apt="selectApt"></list-bar>
       <!-- drawer content -->
     </q-drawer>
-    
-<!-- style="z-index:10; position: absolute; left: 660px" -->
+
+    <!-- style="z-index:10; position: absolute; left: 660px" -->
     <q-page-container>
-      <div class="row" style="z-index:10; position: absolute; left: 1111px; top:90px;">
-        <search-bar @search-send-code="searchSendCode" :firstData="no"> </search-bar>
+      <div
+        class="row"
+        style="z-index:10; position: absolute; right:0; top:10%;"
+      >
+        <search-bar @search-send-code="searchSendCode" :firstData="no">
+        </search-bar>
       </div>
       <div>
         <map-bar :aptlist="aptlist" :apt="selectedApt"></map-bar>
@@ -86,45 +104,44 @@
 </template>
 
 <script>
-import ListBar from 'pages/search/ListBar.vue';
-import MapBar from 'pages/search/MapBar.vue';
-import SearchBar from 'pages/search/SearchBar.vue';
-import { api } from 'boot/axios';
+import ListBar from "pages/search/ListBar.vue";
+import MapBar from "pages/search/MapBar.vue";
+import SearchBar from "pages/search/SearchBar.vue";
+import { api } from "boot/axios";
 export default {
-  name: 'Search',
+  name: "Search",
   props: {
-    no: {},
+    no: {}
   },
 
   components: {
     ListBar,
     MapBar,
-    SearchBar,
+    SearchBar
   },
 
   data() {
     return {
       left: false,
-      dongCode: '',
-      selectedApt: '',
+      dongCode: "",
+      selectedApt: "",
       apts: [],
-      aptlist: [],
+      aptlist: []
     };
   },
 
-
-  watch:{
-    aptlist : function(newVal, oldVal){
-    this.left = true;
+  watch: {
+    aptlist: function(newVal, oldVal) {
+      this.left = true;
     }
   },
   methods: {
     onClickLogo: function() {
-      this.$router.push('/');
+      this.$router.push("/");
     },
     onClickLogout: function() {
       SessionStorage.clear();
-      this.$router.push('/login');
+      this.$router.push("/login");
     },
     adminMemberList() {},
     onClickMypage() {},
@@ -139,75 +156,75 @@ export default {
       //  alert(searchInfo.dealType);
       //alert('1');
       var tempSearchType;
-      if(searchInfo.searchType == "동으로 검색") tempSearchType = "0";
+      if (searchInfo.searchType == "동으로 검색") tempSearchType = "0";
       else tempSearchType = "1";
-//alert(tempSearchType)
+      //alert(tempSearchType)
       api
-        .get('/searchdata/', {
+        .get("/searchdata/", {
           params: {
-            dealType: '1',
+            dealType: "1",
             searchType: tempSearchType,
-            keyword: searchInfo.keyword,
-          },
+            keyword: searchInfo.keyword
+          }
         })
         .then(response => {
           console.log(response); //apt list
-        //  alert('test1');
+          //  alert('test1');
           this.aptlist = response.data;
         })
         .catch(error => {
-          alert('error');
-         // alert(searchInfo.keyword);
-         // alert(searchInfo.searchType);
+          alert("error");
+          // alert(searchInfo.keyword);
+          // alert(searchInfo.searchType);
         });
     },
     selectApt: function(apt) {
       this.selectedApt = apt;
-    },
+    }
   },
 
   mounted() {
     // alert('ㅇㄱ');
     // alert(this.no);
 
-   // alert("1");
-  //  alert(this.no);
+    // alert("1");
+    //  alert(this.no);
 
-//alert(this.no);
+    //alert(this.no);
 
-//alert(this.no.searchType);
-//alert(this.no.keyword);
+    //alert(this.no.searchType);
+    //alert(this.no.keyword);
 
     api
-      .get('/searchdata/', {
+      .get("/searchdata/", {
         params: {
-          dealType: '1',
+          dealType: "1",
           searchType: this.no.searchType,
-          keyword: this.no.keyword,
-        },
+          keyword: this.no.keyword
+        }
       })
       .then(response => {
-     //   alert('wow2');
+        //   alert('wow2');
         console.log(response); //apt list
 
         this.aptlist = response.data;
         //   alert("succ");
       })
       .catch(error => {
-        alert('wow');
+        alert("wow");
         console.log(error);
         //    alert(error);
       });
-  },
+  }
 };
 </script>
 
 <style scoped>
 @charset "UTF-8";
 
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700;800&family=Noto+Sans+KR:wght@500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700;800&family=Noto+Sans+KR:wght@500&display=swap");
 * {
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
 }
 
 body {

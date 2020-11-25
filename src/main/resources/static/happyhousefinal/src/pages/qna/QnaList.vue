@@ -1,75 +1,53 @@
 <template>
-  <div>
+  <div class="flex flex-center">
     <div class="banner">
-      <h2>Q&A</h2>
+      Q&A
     </div>
-    <div class="container" align="center">
-      <div class="col-md-10">
-        <b-container>
-          <b-row>
-            <b-col lg="6" class="my-1">
-              <!-- 글작성 버튼 생성 -->
-              <button
-                id="noticewrite"
-                class="btn-secondary btn-sm"
-                @click="insertArticle"
-              >
-                글작성
-              </button>
-            </b-col>
-            <b-col lg="6" class="my-1">
-              <b-form-group
-                label="검색"
-                label-cols-sm="3"
-                label-align-sm="right"
-                label-size="sm"
-                label-for="filterInput"
-                class="mb-0"
-              >
-                <b-input-group size="sm">
-                  <b-form-input
-                    v-model="filter"
-                    type="search"
-                    id="filterInput"
-                    placeholder="검색할 글제목 입력"
-                  ></b-form-input>
-                  <b-input-group-append>
-                    <b-button :disabled="!filter" @click="filter = ''"
-                      >Clear</b-button
-                    >
-                  </b-input-group-append>
-                </b-input-group>
-              </b-form-group>
-            </b-col>
-          </b-row>
-          <b-table
-            show-empty
-            small
-            stacked="md"
-            hover
-            :items="articles"
-            :fields="fields"
-            :current-page="currentPage"
-            :per-page="perPage"
-            :filter="filter"
-            :filter-included-fields="filterOn"
-            @filtered="onFiltered"
-            @row-clicked="detailArticle"
+    <div class="col-10" style="margin-top:15px;">
+      <q-table
+        :data="articles"
+        :columns="columns"
+        row-key="articleno"
+        :pagination.sync="pagination"
+        hide-pagination
+        :filter="filter"
+        @row-click="detailArticle"
+      >
+        <template v-slot:top-left>
+          <q-btn
+            color="secondary"
+            label="글 작성"
+            size="15px"
+            style="padding:5px;"
+            @click="insertArticle"
+          />
+        </template>
+        <template v-slot:top-right>
+          <q-input
+            outlined
+            dense
+            debounce="300"
+            color="primary"
+            v-model="filter"
           >
-          </b-table>
-          <b-row align-h="center">
-            <b-pagination
-              v-model="currentPage"
-              :total-rows="totalRows"
-              :per-page="perPage"
-              align="fill"
-              size="sm"
-              class="my-0"
-              first-number
-              last-number
-            ></b-pagination>
-          </b-row>
-        </b-container>
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </template>
+      </q-table>
+
+      <div class="row justify-center q-mt-md">
+        <q-pagination
+          v-model="pagination.page"
+          color="primary"
+          :max="pagesNumber"
+          :max-pages="10"
+          size="md"
+          :direction-links="true"
+          :boundary-links="true"
+          style="margin-bottom:20px"
+        />
       </div>
     </div>
   </div>
@@ -81,30 +59,57 @@ export default {
   name: "ArticleList",
   data() {
     return {
-      upHere: false,
-      fields: [
-        { key: "articleno", label: "글번호" },
-        { key: "subject", label: "제목" },
-        { key: "author", label: "작성자" },
-        { key: "regidate", label: "작성일" }
+      columns: [
+        {
+          name: "articleno",
+          align: "center",
+          label: "글번호",
+          field: "articleno",
+          sortable: true,
+          style: "width: 50px"
+        },
+        {
+          name: "subject",
+          align: "left",
+          label: "제목",
+          field: "subject",
+          sortable: true,
+          style: "width: 620px"
+        },
+        {
+          name: "author",
+          align: "left",
+          label: "작성자",
+          field: "author",
+          sortable: true,
+          style: "width: 50px"
+        },
+        {
+          name: "regidate",
+          align: "center",
+          label: "작성일",
+          field: "regidate",
+          sortable: true,
+          style: "width: 100px"
+        }
       ],
       articles: [],
-      loading: true,
-      errored: false,
-      totalRows: 1,
-      currentPage: 1,
-      perPage: 10,
-      filter: null,
-      filterOn: []
+      pagination: {
+        sortBy: "desc",
+        descending: false,
+        page: 1,
+        rowsPerPage: 10
+        // rowsNumber: xx if getting data from a server
+      },
+      filter: ""
     };
   },
   methods: {
     insertArticle() {
-      this.$router.push("/qnainsert");
+      this.$router.push("/qna/insert");
     },
-    detailArticle(items) {
-      //alert(no+"게시글의 정보입니다.");
-      this.$router.push("/qnadetail/" + items.articleno);
+    detailArticle(evt, row) {
+      this.$router.push("/qna/detail/" + row.articleno);
     },
     retrieveArticles() {
       api
@@ -115,27 +120,24 @@ export default {
         })
         .finally(
           () => (
-            //      alert(this.articles),
             (this.loading = false), (this.totalRows = this.articles.length)
           )
         );
-    },
-    QnaArticleWrite() {},
-    onFiltered(filteredItems) {
-      // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length;
-      this.currentPage = 1;
     }
   },
   mounted() {
     this.retrieveArticles();
+  },
+  computed: {
+    pagesNumber() {
+      return Math.ceil(this.articles.length / this.pagination.rowsPerPage);
+    }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-@charset "UTF-8";
 .banner {
   color: #fff;
   padding-top: 70px;
@@ -145,79 +147,8 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
   text-align: center;
-}
-.search-container {
-  display: flex;
-  justify-content: flex-end; /* 요소 오른쪽정렬 */
-  align-items: center; /* 요소 세로방향 가운데정렬 */
-}
-
-#key {
-  width: 15%;
-  margin-right: 5px;
-}
-
-#word {
-  width: 30%;
-  margin-right: 5px;
-}
-
-#searchBtn {
-  width: 37px;
-  height: 37px;
-  line-height: 0px; /* 글씨 세로정렬 */
-  padding: 0 0;
-  border-radius: 2px;
-}
-
-.articleno {
-  width: 100px;
-  text-align: center;
-}
-
-.articledate {
-  width: 150px;
-  text-align: center;
-}
-
-#searchform {
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-button {
-  background: #586282;
-  color: white;
-  padding: 14px 20px;
-  border: none;
-  cursor: pointer;
-  margin-right: 10px;
-}
-
-button:hover {
-  color: #fff;
-  background: linear-gradient(-45deg, #4f463e, #cfb8a1);
-  background-size: 500% 500%;
-  animation: AnimationName 10s ease infinite;
-}
-thead {
-  background-color: #dbc3ab;
-}
-
-.page-link {
-  color: #75612d;
-}
-
-.page-item.active .page-link {
-  background-color: #dbc3ab;
-  border-color: #dbc3ab;
-}
-
-#noticewrite {
-  margin-bottom: 20px;
-  text-align: center;
-  width: 80px;
-  height: 40px;
-  float: left;
+  width: 100%;
+  height: 200px;
+  font-size: 35px;
 }
 </style>

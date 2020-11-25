@@ -1,97 +1,133 @@
 <template>
   <div>
-    <div id="header">
-      <main-header />
-    </div>
     <div class="banner">
-      <h2>Q&A</h2>
+      Q&A
     </div>
-
-    <div class="container" align="center">
-      <div class="col-md-10">
-        <div class="content">
-          <table>
-            <thead style="background-color: white;">
-              <tr>
-                <td id="subject">{{ article.subject }}</td>
-              </tr>
-
-              <tr>
-                <td id="author">
-                  {{ article.author }}, {{ article.regidate }}
-                </td>
-              </tr>
-              <!-- <tr>
-							<td>{{article.regidate}}</td>
-						</tr> -->
-            </thead>
-            <hr />
-            <tbody>
-              <tr>
-                <td id="content">{{ article.content }}</td>
-              </tr>
-            </tbody>
-          </table>
+    <div class="row">
+      <div class="col-2"></div>
+      <div class="col-8" style="margin-top:15px;">
+        <div class="outline">
+          <div class="row" style="font-size:35px;weight:500">
+            {{ article.subject }}
+          </div>
+          <div class="row" style="font-size:15px; margin-bottom : 5px;">
+            작성자 : {{ article.author }}
+          </div>
+          <div
+            class="row text-primary"
+            style="font-size:15px;border-bottom:1px solid #4f463e; margin-bottom : 10px;"
+          >
+            {{ article.regidate }}
+          </div>
+          <div class="row" style="font-size:15px;">{{ article.content }}</div>
         </div>
-        <div>
-          <button
-            type="button"
-            class="btn-secondary btn-lg"
-            v-on:click="retrieveArticles()"
-            style="margin:5px;"
-          >
-            글 목록
-          </button>
-          <button
-            type="button"
-            class="btn-secondary btn-lg"
-            v-on:click="updateArticle(article.articleno)"
-            style="margin:5px;"
-          >
-            글 수정
-          </button>
-          <button
-            type="button"
-            class="btn-secondary btn-lg"
-            v-on:click="deleteArticle(article.articleno)"
-            style="margin:5px;"
-          >
-            글 삭제
-          </button>
+        <div
+          class="q-gutter-md"
+          style="text-align:center;margin-top:5px;margin-bottom:15px"
+        >
+          <q-btn
+            color="secondary"
+            label="글 목록"
+            size="15px"
+            style="padding:5px;"
+            @click="retrieveArticles"
+          />
+          <q-btn
+            color="primary"
+            v-if="this.$q.sessionStorage.getItem('userId') == article.author"
+            label="글 수정"
+            size="15px"
+            style="padding:5px;"
+            @click="updateArticle"
+          />
+          <q-btn
+            color="accent"
+            v-if="this.$q.sessionStorage.getItem('userId') == article.author"
+            label="글 삭제"
+            size="15px"
+            style="padding:5px;"
+            @click="deleteArticle"
+          />
         </div>
-        <b-row>
-          <b-col cols="12" sm>
-            <input
-              type="text"
-              style="width:85%;height:50px;"
+        <div class="row" style="margin-bottom:20px">
+          <div class="col-10">
+            <q-input
+              outlined
               v-model="replycontent"
+              bg-color="white"
+              color="secondary"
+              style="width:100%; margin-right:10px"
             />
-            <button
-              type="button"
-              class="btn-secondary"
-              v-on:click="insertReply()"
-              style="margin:5px;"
-            >
-              댓글 등록
-            </button>
-          </b-col>
-        </b-row>
+          </div>
+          <div class="col-2">
+            <q-btn
+              color="secondary"
+              label="댓글등록"
+              size="15px"
+              style="padding:5px; width:100%; height:100%"
+              @click="insertReply"
+            />
+          </div>
+        </div>
         <div>
-          <b-table
-            show-empty
-            :items="replys"
-            :fields="fields"
-            thead-class="d-none"
+          <q-table
+            :data="reply_data"
+            :columns="reply_columns"
+            row-key="replyno"
+            hide-header
+            hide-bottom
           >
-            <template #cell(update)>
-              <b-button size="md" class="mr-0">수정</b-button>
+            <template v-slot:body="props">
+              <q-tr v-show="!props.expand" :props="props">
+                <q-td v-for="col in props.cols" :key="col.name" :props="props">
+                  {{ col.value }}
+                </q-td>
+                <q-td width="50px">
+                  <q-btn
+                    color="primary"
+                    label="수정"
+                    @click="props.expand = !props.expand"
+                  />
+                </q-td>
+                <q-td width="50px">
+                  <q-btn
+                    color="accent"
+                    label="삭제"
+                    @click="deleteReply(props.row.replyno)"
+                  />
+                </q-td>
+              </q-tr>
+              <q-tr v-show="props.expand" :props="props">
+                <q-td> </q-td>
+                <q-td>
+                  {{ props.row.replyauthor }}
+                </q-td>
+                <q-td>
+                  <q-input
+                    outlined
+                    v-model="props.row.replycontent"
+                    bg-color="white"
+                  />
+                </q-td>
+                <q-td align="right">
+                  {{ props.row.replyregidate }}
+                </q-td>
+                <q-td>
+                  <q-btn
+                    color="primary"
+                    label="수정"
+                    @click="
+                      updateReply(
+                        props.row.replycontent,
+                        props.row.replyno,
+                        props
+                      )
+                    "
+                  />
+                </q-td>
+              </q-tr>
             </template>
-            <template #cell(delete)="row">
-              <b-button size="md" @click="deleteReply(row.item)" class="mr-0"
-                >삭제</b-button
-              >
-            </template>
-          </b-table>
+          </q-table>
         </div>
       </div>
     </div>
@@ -100,38 +136,65 @@
 
 <script>
 import { api } from "boot/axios";
+import { SessionStorage } from "quasar";
 export default {
   name: "QnaDetail",
   props: ["no"],
   data() {
     return {
-      upHere: false,
-      article: {},
-      fields: [
-        { key: "replyauthor", label: "작성자" },
-        { key: "replycontent", label: "댓글내용" },
-        { key: "replyregidate", label: "작성일" },
-        { key: "update", label: "update" },
-        { key: "delete", label: "delete" }
+      reply_data: [],
+      reply_columns: [
+        { name: "replyno", label: "댓글번호", field: "", style: "width:0px" },
+        {
+          name: "replyauthor",
+          label: "작성자",
+          align: "center",
+          field: "replyauthor",
+          style: "width:50px"
+        },
+        {
+          name: "replycontent",
+          align: "left",
+          label: "제목",
+          field: "replycontent"
+        },
+        {
+          name: "replyregidate",
+          align: "right",
+          label: "작성일",
+          field: "replyregidate"
+        }
       ],
       replycontent: "",
-      replys: [],
-      replyinsertcliked: false,
+      article: {},
       loading: true,
       errored: false
     };
   },
   methods: {
-    deleteArticle(no) {
-      ///deleteEmployee/
+    deleteArticle() {
       api
-        .delete("/qnanotice/qnanoticedelete/" + no)
+        .delete("/qnanotice/qnanoticedelete/" + this.no)
         .then(response => {
           if (response.data == "success") {
-            alert("게시글 삭제 처리를 하였습니다.");
-            this.$router.push("/qnanotice");
+            this.$q.notify({
+              color: "primary",
+              textColor: "white",
+              icon: "done_outline",
+              position: "top",
+              timeout: 1000,
+              message: "QnA 삭제 성공!"
+            });
+            this.$router.push("/qna");
           } else {
-            alert("게시글 삭제 처리를 하지 못했습니다.");
+            this.$q.notify({
+              color: "accent",
+              textColor: "white",
+              icon: "warning",
+              position: "top",
+              timeout: 1500,
+              message: "QnA 삭제 실패. 다시 시도해주세요."
+            });
           }
         })
         .catch(() => {
@@ -139,17 +202,17 @@ export default {
         })
         .finally(() => (this.loading = false));
     },
-    updateArticle(no) {
+    updateArticle() {
       //console.log(this.article);
-      this.$router.push("/qnaupdate/" + no);
+      this.$router.push("/qna/update/" + this.no);
     },
     retrieveArticles() {
-      this.$router.push("/qnanotice");
+      this.$router.push("/qna");
     },
     retrieveReplys() {
-      http
+      api
         .get("/qnareply/replylist/" + this.no)
-        .then(response => (this.replys = response.data))
+        .then(response => (this.reply_data = response.data))
         .catch(() => {
           this.errored = true;
         })
@@ -159,34 +222,109 @@ export default {
       api
         .post("/qnareply/replywrite", {
           articleno: this.no,
-          replyauthor: "ssafy",
+          replyauthor: SessionStorage.getItem("userId"),
           replycontent: this.replycontent
         })
         .then(response => {
+          if (this.replycontent == "") {
+            this.$q.notify({
+              color: "secondary",
+              textColor: "white",
+              icon: "warning",
+              position: "top",
+              timeout: 1500,
+              message: "내용을 입력하세요."
+            });
+            return;
+          }
           if (response.data == "success") {
-            alert("댓글을 등록하였습니다.");
+            this.$q.notify({
+              color: "primary",
+              textColor: "white",
+              icon: "done_outline",
+              position: "top",
+              timeout: 1000,
+              message: "댓글 등록 성공!"
+            });
           } else {
-            alert("댓글을 등록하지못했습니다.");
+            this.$q.notify({
+              color: "accent",
+              textColor: "white",
+              icon: "warning",
+              position: "top",
+              timeout: 1500,
+              message: "댓글 등록 실패. 다시 시도해주세요."
+            });
           }
           this.retrieveReplys();
           this.replycontent = "";
         });
     },
-    deleteReply(item) {
-      alert(item);
-      // http
-      //   .delete('/qnareply/replydelete/' + item.replyno)
-      //   .then((response) => {
-      //     if (response.data == 'success') {
-      //       alert('댓글 삭제 처리를 하였습니다.');
-      //     } else {
-      //       alert('댓글 삭제 처리를 하지 못했습니다.');
-      //     }
-      //   })
-      //   .catch(() => {
-      //     this.errored = true;
-      //   })
-      //   .finally(() => (this.loading = false));
+    deleteReply(replyno) {
+      api.delete("/qnareply/replydelete/" + replyno).then(response => {
+        if (response.data == "success") {
+          this.$q.notify({
+            color: "primary",
+            textColor: "white",
+            icon: "done_outline",
+            position: "top",
+            timeout: 1000,
+            message: "댓글 삭제 성공!"
+          });
+        } else {
+          this.$q.notify({
+            color: "accent",
+            textColor: "white",
+            icon: "warning",
+            position: "top",
+            timeout: 1500,
+            message: "댓글 삭제 실패. 다시 시도해주세요."
+          });
+        }
+        this.retrieveReplys();
+        this.replycontent = "";
+      });
+    },
+    updateReply(replycontent, replyno, props) {
+      if (replycontent == "") {
+        this.$q.notify({
+          color: "secondary",
+          textColor: "white",
+          icon: "warning",
+          position: "top",
+          timeout: 1500,
+          message: "내용을 입력하세요."
+        });
+        return;
+      }
+      api
+        .put("/qnareply/replyupdate", {
+          replyno: replyno,
+          replycontent: replycontent
+        })
+        .then(response => {
+          if (response.data == "success") {
+            this.$q.notify({
+              color: "primary",
+              textColor: "white",
+              icon: "done_outline",
+              position: "top",
+              timeout: 1000,
+              message: "댓글 수정 성공!"
+            });
+          } else {
+            this.$q.notify({
+              color: "accent",
+              textColor: "white",
+              icon: "warning",
+              position: "top",
+              timeout: 1500,
+              message: "댓글 수정 실패. 다시 시도해주세요."
+            });
+          }
+          props.expand = !props.expand;
+          this.retrieveReplys();
+        });
     }
   },
   mounted() {
@@ -203,7 +341,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-@charset "UTF-8";
 .banner {
   color: #fff;
   padding-top: 70px;
@@ -213,26 +350,13 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
   text-align: center;
-}
-
-button {
-  background: #586282;
-  color: white;
-  padding: 14px 20px;
-  margin: 20px 10px;
-  cursor: pointer;
-}
-
-button:hover {
-  color: #fff;
-  background: linear-gradient(-45deg, #4f463e, #cfb8a1);
-  background-size: 500% 500%;
-  animation: AnimationName 10s ease infinite;
-}
-
-.content {
   width: 100%;
-  margin-top: 50px;
+  height: 200px;
+  font-size: 35px;
+}
+
+.outline {
+  width: 100%;
   border: 1px solid #4f463e;
   border-radius: 10px;
   padding-top: 35px;
@@ -240,31 +364,5 @@ button:hover {
   padding-right: 40px;
   padding-bottom: 40px;
   min-height: 500px;
-}
-
-table {
-  width: 100%;
-  text-align: left;
-  padding: 20px;
-}
-
-#subject {
-  font-size: 30px;
-  font-weight: 500;
-}
-
-#date {
-  color: #dbc3ab;
-  border-bottom: 1px solid #4f463e;
-}
-
-#content {
-  padding-top: 20px;
-}
-
-.buttonDiv {
-  display: flex;
-  justify-content: center; /* 요소 오른쪽정렬 */
-  align-items: center; /* 요소 세로방향 가운데정렬 */
 }
 </style>

@@ -1,62 +1,60 @@
 <template>
-  <div class="flex flex-center">
+  <div>
     <div class="banner">
       공지사항
     </div>
-    <div class="col-10" style="margin-top:15px;">
-      <form
-        id="writeform"
-        method="post"
-        action=""
-        @submit.prevent="writeArticle"
-      >
-        <div class="content">
-          <table style="  border-collapse: separate; border-spacing: 0 10px">
-            <thead style="background-color: white;">
-              <tr style="text-align:center">
-                <td>
-                  <q-input
-                    outlined
-                    v-model="subject"
-                    label="제목"
-                    bg-color="white"
-                    style="width:100%; margin-right:10px"
-                  />
-                </td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <q-input
-                    v-model="content"
-                    filled
-                    type="textarea"
-                    label="내용"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="buttonDiv">
-          <q-btn
-            color="primary"
-            label="글작성"
-            size="15px"
-            type="submit"
-            style="padding:5px;"
-          />
-          <q-btn
-            color="secondary"
-            label="글목록"
-            size="15px"
-            type="submit"
-            style="padding:5px;"
-            @click="retrieveArticles"
-          />
-        </div>
-      </form>
+    <div class="row">
+      <div class="col-2"></div>
+      <div class="col-8" style="margin-top:15px;">
+        <form
+          id="writeform"
+          method="post"
+          action=""
+          @submit.prevent="writeArticle"
+        >
+          <div class="outline">
+            <div class="row">
+              <q-input
+                outlined
+                v-model="subject"
+                label="제목"
+                bg-color="white"
+                style="width:100%; margin-bottom:15px"
+              />
+            </div>
+            <div class="row">
+              <q-input
+                v-model="content"
+                filled
+                type="textarea"
+                label="내용"
+                rows="20"
+                style="width:100%;"
+              />
+            </div>
+          </div>
+          <div
+            class="q-gutter-md"
+            style="text-align:center;margin-top:5px;margin-bottom:15px"
+          >
+            <q-btn
+              color="primary"
+              label="글 작성"
+              size="15px"
+              type="submit"
+              style="padding:5px;"
+            />
+            <q-btn
+              color="secondary"
+              label="글 목록"
+              size="15px"
+              type="submit"
+              style="padding:5px;"
+              @click="retrieveArticles"
+            />
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -64,7 +62,7 @@
 import { api } from "boot/axios";
 
 export default {
-  name: "QnaInsert",
+  name: "NoticeInsert",
   data() {
     return {
       info: null,
@@ -83,10 +81,6 @@ export default {
         alert("제목을 입력하세요.");
         return;
       }
-      if (this.author == "") {
-        alert("작성자를 입력하세요.");
-        return;
-      }
       if (this.content == "") {
         alert("내용을 입력하세요.");
         return;
@@ -100,10 +94,24 @@ export default {
         })
         .then(response => {
           if (response.data == "success") {
-            alert("게시글을 등록하였습니다.");
+            this.$q.notify({
+              color: "primary",
+              textColor: "white",
+              icon: "done_outline",
+              position: "top",
+              timeout: 1000,
+              message: "게시글 등록 성공!"
+            });
             this.$router.push("/notice");
           } else {
-            alert("게시글을 등록하지못했습니다.");
+            this.$q.notify({
+              color: "accent",
+              textColor: "white",
+              icon: "warning",
+              position: "top",
+              timeout: 1500,
+              message: "게시글 등록 실패. 다시 시도해주세요."
+            });
           }
         });
       this.submitted = true;
@@ -136,9 +144,8 @@ export default {
   font-size: 35px;
 }
 
-.content {
+.outline {
   width: 100%;
-  margin-top: 50px;
   border: 1px solid #4f463e;
   border-radius: 10px;
   padding-top: 35px;
@@ -146,11 +153,5 @@ export default {
   padding-right: 40px;
   padding-bottom: 40px;
   min-height: 500px;
-}
-
-table {
-  width: 100%;
-  text-align: left;
-  padding: 20px;
 }
 </style>

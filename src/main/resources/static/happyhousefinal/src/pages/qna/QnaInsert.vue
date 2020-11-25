@@ -1,87 +1,67 @@
 <template>
   <div>
-    <div id="header">
-      <main-header />
-    </div>
     <div class="banner">
-      <h2>Q&A</h2>
+      Q&A
     </div>
-    <div class="container" align="center">
-      <div class="col-md-10">
+    <div class="row">
+      <div class="col-2"></div>
+      <div class="col-8" style="margin-top:15px;">
         <form
           id="writeform"
           method="post"
           action=""
           @submit.prevent="writeArticle"
         >
-          <div class="content">
-            <table style="  border-collapse: separate; border-spacing: 0 10px">
-              <thead style="background-color: white;">
-                <tr>
-                  <th>제목</th>
-                  <td>
-                    <input
-                      data-msg="제목"
-                      class="form-control"
-                      type="text"
-                      name="subject"
-                      id="subj"
-                      v-model="subject"
-                      style="width:100%"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <th>작성자</th>
-                  <td>
-                    <input
-                      data-msg="작성자"
-                      class="form-control"
-                      type="text"
-                      name="author"
-                      id="_author"
-                      v-model="author"
-                      style="width:100%"
-                    />
-                  </td>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th style="valign : top">내용</th>
-                  <td>
-                    <textarea
-                      data-msg="내용"
-                      class="form-control"
-                      rows="15"
-                      type="text"
-                      name="content"
-                      id="cont"
-                      size="30"
-                      v-model="content"
-                      style="width:100%;"
-                    />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="outline">
+            <div class="row">
+              <q-input
+                outlined
+                v-model="subject"
+                label="제목"
+                bg-color="white"
+                style="width:100%; margin-bottom:15px"
+              />
+            </div>
+            <div class="row">
+              <q-input
+                outlined
+                v-model="author"
+                label="작성자"
+                bg-color="white"
+                style="width:100%; margin-bottom:15px"
+                readonly
+              />
+            </div>
+            <div class="row">
+              <q-input
+                v-model="content"
+                filled
+                type="textarea"
+                label="내용"
+                rows="20"
+                style="width:100%;"
+              />
+            </div>
           </div>
-          <div class="buttonDiv">
-            <button
+          <div
+            class="q-gutter-md"
+            style="text-align:center;margin-top:5px;margin-bottom:15px"
+          >
+            <q-btn
+              color="primary"
+              label="글 작성"
+              size="15px"
               type="submit"
-              class="btn btn-secondary btn-lg"
-              name="button"
-            >
-              글 작성
-            </button>
-            <button
-              class="btn btn-secondary btn-lg"
-              name="button"
-              v-on:click="retrieveArticles()"
-              style="margin:10px;"
-            >
-              글 목록
-            </button>
+              style="padding:5px;"
+            />
+            <q-btn
+              color="secondary"
+              label="글 목록"
+              size="15px"
+              type="submit"
+              style="padding:5px;"
+              @click="retrieveArticles"
+            />
           </div>
         </form>
       </div>
@@ -90,6 +70,7 @@
 </template>
 <script>
 import { api } from "boot/axios";
+import { SessionStorage } from "quasar";
 export default {
   name: "QnaInsert",
   data() {
@@ -103,19 +84,31 @@ export default {
       submitted: false
     };
   },
-  mounted() {},
+  mounted() {
+    this.author = SessionStorage.getItem("userId");
+  },
   methods: {
     writeArticle() {
       if (this.subject == "") {
-        alert("제목을 입력하세요.");
-        return;
-      }
-      if (this.author == "") {
-        alert("작성자를 입력하세요.");
+        this.$q.notify({
+          color: "secondary",
+          textColor: "white",
+          icon: "warning",
+          position: "top",
+          timeout: 1500,
+          message: "제목을 입력하세요."
+        });
         return;
       }
       if (this.content == "") {
-        alert("내용을 입력하세요.");
+        this.$q.notify({
+          color: "secondary",
+          textColor: "white",
+          icon: "warning",
+          position: "top",
+          timeout: 1500,
+          message: "내용을 입력하세요."
+        });
         return;
       }
 
@@ -127,10 +120,24 @@ export default {
         })
         .then(response => {
           if (response.data == "success") {
-            alert("게시글을 등록하였습니다.");
-            this.$router.push("/qnanotice");
+            this.$q.notify({
+              color: "primary",
+              textColor: "white",
+              icon: "done_outline",
+              position: "top",
+              timeout: 1000,
+              message: "QnA 등록 성공!"
+            });
+            this.$router.push("/qna");
           } else {
-            alert("게시글을 등록하지못했습니다.");
+            this.$q.notify({
+              color: "accent",
+              textColor: "white",
+              icon: "warning",
+              position: "top",
+              timeout: 1500,
+              message: "QnA 등록 실패. 다시 시도해주세요."
+            });
           }
         });
       this.submitted = true;
@@ -142,14 +149,13 @@ export default {
         (this.content = "");
     },
     retrieveArticles() {
-      this.$router.push("/qnanotice");
+      this.$router.push("/qna");
     }
   }
 };
 </script>
 
 <style scoped>
-@charset "UTF-8";
 .banner {
   color: #fff;
   padding-top: 70px;
@@ -159,26 +165,13 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
   text-align: center;
-}
-
-button {
-  background: #586282;
-  color: white;
-  padding: 14px 20px;
-  margin: 20px 10px;
-  cursor: pointer;
-}
-
-button:hover {
-  color: #fff;
-  background: linear-gradient(-45deg, #4f463e, #cfb8a1);
-  background-size: 500% 500%;
-  animation: AnimationName 10s ease infinite;
-}
-
-.content {
   width: 100%;
-  margin-top: 50px;
+  height: 200px;
+  font-size: 35px;
+}
+
+.outline {
+  width: 100%;
   border: 1px solid #4f463e;
   border-radius: 10px;
   padding-top: 35px;
@@ -186,31 +179,5 @@ button:hover {
   padding-right: 40px;
   padding-bottom: 40px;
   min-height: 500px;
-}
-
-table {
-  width: 100%;
-  text-align: left;
-  padding: 20px;
-}
-
-#subject {
-  font-size: 30px;
-  font-weight: 500;
-}
-
-#date {
-  color: #dbc3ab;
-  border-bottom: 1px solid #4f463e;
-}
-
-#content {
-  padding-top: 20px;
-}
-
-.buttonDiv {
-  display: flex;
-  justify-content: center; /* 요소 오른쪽정렬 */
-  align-items: center; /* 요소 세로방향 가운데정렬 */
 }
 </style>

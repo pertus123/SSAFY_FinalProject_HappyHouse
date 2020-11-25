@@ -1,62 +1,50 @@
 <template>
   <div>
     <div class="banner">
-      <h2>공지사항</h2>
+      공지사항
     </div>
-
-    <div class="container" align="center">
-      <div class="col-md-10">
-        <div class="content">
-          <table>
-            <thead style="background-color: white;">
-              <tr>
-                <td id="subject">{{ article.subject }}</td>
-              </tr>
-
-              <tr>
-                <td id="author">
-                  {{ article.author }}, {{ article.regidate }}
-                </td>
-              </tr>
-              <!-- <tr>
-							<td>{{article.regidate}}</td>
-						</tr> -->
-            </thead>
-            <hr />
-            <tbody>
-              <tr>
-                <td id="content">{{ article.content }}</td>
-              </tr>
-            </tbody>
-          </table>
+    <div class="row">
+      <div class="col-2"></div>
+      <div class="col-8" style="margin-top:15px;">
+        <div class="outline">
+          <div class="row" style="font-size:35px;weight:500">
+            {{ article.subject }}
+          </div>
+          <div
+            class="row text-primary"
+            style="font-size:15px;border-bottom:1px solid #4f463e; margin-bottom : 10px;"
+          >
+            {{ article.regidate }}
+          </div>
+          <div class="row" style="font-size:15px;">{{ article.content }}</div>
         </div>
-        <div>
-          <button
-            type="button"
-            class="btn-secondary btn-lg"
-            v-on:click="retrieveArticles()"
-            style="margin:5px;"
-          >
-            글 목록
-          </button>
-          <button
-            v-if="adminCondition"
-            type="button"
-            class="btn-secondary btn-lg"
-            v-on:click="updateArticle(article.articleno)"
-            style="margin:5px;"
-          >
-            글 수정
-          </button>
-          <button
-            v-if="adminCondition"
-            type="button"
-            class="btn-secondary btn-lg"
-            v-on:click="deleteArticle(article.articleno)"
-            style="margin:5px;"
-          >
-            글 삭제
-          </button>
+        <div
+          class="q-gutter-md"
+          style="text-align:center;margin-top:5px;margin-bottom:15px"
+        >
+          <q-btn
+            color="secondary"
+            label="글 목록"
+            size="15px"
+            style="padding:5px;"
+            @click="retrieveArticles"
+          />
+          <q-btn
+            color="primary"
+            v-if="this.$q.sessionStorage.getItem('isAdmin') == 'true'"
+            label="글 수정"
+            size="15px"
+            style="padding:5px;"
+            @click="updateArticle"
+          />
+          <q-btn
+            color="accent"
+            v-if="this.$q.sessionStorage.getItem('isAdmin') == 'true'"
+            label="글 삭제"
+            size="15px"
+            style="padding:5px;"
+            @click="deleteArticle"
+          />
         </div>
       </div>
     </div>
@@ -67,34 +55,40 @@
 import { api } from "boot/axios";
 
 export default {
-  name: "QnaDetail",
+  name: "NoticeDetail",
   props: ["no"],
   data() {
     return {
-      upHere: false,
       article: {},
       loading: true,
-      errored: false,
-      adminCondition: false
-      // emp: {
-      //   subject: null,
-      //   no:null,
-      //   author : null,
-      //   regidate : null
-      //   }
+      errored: false
     };
   },
   methods: {
-    deleteArticle(no) {
+    deleteArticle() {
       ///deleteEmployee/
       api
-        .delete("/qnanotice/qnanoticedelete/" + no)
+        .delete("/notice/noticedelete/" + this.no)
         .then(response => {
           if (response.data == "success") {
-            alert("게시글 삭제 처리를 하였습니다.");
+            this.$q.notify({
+              color: "primary",
+              textColor: "white",
+              icon: "done_outline",
+              position: "top",
+              timeout: 1000,
+              message: "공지사항 삭제 성공!"
+            });
             this.$router.push("/notice");
           } else {
-            alert("게시글 삭제 처리를 하지 못했습니다.");
+            this.$q.notify({
+              color: "accent",
+              textColor: "white",
+              icon: "warning",
+              position: "top",
+              timeout: 1500,
+              message: "공지사항 삭제 실패. 다시 시도해주세요."
+            });
           }
         })
         .catch(() => {
@@ -102,24 +96,9 @@ export default {
         })
         .finally(() => (this.loading = false));
     },
-    updateArticle(no) {
+    updateArticle() {
       //console.log(this.article);
-      this.$router.push("/noticeupdate/" + no);
-
-      // alert(no + "번 게시글이 수정됩니다.");
-      // http
-      //   .put("/"+no, this.article)
-      //    .then(response => {
-      //     if (response.data == "success") {
-      //       alert("게시글 수정 처리를 하였습니다.");
-      //     } else {
-      //       alert("게시글 수정 처리를 하지 못했습니다.");
-      //     }
-      //   })
-      //   .catch(() => {
-      //     this.errored = true;
-      //   })
-      //   .finally(() => (this.loading = false));
+      this.$router.push("/notice/update/" + this.no);
     },
     retrieveArticles() {
       this.$router.push("/notice");
@@ -127,23 +106,18 @@ export default {
   },
   mounted() {
     api
-      .get("/qnanotice/qnanoticedetail/" + this.no)
+      .get("/notice/noticedetail/" + this.no)
       .then(response => (this.article = response.data))
       .catch(() => {
         this.errored = true;
       })
       .finally(() => (this.loading = false));
-
-    // admin 검사
-    this.adminCondition = true;
-    //alert("1"));
-  } //
+  }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-@charset "UTF-8";
 .banner {
   color: #fff;
   padding-top: 70px;
@@ -153,26 +127,13 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
   text-align: center;
-}
-
-button {
-  background: #586282;
-  color: white;
-  padding: 14px 20px;
-  margin: 20px 10px;
-  cursor: pointer;
-}
-
-button:hover {
-  color: #fff;
-  background: linear-gradient(-45deg, #4f463e, #cfb8a1);
-  background-size: 500% 500%;
-  animation: AnimationName 10s ease infinite;
-}
-
-.content {
   width: 100%;
-  margin-top: 50px;
+  height: 200px;
+  font-size: 35px;
+}
+
+.outline {
+  width: 100%;
   border: 1px solid #4f463e;
   border-radius: 10px;
   padding-top: 35px;
@@ -180,31 +141,5 @@ button:hover {
   padding-right: 40px;
   padding-bottom: 40px;
   min-height: 500px;
-}
-
-table {
-  width: 100%;
-  text-align: left;
-  padding: 20px;
-}
-
-#subject {
-  font-size: 30px;
-  font-weight: 500;
-}
-
-#date {
-  color: #dbc3ab;
-  border-bottom: 1px solid #4f463e;
-}
-
-#content {
-  padding-top: 20px;
-}
-
-.buttonDiv {
-  display: flex;
-  justify-content: center; /* 요소 오른쪽정렬 */
-  align-items: center; /* 요소 세로방향 가운데정렬 */
 }
 </style>
