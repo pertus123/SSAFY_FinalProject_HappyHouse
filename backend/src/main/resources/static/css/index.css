@@ -1,0 +1,107 @@
+@charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700;800&family=Noto+Sans+KR:wght@500&display=swap');
+* {
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+	background: url("../img/main_background.png");
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+#blackbox {
+	margin: 100px auto;
+	width: 500px;
+	background: url("../img/main_blackbox.png");
+	text-align: center;
+	padding-bottom: 10px;
+}
+
+img{
+	margin-top: 50px;
+	margin-bottom: 30px;
+}
+
+label {
+	color: rgb(255, 255, 255);
+	font-size: 20px;
+	float: left;
+}
+
+input:not([type="checkbox"]){
+	width: 100%;
+	padding: 8px 20px;
+	margin: 8px 0;
+	border: 1px solid;
+	box-sizing: border-box;
+}
+
+/*여기부터 버튼*/
+-webkit-animation: AnimationName 16s ease infinite; 
+-moz-animation: AnimationName 16s ease infinite; 
+-o-animation: AnimationName 16s ease infinite;
+animation: AnimationName 16s ease infinite; 
+
+@-webkit-keyframes AnimationName { 
+	0%{background-position:0% 50%} 
+	50%{background-position:100% 50%} 
+	100%{background-position:0% 50%} 
+} 
+@-moz-keyframes AnimationName { 
+	0%{background-position:0% 50%} 
+	50%{background-position:100% 50%} 
+	100%{background-position:0% 50%} 
+} 
+@-o-keyframes AnimationName { 
+	0%{background-position:0% 50%} 
+	50%{background-position:100% 50%} 
+	100%{background-position:0% 50%} 
+} 
+@keyframes AnimationName { 
+	0%{background-position:0% 50%} 
+	50%{background-position:100% 50%} 
+	100%{background-position:0% 50%} 
+}
+
+
+button {
+	background: #CFB8A1;
+	color: white;
+	padding: 14px 20px;
+	margin: 20px 0;
+	border: none;
+	cursor: pointer;
+	width: 100%;
+}
+
+button:hover {
+	color: #fff; 
+	background: linear-gradient(-45deg,#4F463E,#CFB8A1); 
+	background-size: 500% 500%; 
+	animation: AnimationName 10s ease infinite;
+}
+/*여기까지 버튼*/
+
+.psw{
+	color: rgb(255, 255, 255);
+	font-size: 18px;
+	float: right;
+}
+.signup{
+	background: url("../img/main_blackbox.png");
+	color: white;
+	padding-top: 10px;
+    padding-bottom: 10px;
+	font-style: bold;
+	font-size: 20px;
+}
+
+p{
+	 margin-bottom:0px;
+}

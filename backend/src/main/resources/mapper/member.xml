@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.happyhouse.model.mapper.MemberMapper">
+
+	<!-- 회원가입 -->
+	<insert id="join" parameterType="MemberDto">
+		insert into user (userid, userpwd, username, userbirth, userphone)
+		values (#{userid}, #{userpwd}, #{username}, #{userbirth}, #{userphone})
+	</insert>
+
+	<!-- 로그인 -->
+	<select id="login" parameterType="MemberDto" resultType="MemberDto">
+		select userid, userpwd, username, userbirth, userphone, isadmin
+		from user
+		where userid = #{userid} and userpwd = #{userpwd}
+	</select>
+	
+	<!-- 회원 목록 (Admin) -->
+	<select id="userList" resultType="memberDto">
+		select userid, userpwd, username, userbirth, userphone
+		from user
+	</select>
+	
+	<!-- 아이디로 회원 검색 (Admin) -->
+	<select id="userSearchById" parameterType="String" resultType="MemberDto">
+		select userid, userpwd, username, userbirth, userphone
+		from user
+		where userid like concat('%',#{userid},'%')
+	</select>
+	<!-- 이름으로 회원 검색 (Admin) -->
+	<select id="userSearchByName" parameterType="String" resultType="MemberDto">
+		select userid, userpwd, username, userbirth, userphone
+		from user
+		where username like concat('%',#{username},'%')
+	</select>
+	
+	<!-- 회원정보(마이페이지) -->
+	<select id="getUserInform" parameterType="String" resultType="MemberDto">
+		select username, userbirth, userphone
+		from user
+		where userid = #{userid}
+	</select>
+	
+	<!-- 회원정보 수정(마이페이지) -->
+	<update id="userInformUpdate" parameterType="MemberDto">
+		update user
+		set username = #{username}, userbirth = #{userbirth}, userphone = #{userphone}
+		where userid = #{userid}
+	</update>
+	
+	<!-- 비밀번호 확인(마이페이지) -->
+	<select id="pwdValidate" parameterType="String" resultType="String">
+		select userpwd
+		from user
+		where userid = #{userid}
+	</select>
+	
+	<!-- 비밀번호 수정(마이페이지) -->
+	<update id="userPwdUpdate" parameterType="MemberDto">
+		update user
+		set userpwd = #{userpwd}
+		where userid = #{userid}
+	</update>
+	
+	<!-- 회원탈퇴(마이페이지) -->
+	<delete id="userLeave" parameterType="String">
+		delete from user
+		where userid = #{userid}
+	</delete>
+	
+	<!-- 관심지역리스트(마이페이지) -->
+	<select id="getInterestLoc" parameterType="String" resultType="String">
+		select g.gungu
+		from interestlocal i join gungucode g
+		on i.gunguCode = g.gunguCode
+		where userid = #{userid}
+	</select>
+	
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- <mapper namespace="member"> -->
+<mapper
+	namespace="com.project.happyhouse.model.mapper.QnaArticleMapper">
+
+	<!-- QnA글 4개 조회 -->
+	<select id="getmainqnalist" resultType="QnaArticleDto">
+		select articleno,author,subject,regidate from qnanotice
+		order by articleno desc
+		limit 0,4;
+	</select>
+
+
+	<!-- QnA글 전체 조회 -->
+	<select id="qnaGetnoticelist" resultType="QnaArticleDto">
+		select articleno,author,subject,regidate from qnanotice
+		order by articleno desc
+	</select>
+
+	<!-- QnA글 상세 조회 -->
+	<select id="qnaGetnoticedetail" parameterType="map" resultType="QnaArticleDto">
+		select articleno, author, subject, content, regidate 
+		from qnanotice
+		where articleno = #{articleno}
+	</select>
+
+	<!-- QnA글 등록 -->
+	<insert id="qnaNoticewrite" parameterType="QnaArticleDto">
+		INSERT INTO qnanotice (author, subject, content) 
+		values (#{author}, #{subject}, #{content})
+	</insert>
+
+	<!-- QnA글 수정 -->
+	<update id="qnaNoticeupdate" parameterType="QnaArticleDto">
+		update qnanotice
+		set subject = #{subject}, content = #{content}, regidate = now()
+		where articleno = #{articleno}
+	</update>
+
+	<!-- QnA글 삭제 -->
+	<delete id="qnaNoticedelete" parameterType="int">
+		delete 
+		from qnanotice where articleno = #{articleno}
+	</delete>
+</mapper>

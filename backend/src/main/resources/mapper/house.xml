@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- <mapper namespace="member"> -->
+<mapper namespace="com.project.happyhouse.model.mapper.HouseMapper">
+
+	<!--  d여기
+	<select id="searchZero"			parameterType="SearchBean"  	resultType="HouseDealDto">
+		SELECT no, dong, aptName, gunguCode, jibun, lat, lng FROM housedeal WHERE type = #{dealType}
+		 <if test="#{searchType} eq '0'"> 
+				AND dong = #{keyword} ORDER BY AptName
+			</if>
+			<if test="#{searchType} == '1'">
+				AND AptName LIKE concat('%', #{keyword}, '%') ORDER BY dong
+			</if>
+	</select> -->
+	
+		<select id="searchZero"			parameterType="SearchBean"  	resultType="HouseDealDto">
+		SELECT no, dong, aptName, gunguCode, jibun, lat, lng, dealAmount FROM housedeal WHERE type = #{dealType} AND dong = #{keyword} ORDER BY AptName
+	</select>
+	<select id="searchOne"			parameterType="SearchBean"  	resultType="HouseDealDto">
+		SELECT no, dong, aptName, gunguCode, jibun, lat, lng, dealAmount FROM housedeal WHERE type = #{dealType} AND AptName LIKE concat('%', #{keyword}, '%') ORDER BY dong
+	</select>
+	
+	<select id="getDealInfo"			parameterType="int"  	resultType="HouseDealDto">
+		SELECT no, dong, aptName, gunguCode, dealAmount, buildYear,
+					  area, floor, jibun  FROM housedeal WHERE no = #{no}
+	</select>
+	<select id="getHospital"			parameterType="map"  	resultType="HospitalDto">
+		SELECT name, address, weekdayop, tel, lat, lng 
+		 FROM hospital WHERE type = #{type} AND gunguCode = concat(#{code},'00000')
+	</select>
+	
+	
+	<!-- 상권정보  -->
+	
+	<select id="getCommerce"			parameterType="map"  	resultType="CommerceDto">
+		SELECT * FROM commerce WHERE dongName = #{curDong} AND bigClass = #{commerClass}
+
+	</select>
+<select id="getCommerce2"			parameterType="String"  	resultType="CommerceDto">
+		SELECT * FROM commerce WHERE dongName = #{curDong}
+
+	</select>
+	
+	
+<!--  	List<HouseDealDto> search(SearchBean bean) throws Exception;
+	HouseDealDto getDealInfo(int no) throws Exception;	
+	List<HospitalDto> getHospital(String type, String code) throws Exception;	-->
+	
+</mapper>
